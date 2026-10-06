@@ -15,7 +15,15 @@ export type AnalyticsEvent =
   | "compression_completed"
   | "conversion_completed"
   | "download_clicked"
-  | "processing_failed";
+  | "processing_failed"
+  | "heic_conversion_completed"
+  | "svg_conversion_completed"
+  | "png_svg_conversion_completed"
+  | "crop_completed"
+  | "passport_photo_completed"
+  | "signature_resize_completed"
+  | "bulk_resize_completed"
+  | "bulk_download_completed";
 
 export interface AnalyticsProps {
   tool?: string;
@@ -28,6 +36,10 @@ export interface AnalyticsProps {
   outcome?: string;
   mode?: string;
   error_code?: string;
+  /** Coarse bucket for batch sizes such as "2-10", never an exact list of files. */
+  count_bucket?: string;
+  /** Preset identifier (e.g. an aspect ratio or a photo requirement id). */
+  preset?: string;
 }
 
 const ALLOWED_KEYS: ReadonlyArray<keyof AnalyticsProps> = [
@@ -39,6 +51,8 @@ const ALLOWED_KEYS: ReadonlyArray<keyof AnalyticsProps> = [
   "outcome",
   "mode",
   "error_code",
+  "count_bucket",
+  "preset",
 ];
 
 type PlausibleFn = (event: string, options?: { props?: Record<string, string | number> }) => void;

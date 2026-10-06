@@ -9,6 +9,13 @@ const toolPages = [
   "/tools/resize-image-to-kb",
   "/tools/jpg-to-png",
   "/tools/png-to-jpg",
+  "/tools/heic-to-jpg",
+  "/tools/svg-to-png",
+  "/tools/png-to-svg",
+  "/tools/image-cropper",
+  "/tools/passport-photo-resizer",
+  "/tools/signature-resizer",
+  "/tools/bulk-image-resizer",
 ];
 const pages = ["/", "/tools", ...toolPages, "/about", "/methodology", "/privacy", "/terms", "/contact"];
 
@@ -23,6 +30,7 @@ const meta = (html, attr, value) =>
   decode(html.match(new RegExp(`<meta[^>]*${attr}="${value}"[^>]*content="([^"]*)"`))?.[1] ?? "");
 
 const titles = new Map();
+const h1Texts = new Map();
 const descriptions = new Map();
 
 for (const route of pages) {
@@ -55,6 +63,9 @@ for (const route of pages) {
     check(`${route}: every FAQPage question is visible on the page`, faqQuestions.length >= 5 && visible, `${faqQuestions.length} questions`);
     check(`${route}: no ratings/reviews in schema`, !/AggregateRating|"Review"/.test(html));
   }
+  const h1 = decode((html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1] ?? "").replace(/<[^>]+>/g, ""));
+  if (h1Texts.has(h1)) check(`${route}: unique H1`, false, `same as ${h1Texts.get(h1)}`);
+  h1Texts.set(h1, route);
   if (titles.has(title)) check(`${route}: unique title`, false, `same as ${titles.get(title)}`);
   titles.set(title, route);
   if (descriptions.has(description)) check(`${route}: unique description`, false, `same as ${descriptions.get(description)}`);
@@ -62,6 +73,27 @@ for (const route of pages) {
 }
 check("all titles unique", titles.size === pages.length);
 check("all descriptions unique", descriptions.size === pages.length);
+check("all H1s unique", h1Texts.size === pages.length);
+
+// Every tool page links to every one of its registry "related" tools.
+for (const route of toolPages) {
+  const html = await (await fetch(BASE + route)).text();
+  const related = (html.split('id="related-heading"')[1] ?? "").split("</section>")[0];
+  const links = [...related.matchAll(/href="(\/tools\/[^"]+)"/g)].map((m) => m[1]);
+  check(`${route}: related tools are other tools`, links.length >= 3 && !links.includes(route), links.join(", "));
+}
+
+// Heavy tool libraries must not load on pages that don't need them.
+for (const route of ["/", "/tools", "/tools/image-resizer"]) {
+  const html = await (await fetch(BASE + route)).text();
+  const srcs = [...new Set([...html.matchAll(/<script src="([^"]+)"/g)].map((m) => m[1]))];
+  let heavy = false;
+  for (const src of srcs) {
+    const js = await (await fetch(BASE + src)).text();
+    if (/HeifDecoder|imagedataToTracedata|DOMPurify/.test(js)) heavy = true;
+  }
+  check(`${route}: no HEIC/tracing/sanitizer code in initial JS`, !heavy);
+}
 
 // Sitemap
 const sitemap = await (await fetch(`${BASE}/sitemap.xml`)).text();
@@ -82,6 +114,7 @@ check("og image renders", og.status === 200 && og.headers.get("content-type") ==
 const headers = (await fetch(`${BASE}/tools/image-resizer`)).headers;
 const csp = headers.get("content-security-policy") ?? "";
 check("CSP restricts network requests to this site", /connect-src 'self'(;|$)/.test(csp), csp.match(/connect-src[^;]*/)?.[0]);
+check("CSP allows WebAssembly but not eval", /'wasm-unsafe-eval'/.test(csp) && !/'unsafe-eval'/.test(csp));
 
 // 404
 const missing = await fetch(`${BASE}/tools/does-not-exist`);

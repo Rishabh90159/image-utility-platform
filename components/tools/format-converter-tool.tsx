@@ -5,9 +5,9 @@ import { useCallback, useId, useState } from "react";
 import { ResultPanel, type ResultImage } from "@/components/before-after/result-panel";
 import { Alert } from "@/components/controls/alert";
 import { QualitySlider, Segmented } from "@/components/controls/fields";
-import { track } from "@/lib/analytics";
+import { track, type AnalyticsEvent } from "@/lib/analytics";
 import { toImageToolError } from "@/lib/image-processing/errors";
-import { FORMATS, type ImageMime } from "@/lib/image-processing/formats";
+import { FORMATS, type ImageMime, type OutputMime } from "@/lib/image-processing/formats";
 import type { ToolId } from "@/lib/tools/registry";
 import { outputFileName, sizeBucket } from "@/lib/utils/format";
 import { useJobRunner, useSourceImage, useToolOpen, type SourceImage } from "./hooks";
@@ -20,9 +20,11 @@ import { ActionButton, ToolWorkspace } from "./tool-workspace";
 export interface ConverterConfig {
   tool: ToolId;
   from: ImageMime[];
-  to: ImageMime;
+  to: OutputMime;
   /** Shown when someone drops a file that is already in the target format. */
   reverse?: { href: string; label: string };
+  /** Analytics event sent after a successful conversion. */
+  completedEvent?: AnalyticsEvent;
 }
 
 type BackgroundChoice = "white" | "black" | "custom";
@@ -30,7 +32,7 @@ const BACKGROUNDS: Record<Exclude<BackgroundChoice, "custom">, string> = { white
 const DEFAULT_QUALITY = 0.9;
 
 export function FormatConverterTool({ config }: { config: ConverterConfig }) {
-  const { tool, from, to, reverse } = config;
+  const { tool, from, to, reverse, completedEvent = "conversion_completed" } = config;
   const target = FORMATS[to];
   useToolOpen(tool);
 
@@ -71,7 +73,7 @@ export function FormatConverterTool({ config }: { config: ConverterConfig }) {
       });
       if (!encoded) return;
       setResult({ key: keyFor(image), image: { blob: encoded.blob, width: encoded.width, height: encoded.height, mime: to } });
-      track("conversion_completed", {
+      track(completedEvent, {
         tool,
         input_format: FORMATS[image.mime].label,
         output_format: target.label,

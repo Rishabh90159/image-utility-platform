@@ -7,7 +7,7 @@ import { Alert } from "@/components/controls/alert";
 import { QualitySlider, Segmented } from "@/components/controls/fields";
 import { track } from "@/lib/analytics";
 import { toImageToolError } from "@/lib/image-processing/errors";
-import { ALL_INPUT_FORMATS, FORMATS, type ImageMime } from "@/lib/image-processing/formats";
+import { ALL_INPUT_FORMATS, FORMATS, outputMimeFor, type OutputMime } from "@/lib/image-processing/formats";
 import { formatBytes, outputFileName, percentSaved, sizeBucket } from "@/lib/utils/format";
 import { useEncodeSupport, useJobRunner, useSourceImage, useToolOpen, type SourceImage } from "./hooks";
 import { ActionButton, ToolWorkspace } from "./tool-workspace";
@@ -39,7 +39,7 @@ interface CompressionResult {
 }
 
 function resolveJob(source: SourceImage, settings: Settings) {
-  const mime: ImageMime = settings.output === "original" ? source.mime : settings.output;
+  const mime: OutputMime = settings.output === "original" ? outputMimeFor(source.mime) : settings.output;
   const isPng = mime === "image/png";
   const pngColors = isPng
     ? settings.mode === "auto"

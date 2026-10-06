@@ -1,3 +1,5 @@
+import { crc32 } from "@/lib/utils/crc32";
+
 /**
  * Minimal indexed-colour PNG encoder (colour type 3) using the browser's
  * built-in CompressionStream for zlib/deflate, so no compression library is
@@ -92,18 +94,3 @@ function chunk(type: string, payload: Uint8Array): Uint8Array<ArrayBuffer> {
   return out;
 }
 
-let crcTable: Uint32Array | null = null;
-
-function crc32(bytes: Uint8Array, start: number, end: number): number {
-  if (!crcTable) {
-    crcTable = new Uint32Array(256);
-    for (let n = 0; n < 256; n++) {
-      let c = n;
-      for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
-      crcTable[n] = c >>> 0;
-    }
-  }
-  let crc = 0xffffffff;
-  for (let i = start; i < end; i++) crc = crcTable[(crc ^ bytes[i]) & 0xff] ^ (crc >>> 8);
-  return (crc ^ 0xffffffff) >>> 0;
-}

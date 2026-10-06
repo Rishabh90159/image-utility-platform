@@ -23,7 +23,8 @@ function contentSecurityPolicy(): string {
   return [
     "default-src 'self'",
     // Next.js injects small inline bootstrap scripts; 'unsafe-inline' is needed without nonces.
-    `script-src 'self' 'unsafe-inline'${extra}`,
+    // 'wasm-unsafe-eval' lets the HEIC decoder compile its WebAssembly; it does not allow JavaScript eval().
+    `script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'${extra}`,
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' blob: data:",
     "font-src 'self'",

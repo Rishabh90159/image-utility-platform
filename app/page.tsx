@@ -6,9 +6,9 @@ import { siteConfig } from "@/lib/site";
 import { allTools } from "@/lib/tools/registry";
 
 export const metadata: Metadata = pageMetadata({
-  title: `Free Online Image Tools – Resize, Compress & Convert | ${siteConfig.name}`,
+  title: `Free Online Image Tools – Resize, Crop, Compress & Convert | ${siteConfig.name}`,
   description:
-    "Resize, compress and convert JPG, PNG and WebP images for free. Hit exact sizes like 50KB or 100KB. Images are processed in your browser and never uploaded.",
+    "Resize, crop, compress and convert images for free, including HEIC and SVG. Hit exact sizes like 50KB or 100KB. Images are processed in your browser, never uploaded.",
   path: "/",
 });
 
@@ -21,6 +21,13 @@ const commonTasks = [
   { href: "/tools/image-resizer", label: "Resize an image to 1920 px wide" },
   { href: "/tools/png-to-jpg", label: "Convert PNG to JPG with a white background" },
   { href: "/tools/jpg-to-png", label: "Convert JPEG to PNG" },
+  { href: "/tools/heic-to-jpg", label: "Convert an iPhone HEIC photo to JPG" },
+  { href: "/tools/image-cropper", label: "Crop a photo to a square (1:1)" },
+  { href: "/tools/passport-photo-resizer", label: "Resize a photo for a passport form" },
+  { href: "/tools/signature-resizer", label: "Resize a signature for an online form" },
+  { href: "/tools/bulk-image-resizer", label: "Resize many photos at once" },
+  { href: "/tools/svg-to-png", label: "Convert an SVG logo to PNG" },
+  { href: "/tools/png-to-svg", label: "Turn a PNG logo into an SVG" },
 ];
 
 export default function HomePage() {
@@ -33,8 +40,8 @@ export default function HomePage() {
             Free Online Image Tools
           </h1>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-ink-soft">
-            Resize, compress and convert images quickly with privacy-first tools that work directly in your browser. Make
-            your image fit the exact requirement — dimensions, file size or format.
+            Resize, crop, compress and convert images quickly with privacy-first tools that work directly in your browser.
+            Make your image fit the exact requirement — dimensions, file size or format.
           </p>
 
           <h2 className="sr-only">Image tools</h2>
@@ -74,7 +81,7 @@ export default function HomePage() {
           <ol className="space-y-5 self-start rounded-lg border border-line p-6">
             {[
               ["Select an image", "Choose a file, drag it in or paste it. It's opened by your browser, not uploaded."],
-              ["Set what you need", "Dimensions, a file size such as 100 KB, a quality level or an output format."],
+              ["Set what you need", "Dimensions, a crop, a file size such as 100 KB, a quality level or an output format."],
               ["Check and download", "Compare before and after, including exact file size, then save the result."],
             ].map(([title, text], index) => (
               <li key={title} className="flex gap-4">

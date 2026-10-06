@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { allTools } from "@/lib/tools/registry";
+import { allTools, headerTools } from "@/lib/tools/registry";
 import { Logo } from "./logo";
 
 /** Server-rendered header. The mobile menu uses <details>, so it needs no JavaScript. */
@@ -13,7 +13,7 @@ export function SiteHeader() {
 
         <nav aria-label="Image tools" className="hidden md:block">
           <ul className="flex items-center gap-1">
-            {allTools.map((tool) => (
+            {headerTools.map((tool) => (
               <li key={tool.id}>
                 <Link
                   href={tool.path}
@@ -23,6 +23,14 @@ export function SiteHeader() {
                 </Link>
               </li>
             ))}
+            <li>
+              <Link
+                href="/tools"
+                className="rounded-md px-3 py-2 text-sm font-medium text-accent transition-colors hover:bg-surface"
+              >
+                All tools
+              </Link>
+            </li>
           </ul>
         </nav>
 
@@ -35,7 +43,7 @@ export function SiteHeader() {
           </summary>
           <nav
             aria-label="Image tools"
-            className="absolute right-0 z-30 mt-2 w-64 rounded-lg border border-line bg-canvas p-2 shadow-lg"
+            className="absolute right-0 z-30 mt-2 max-h-[75vh] w-64 overflow-y-auto rounded-lg border border-line bg-canvas p-2 shadow-lg"
           >
             <ul>
               {allTools.map((tool) => (
@@ -45,6 +53,11 @@ export function SiteHeader() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link href="/tools" className="block rounded-md px-3 py-2.5 text-[0.9375rem] font-medium text-accent hover:bg-surface">
+                  All image tools
+                </Link>
+              </li>
             </ul>
           </nav>
         </details>

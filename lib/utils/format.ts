@@ -69,3 +69,11 @@ export function sizeBucket(bytes: number): string {
   if (bytes < 20 * MB) return "5-20MB";
   return ">20MB";
 }
+
+/** Coarse bucket for the number of files in a batch, for analytics. */
+export function countBucket(count: number): string {
+  if (count <= 1) return "1";
+  if (count <= 10) return "2-10";
+  if (count <= 50) return "11-50";
+  return ">50";
+}

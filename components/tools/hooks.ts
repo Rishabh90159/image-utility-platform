@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { track } from "@/lib/analytics";
 import { canEncode, isAbortError, newSourceId, processImage } from "@/lib/image-processing/client";
 import { ImageToolError, toImageToolError } from "@/lib/image-processing/errors";
-import { FORMATS, type ImageMime } from "@/lib/image-processing/formats";
+import { FORMATS, type ImageMime, type OutputMime } from "@/lib/image-processing/formats";
 import type { Job, ResultFor } from "@/lib/image-processing/types";
 import { validateImageFile } from "@/lib/image-processing/validate";
 import { sizeBucket } from "@/lib/utils/format";
@@ -20,9 +20,12 @@ export interface SourceImage {
   width: number;
   height: number;
   hasTransparency: boolean;
-  /** Local object URL for previewing; never leaves the browser. */
+  /** Local object URL for previewing; never leaves the browser. For HEIC it points to a decoded JPG/PNG copy. */
   url: string;
 }
+
+/** Longest side of previews generated for formats the browser can't display itself. */
+const PREVIEW_LONG_SIDE = 1600;
 
 interface UseSourceImageOptions {
   tool: ToolId;
@@ -62,9 +65,11 @@ export function useSourceImage({ tool, accept, wrongFormatMessage }: UseSourceIm
           sourceId,
           file,
           checkTransparency: FORMATS[mime].supportsTransparency,
+          // Most browsers can't display HEIC in an <img>, so show a decoded copy instead.
+          preview: mime === "image/heic" ? PREVIEW_LONG_SIDE : undefined,
         });
         if (id !== request.current) return null;
-        const url = URL.createObjectURL(file);
+        const url = URL.createObjectURL(probe.preview ?? file);
         replaceUrl(url);
         const loaded: SourceImage = {
           id: sourceId,
@@ -162,7 +167,7 @@ export function useObjectUrl(blob: Blob | null): string | null {
 }
 
 /** Whether the browser can create files of this format. `null` while checking. */
-export function useEncodeSupport(mime: ImageMime): boolean | null {
+export function useEncodeSupport(mime: OutputMime): boolean | null {
   const [supported, setSupported] = useState<boolean | null>(null);
   useEffect(() => {
     let active = true;

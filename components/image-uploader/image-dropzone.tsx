@@ -8,7 +8,14 @@ import { formatBytes } from "@/lib/utils/format";
 
 interface ImageDropzoneProps {
   accept: ImageMime[];
-  onFile: (file: File) => void;
+  /** Called with the first file (single-file tools). */
+  onFile?: (file: File) => void;
+  /** Called with every selected file (batch tools). Enables multiple selection. */
+  onFiles?: (files: File[]) => void;
+  /** Overrides the accept attribute and the list of formats shown. */
+  acceptOverride?: { attribute: string; label: string };
+  /** Shorter layout for adding more files to an existing batch. */
+  compact?: boolean;
   loading?: boolean;
   /** Short line describing what happens next, e.g. "Choose a JPG to convert to PNG". */
   prompt?: string;
@@ -18,7 +25,16 @@ interface ImageDropzoneProps {
  * Upload area: drag and drop, file picker, or paste from the clipboard.
  * Files are read locally; nothing is sent over the network.
  */
-export function ImageDropzone({ accept, onFile, loading = false, prompt = "Drop an image here" }: ImageDropzoneProps) {
+export function ImageDropzone({
+  accept,
+  onFile,
+  onFiles,
+  acceptOverride,
+  compact = false,
+  loading = false,
+  prompt = "Drop an image here",
+}: ImageDropzoneProps) {
+  const multiple = Boolean(onFiles);
   const inputId = useId();
   const hintId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -30,19 +46,22 @@ export function ImageDropzone({ accept, onFile, loading = false, prompt = "Drop 
     const onPaste = (event: ClipboardEvent) => {
       const target = event.target as HTMLElement | null;
       if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable)) return;
-      const file = [...(event.clipboardData?.files ?? [])][0];
-      if (file) {
+      const files = [...(event.clipboardData?.files ?? [])];
+      if (files.length > 0) {
         event.preventDefault();
-        onFile(file);
+        if (onFiles) onFiles(files);
+        else onFile?.(files[0]);
       }
     };
     window.addEventListener("paste", onPaste);
     return () => window.removeEventListener("paste", onPaste);
-  }, [onFile]);
+  }, [onFile, onFiles]);
 
-  const handleFiles = (files: FileList | null) => {
-    const file = files?.[0];
-    if (file) onFile(file);
+  const handleFiles = (list: FileList | null) => {
+    const files = [...(list ?? [])];
+    if (files.length === 0) return;
+    if (onFiles) onFiles(files);
+    else onFile?.(files[0]);
   };
 
   return (
@@ -66,7 +85,7 @@ export function ImageDropzone({ accept, onFile, loading = false, prompt = "Drop 
         setDragging(false);
         handleFiles(event.dataTransfer.files);
       }}
-      className={`flex flex-col items-center justify-center rounded-lg border-2 border-dashed px-5 py-10 text-center transition-colors sm:py-14 ${
+      className={`flex flex-col items-center justify-center rounded-lg border-2 border-dashed px-5 text-center transition-colors ${compact ? "py-6" : "py-10 sm:py-14"} ${
         dragging ? "border-accent bg-accent-soft" : "border-line-strong bg-canvas"
       }`}
       aria-busy={loading}
@@ -83,7 +102,8 @@ export function ImageDropzone({ accept, onFile, loading = false, prompt = "Drop 
         ref={inputRef}
         id={inputId}
         type="file"
-        accept={acceptAttribute(accept)}
+        accept={acceptOverride?.attribute ?? acceptAttribute(accept)}
+        multiple={multiple}
         className="peer sr-only"
         aria-describedby={hintId}
         disabled={loading}
@@ -100,11 +120,12 @@ export function ImageDropzone({ accept, onFile, loading = false, prompt = "Drop 
           `mt-3 cursor-pointer px-6 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent ${loading ? "pointer-events-none opacity-55" : ""}`,
         )}
       >
-        Choose image
+        {multiple ? "Choose images" : "Choose image"}
       </label>
 
       <p id={hintId} className="mt-4 text-sm text-muted">
-        {acceptedLabels(accept)} · up to {formatBytes(LIMITS.maxFileBytes)} · one image at a time
+        {acceptOverride?.label ?? acceptedLabels(accept)} · up to {formatBytes(LIMITS.maxFileBytes)}
+        {multiple ? " each · select as many as you need" : " · one image at a time"}
         <span className="hidden sm:inline"> · or paste with Ctrl+V</span>
       </p>
       <p className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-ink-soft">
@@ -112,7 +133,7 @@ export function ImageDropzone({ accept, onFile, loading = false, prompt = "Drop 
           <rect x="2.5" y="6" width="9" height="6.5" rx="1" fill="none" stroke="currentColor" strokeWidth="1.4" />
           <path d="M4.5 6V4.5a2.5 2.5 0 015 0V6" fill="none" stroke="currentColor" strokeWidth="1.4" />
         </svg>
-        Processed in your browser. Your image is not uploaded.
+        {multiple ? "Processed in your browser. Your images are not uploaded." : "Processed in your browser. Your image is not uploaded."}
       </p>
     </div>
   );

@@ -5,9 +5,9 @@ import { pageMetadata } from "@/lib/seo/metadata";
 import { allTools, type ToolCategory } from "@/lib/tools/registry";
 
 export const metadata: Metadata = pageMetadata({
-  title: "All Image Tools – Resize, Compress and Convert Images",
+  title: "All Image Tools – Resize, Crop, Compress and Convert Images",
   description:
-    "Every free image tool in one place: resize images by pixels or to a target KB size, compress JPG, PNG and WebP, and convert between JPG and PNG in your browser.",
+    "Every free image tool in one place: resize single or bulk images, crop, prepare passport photos and signatures, compress, and convert HEIC, SVG, PNG and JPG.",
   path: "/tools",
 });
 
@@ -15,7 +15,12 @@ const groups: { category: ToolCategory; heading: string; text: string }[] = [
   {
     category: "resize",
     heading: "Resize images",
-    text: "Change dimensions in pixels, or reduce an image to a file size limit such as 50 KB.",
+    text: "Change dimensions in pixels for one image or a whole batch, or reduce an image to a file size limit such as 50 KB.",
+  },
+  {
+    category: "edit",
+    heading: "Crop and prepare images",
+    text: "Crop to any ratio, and prepare passport photos and signatures for application forms.",
   },
   {
     category: "compress",
@@ -25,7 +30,7 @@ const groups: { category: ToolCategory; heading: string; text: string }[] = [
   {
     category: "convert",
     heading: "Convert image formats",
-    text: "Switch between JPG and PNG, with control over quality and transparency.",
+    text: "Convert iPhone HEIC photos, render SVG to PNG, trace PNG into vector SVG, and switch between JPG and PNG.",
   },
 ];
 

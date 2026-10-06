@@ -23,7 +23,6 @@ const UNSUPPORTED_NAMES: Record<string, string> = {
   "image/bmp": "BMP",
   "image/tiff": "TIFF",
   "image/avif": "AVIF",
-  "image/svg+xml": "SVG",
 };
 
 export function acceptedLabels(accept: ImageMime[]): string {
@@ -54,14 +53,14 @@ export async function validateImageFile(file: File, options: ValidateOptions): P
   const detected = detectFormat(head);
   const accepted = acceptedLabels(options.accept);
 
-  if (detected === "image/heic") {
+  if (detected === "image/heic" && !options.accept.includes("image/heic")) {
     throw new ImageToolError(
       "HEIC_NOT_SUPPORTED",
-      `HEIC photos aren't supported yet. On iPhone, set Settings > Camera > Formats to "Most Compatible", or share the photo as JPG first. Supported formats: ${accepted}.`,
+      `This tool can't open HEIC (iPhone) photos directly. Convert the photo to JPG first — that also runs in your browser. Supported formats here: ${accepted}.`,
     );
   }
   if (detected === null) {
-    const looksLikeImage = file.type.startsWith("image/") || /\.(jpe?g|png|webp)$/i.test(file.name);
+    const looksLikeImage = file.type.startsWith("image/") || /\.(jpe?g|png|webp|heic|heif)$/i.test(file.name);
     throw new ImageToolError(
       looksLikeImage ? "DECODE_FAILED" : "NOT_AN_IMAGE",
       looksLikeImage

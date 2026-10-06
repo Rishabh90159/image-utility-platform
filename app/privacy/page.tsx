@@ -40,6 +40,15 @@ export default function PrivacyPage() {
           Processed images don&apos;t include metadata such as GPS location from the original, which helps if you share them
           afterwards.
         </li>
+        <li>
+          Some tools load extra processing code only when you use them, for example the HEIC decoder (about 2 MB) or the
+          SVG tracing engine. This code is downloaded from this website to your browser; nothing is sent in the other
+          direction, and your image is never part of the request.
+        </li>
+        <li>
+          Batch downloads (ZIP files) are assembled in your browser. Passport photos and signatures, which are especially
+          personal, are handled exactly like every other image: locally, and never stored by us.
+        </li>
       </ul>
       <p>
         This is enforced technically as well as by policy: the site&apos;s Content Security Policy tells your browser to block

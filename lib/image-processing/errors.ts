@@ -17,6 +17,10 @@ export type ImageErrorCode =
   | "ENCODER_UNSUPPORTED"
   | "INVALID_TARGET"
   | "OUT_OF_MEMORY"
+  | "DECODER_UNAVAILABLE"
+  | "INVALID_SVG"
+  | "VECTORIZE_FAILED"
+  | "ZIP_FAILED"
   | "UNKNOWN";
 
 export class ImageToolError extends Error {

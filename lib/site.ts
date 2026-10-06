@@ -17,7 +17,7 @@ export const siteConfig = {
   name: "Pixfit",
   tagline: "Fast, private image tools that make your image fit the exact requirement.",
   description:
-    "Free online image tools to resize, compress and convert JPG, PNG and WebP images. Everything runs in your browser, so your images are never uploaded.",
+    "Free online image tools to resize, crop, compress and convert JPG, PNG, WebP, HEIC and SVG images. Everything runs in your browser, so your images are never uploaded.",
   url: resolveSiteUrl(),
   locale: "en_US",
   contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || null,

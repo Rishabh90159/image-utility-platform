@@ -10,7 +10,7 @@ import { formatBytes } from "@/lib/utils/format";
 export const metadata: Metadata = pageMetadata({
   title: `How the Image Tools Work – Methodology | ${siteConfig.name}`,
   description:
-    "A plain-language explanation of how images are resized, compressed, converted and reduced to a target KB size in your browser, including limits and trade-offs.",
+    "A plain-language explanation of how images are resized, cropped, compressed, converted, traced and reduced to a target KB size in your browser, with limits.",
   path: "/methodology",
 });
 
@@ -144,7 +144,54 @@ export default function MethodologyPage() {
           <strong>PNG to JPG:</strong> JPG has no transparency, so transparent pixels are placed over the background colour
           you choose (white by default). Semi-transparent pixels are blended so edges stay smooth.
         </li>
+        <li>
+          <strong>HEIC to JPG:</strong> Safari can read HEIC itself. Other browsers can&apos;t, so the first time you open a
+          HEIC photo, the page downloads a HEIC decoder (libheif compiled to WebAssembly, about 2 MB) from this site. It runs
+          in the background thread like everything else; your photo is not sent anywhere. Files with several images (bursts,
+          Live Photos) use the main photo. The decoder treats colours as standard sRGB, so wide-gamut iPhone colours can
+          look very slightly less saturated than in the Photos app.
+        </li>
+        <li>
+          <strong>SVG to PNG:</strong> SVG files can contain scripts and links, so they are never inserted into the page.
+          The file is parsed without running anything, then cleaned with DOMPurify&apos;s SVG rules plus stricter ones of our
+          own: scripts, event handlers, embedded HTML, animations, links to other files and XML entity tricks are removed or
+          rejected. The cleaned SVG is drawn through an image element, where browsers disable scripting and external
+          loading, at the pixel size you choose.
+        </li>
+        <li>
+          <strong>PNG to SVG:</strong> a PNG has no shapes, so they must be reconstructed. The image is reduced to a small
+          palette (using the same median-cut method as the PNG compressor) or to black and white, then each colour
+          region&apos;s outline is traced into lines and curves with ImageTracer.js. The SVG contains only vector paths, never
+          an embedded copy of the PNG. Photos and gradients produce many shapes and don&apos;t trace well.
+        </li>
       </ul>
+
+      <h2>Cropping, rotation and photo preparation</h2>
+      <p>
+        The cropper works on a preview, but the crop is applied to the full-resolution image: rotation (in 90° steps) and
+        mirroring are applied first, then the selected rectangle is cut out and scaled to the output size with the same
+        high-quality resampling as the resizer. The passport photo and signature tools use the same cropper with an exact
+        output size in pixels. When a size is given in millimetres or inches, pixels are calculated from the DPI, and the DPI
+        is written into the JPG header so the photo prints at the intended physical size.
+      </p>
+      <p>
+        Passport presets are added only when their numbers are copied from the issuing government&apos;s own website. Each
+        preset shows its source and the date it was last checked. When a maximum file size is set, the target-size search
+        described above runs with resizing turned off, so the required dimensions are never changed.
+      </p>
+      <p>
+        The signature clean-up measures each pixel&apos;s brightness. Pixels lighter than the chosen threshold become white or
+        transparent, darker ink is kept, and a narrow band in between is blended so pen edges stay smooth.
+      </p>
+
+      <h2>Batch processing</h2>
+      <p>
+        The bulk resizer processes images through a small pool of background workers, usually two or three depending on
+        the device&apos;s processor and memory. Each image is decoded, resized, encoded and then released from memory before
+        the worker takes the next one, so large batches don&apos;t exhaust memory and one damaged file doesn&apos;t stop the
+        rest. The ZIP download is assembled in your browser: images are stored without recompression, and file names are
+        cleaned so they can&apos;t contain folders or characters that are invalid on Windows, macOS or Linux.
+      </p>
 
       <h2>Metadata</h2>
       <p>
@@ -155,8 +202,13 @@ export default function MethodologyPage() {
 
       <h2>Known limitations</h2>
       <ul>
-        <li>One image at a time. Batch processing is planned.</li>
-        <li>HEIC (iPhone) photos, GIF, SVG and AVIF can&apos;t be opened yet.</li>
+        <li>
+          The resizer, compressor, target-size and JPG/PNG converters handle one image at a time; use the bulk resizer for
+          batches.
+        </li>
+        <li>GIF, TIFF and AVIF can&apos;t be opened yet. HEIC is supported by the HEIC converter, cropper, photo tools and bulk resizer.</li>
+        <li>Rotation is in 90° steps; free-angle straightening isn&apos;t available yet.</li>
+        <li>Passport and signature tools don&apos;t change backgrounds or check pose, lighting or expression.</li>
         <li>Some versions of Safari can&apos;t create WebP files; the WebP option is disabled when that&apos;s the case.</li>
         <li>Colour profiles other than standard sRGB may be converted to sRGB by the browser.</li>
         <li>Animated images are not supported; only the first frame would be used.</li>

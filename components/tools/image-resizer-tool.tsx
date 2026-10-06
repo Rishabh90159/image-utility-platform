@@ -6,7 +6,7 @@ import { Alert } from "@/components/controls/alert";
 import { Checkbox, FieldLabel, inputClass, QualitySlider, Segmented } from "@/components/controls/fields";
 import { track } from "@/lib/analytics";
 import { toImageToolError } from "@/lib/image-processing/errors";
-import { ALL_INPUT_FORMATS, FORMATS, LIMITS, type ImageMime } from "@/lib/image-processing/formats";
+import { ALL_INPUT_FORMATS, FORMATS, LIMITS, outputMimeFor, type OutputMime } from "@/lib/image-processing/formats";
 import { formatDimensions, outputFileName, sizeBucket } from "@/lib/utils/format";
 import { useEncodeSupport, useJobRunner, useSourceImage, useToolOpen, type SourceImage } from "./hooks";
 import { ActionButton, ToolWorkspace } from "./tool-workspace";
@@ -16,7 +16,7 @@ const WIDTH_PRESETS = [3840, 1920, 1280, 1080, 800, 640];
 const PERCENT_PRESETS = [25, 50, 75];
 
 type Mode = "pixels" | "percent";
-type OutputChoice = "original" | ImageMime;
+type OutputChoice = "original" | OutputMime;
 
 interface Target {
   width: number;
@@ -108,7 +108,7 @@ export function ImageResizerTool() {
   })();
   const dimsError = mode === "percent" && Number(percent) > 400 ? "Use a percentage between 1 and 400." : dimensionError(target);
 
-  const outMime: ImageMime = output === "original" ? source.mime : output;
+  const outMime: OutputMime = output === "original" ? outputMimeFor(source.mime) : output;
   const lossy = FORMATS[outMime].lossy;
   const flattens = source.hasTransparency && !FORMATS[outMime].supportsTransparency;
   const settingsKey = JSON.stringify([source.id, target, outMime, lossy ? quality : null]);

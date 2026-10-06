@@ -1,5 +1,6 @@
 import { ImageToolError } from "./errors";
-import { FORMATS, LIMITS, type ImageMime } from "./formats";
+import { FORMATS, LIMITS, type OutputMime } from "./formats";
+import { detectFormat } from "./sniff";
 
 /**
  * Canvas helpers that work both inside a Web Worker (OffscreenCanvas) and on
@@ -59,7 +60,7 @@ export function releaseCanvas(canvas: AnyCanvas): void {
   canvas.height = 0;
 }
 
-type DrawableSource = ImageBitmap | AnyCanvas;
+export type DrawableSource = ImageBitmap | AnyCanvas;
 
 /**
  * Draws `source` into a new canvas of the requested size.
@@ -110,7 +111,7 @@ export function drawScaled(
   }
 }
 
-export async function canvasToBlob(canvas: AnyCanvas, mime: ImageMime, quality?: number): Promise<Blob> {
+export async function canvasToBlob(canvas: AnyCanvas, mime: OutputMime, quality?: number): Promise<Blob> {
   let blob: Blob | null = null;
   try {
     if ("convertToBlob" in canvas) {
@@ -135,7 +136,7 @@ export async function canvasToBlob(canvas: AnyCanvas, mime: ImageMime, quality?:
 }
 
 /** Checks whether any pixel is not fully opaque, using a downscaled copy for speed. */
-export function hasTransparency(source: ImageBitmap): boolean {
+export function hasTransparency(source: DrawableSource): boolean {
   const scale = Math.min(1, 1024 / Math.max(source.width, source.height));
   const w = Math.max(1, Math.round(source.width * scale));
   const h = Math.max(1, Math.round(source.height * scale));
@@ -154,6 +155,21 @@ export function hasTransparency(source: ImageBitmap): boolean {
 }
 
 export async function decodeImage(file: Blob): Promise<ImageBitmap> {
+  const bitmap = await decodeNatively(file);
+  if (bitmap) return bitmap;
+  // Most browsers can't decode HEIC themselves (Safari can); fall back to the on-demand decoder.
+  const head = new Uint8Array(await file.slice(0, 64).arrayBuffer());
+  if (detectFormat(head) === "image/heic") {
+    const { decodeHeic } = await import("./heic");
+    return decodeHeic(file);
+  }
+  throw new ImageToolError(
+    "DECODE_FAILED",
+    "We couldn't open this image. The file may be damaged, incomplete, or too large for your browser to decode.",
+  );
+}
+
+async function decodeNatively(file: Blob): Promise<ImageBitmap | null> {
   let bitmap: ImageBitmap | null = null;
   try {
     bitmap = await createImageBitmap(file, { imageOrientation: "from-image" });
@@ -164,12 +180,9 @@ export async function decodeImage(file: Blob): Promise<ImageBitmap> {
       bitmap = null;
     }
   }
-  if (!bitmap || bitmap.width === 0 || bitmap.height === 0) {
-    bitmap?.close();
-    throw new ImageToolError(
-      "DECODE_FAILED",
-      "We couldn't open this image. The file may be damaged, incomplete, or too large for your browser to decode.",
-    );
+  if (bitmap && (bitmap.width === 0 || bitmap.height === 0)) {
+    bitmap.close();
+    return null;
   }
   return bitmap;
 }

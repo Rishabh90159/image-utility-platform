@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useId } from "react";
 import { Alert } from "@/components/controls/alert";
 import { buttonClass } from "@/components/controls/button";
@@ -24,6 +25,12 @@ interface ToolWorkspaceProps {
   controls: React.ReactNode;
   /** Result area, shown below the workspace once processing finishes. */
   result?: React.ReactNode;
+  /** Replaces the static preview, e.g. with an interactive cropper. */
+  preview?: React.ReactNode;
+  /** Gives the preview more room than the settings (for cropping). */
+  widePreview?: boolean;
+  /** Overrides the file picker's accept list and labels (e.g. SVG). */
+  acceptOverride?: { attribute: string; label: string };
 }
 
 /** Common frame for every tool: upload → preview + settings → result. */
@@ -38,12 +45,22 @@ export function ToolWorkspace({
   prompt,
   controls,
   result,
+  preview,
+  widePreview = false,
+  acceptOverride,
 }: ToolWorkspaceProps) {
   const changeId = useId();
   const errorBlock = error ? (
     <Alert tone="error" title="We couldn't use that file">
       <p>{error.message}</p>
-      {errorAction}
+      {errorAction ??
+        (error.code === "HEIC_NOT_SUPPORTED" ? (
+          <p className="mt-1">
+            <Link href="/tools/heic-to-jpg" className="font-medium text-accent underline">
+              Convert HEIC to JPG
+            </Link>
+          </p>
+        ) : null)}
     </Alert>
   ) : null;
 
@@ -51,7 +68,7 @@ export function ToolWorkspace({
     return (
       <div className="space-y-4">
         {errorBlock}
-        <ImageDropzone accept={accept} onFile={onFile} loading={loading} prompt={prompt} />
+        <ImageDropzone accept={accept} onFile={onFile} loading={loading} prompt={prompt} acceptOverride={acceptOverride} />
       </div>
     );
   }
@@ -73,7 +90,7 @@ export function ToolWorkspace({
             <input
               id={changeId}
               type="file"
-              accept={acceptAttribute(accept)}
+              accept={acceptOverride?.attribute ?? acceptAttribute(accept)}
               className="peer sr-only"
               onChange={(event) => {
                 const file = event.target.files?.[0];
@@ -96,14 +113,18 @@ export function ToolWorkspace({
           </div>
         </div>
 
-        <div className="grid gap-6 p-4 sm:p-5 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
-          <ImagePreview
-            src={source.url}
-            alt="Preview of the image you selected"
-            width={source.width}
-            height={source.height}
-            className="h-52 sm:h-72 md:h-full md:max-h-[26rem] md:min-h-72"
-          />
+        <div
+          className={`grid gap-6 p-4 sm:p-5 ${widePreview ? "lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]" : "md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]"}`}
+        >
+          {preview ?? (
+            <ImagePreview
+              src={source.url}
+              alt="Preview of the image you selected"
+              width={source.width}
+              height={source.height}
+              className="h-52 sm:h-72 md:h-full md:max-h-[26rem] md:min-h-72"
+            />
+          )}
           <div className="min-w-0 space-y-5">
             {errorBlock}
             {controls}

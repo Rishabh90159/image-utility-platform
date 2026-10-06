@@ -48,7 +48,7 @@ const faqs: FaqItem[] = [
   {
     question: "Can I convert several JPGs at once?",
     answer:
-      "Currently the converter handles one image at a time. Select the next image after downloading, and it converts immediately.",
+      "This converter handles one image at a time: select the next image after downloading and it converts immediately. To convert a whole batch, the bulk image resizer can save many images as PNG in one go and download them as a ZIP.",
   },
   {
     question: "Is my image uploaded during conversion?",
