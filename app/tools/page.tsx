@@ -1,0 +1,65 @@
+import type { Metadata } from "next";
+import { Breadcrumbs } from "@/components/breadcrumbs/breadcrumbs";
+import { ToolCard } from "@/components/tool-card/tool-card";
+import { pageMetadata } from "@/lib/seo/metadata";
+import { allTools, type ToolCategory } from "@/lib/tools/registry";
+
+export const metadata: Metadata = pageMetadata({
+  title: "All Image Tools – Resize, Compress and Convert Images",
+  description:
+    "Every free image tool in one place: resize images by pixels or to a target KB size, compress JPG, PNG and WebP, and convert between JPG and PNG in your browser.",
+  path: "/tools",
+});
+
+const groups: { category: ToolCategory; heading: string; text: string }[] = [
+  {
+    category: "resize",
+    heading: "Resize images",
+    text: "Change dimensions in pixels, or reduce an image to a file size limit such as 50 KB.",
+  },
+  {
+    category: "compress",
+    heading: "Compress images",
+    text: "Make files smaller while keeping their dimensions.",
+  },
+  {
+    category: "convert",
+    heading: "Convert image formats",
+    text: "Switch between JPG and PNG, with control over quality and transparency.",
+  },
+];
+
+export default function ToolsIndexPage() {
+  return (
+    <div className="mx-auto max-w-6xl px-4 pt-8 sm:px-6">
+      <Breadcrumbs
+        items={[
+          { name: "Home", path: "/" },
+          { name: "Image tools", path: "/tools" },
+        ]}
+      />
+      <h1 className="mt-4 text-3xl font-bold tracking-tight text-ink sm:text-4xl">All image tools</h1>
+      <p className="mt-3 max-w-2xl text-lg leading-relaxed text-ink-soft">
+        Free tools that run in your browser. Pick the one that matches what you need to do; your images are never uploaded.
+      </p>
+
+      {groups.map((group) => (
+        <section key={group.category} aria-labelledby={`group-${group.category}`} className="mt-12">
+          <h2 id={`group-${group.category}`} className="text-xl font-semibold text-ink">
+            {group.heading}
+          </h2>
+          <p className="mt-1 text-muted">{group.text}</p>
+          <ul className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {allTools
+              .filter((tool) => tool.category === group.category)
+              .map((tool) => (
+                <li key={tool.id}>
+                  <ToolCard tool={tool} />
+                </li>
+              ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+  );
+}
