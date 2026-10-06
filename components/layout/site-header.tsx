@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { allTools, headerTools } from "@/lib/tools/registry";
 import { Logo } from "./logo";
+import { MobileMenu } from "./mobile-menu";
 
-/** Server-rendered header. The mobile menu uses <details>, so it needs no JavaScript. */
+/** Server-rendered header. The mobile menu is a <details> element that also works without JavaScript. */
 export function SiteHeader() {
   return (
     <header className="border-b border-line bg-canvas">
@@ -34,7 +35,7 @@ export function SiteHeader() {
           </ul>
         </nav>
 
-        <details className="group relative md:hidden">
+        <MobileMenu className="group relative md:hidden">
           <summary className="flex cursor-pointer list-none items-center gap-2 rounded-md border border-line px-3 py-2 text-sm font-medium text-ink [&::-webkit-details-marker]:hidden">
             Tools
             <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" className="transition-transform group-open:rotate-180">
@@ -60,7 +61,7 @@ export function SiteHeader() {
               </li>
             </ul>
           </nav>
-        </details>
+        </MobileMenu>
       </div>
     </header>
   );
