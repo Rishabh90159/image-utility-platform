@@ -21,6 +21,9 @@ export type ImageErrorCode =
   | "INVALID_SVG"
   | "VECTORIZE_FAILED"
   | "ZIP_FAILED"
+  | "MODEL_UNAVAILABLE"
+  | "BACKGROUND_REMOVAL_FAILED"
+  | "PDF_FAILED"
   | "UNKNOWN";
 
 export class ImageToolError extends Error {

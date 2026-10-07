@@ -24,9 +24,12 @@ answer to one clearly defined intent.
 ```
 /                                 Home
 /tools                            All tools, grouped
-├── Image tools                   /tools/image-resizer, image-compressor, image-cropper, bulk-image-resizer,
-│                                 jpg-to-png, png-to-jpg, webp-to-jpg, heic-to-jpg, svg-to-png, png-to-svg,
-│                                 passport-photo-resizer, signature-resizer
+├── Image tools                   /tools/image-resizer, image-compressor, image-upscaler, image-size-increase,
+│                                 image-quality-enhancer, background-remover, merge-images, image-cropper,
+│                                 bulk-image-resizer, passport-photo-resizer, signature-resizer
+├── Convert                       /tools/jpg-to-png, png-to-jpg, webp-to-jpg, heic-to-jpg, jpeg-to-jpg,
+│                                 svg-to-png, png-to-svg, photo-to-pdf, jpg-to-pdf
+├── /tools/mb-to-kb-converter     File-size units (in the "Photo size" menu)
 ├── /tools/resize-image-to-kb     Exact file size (general)
 │   └── 20kb-photo, 50kb-photo, 100kb-photo, 200kb-photo
 └── /tools/application-photos     Exam & passport hub (comparison table)
@@ -65,6 +68,15 @@ Volumes and difficulty (KD) are approximate global figures from competitor keywo
 | /tools/passport-photo | passport size photo (351K, KD 10) | passport size photo maker (189K), passport photo maker (66K), passport photo size | Application |
 | /tools/passport-photo-resizer | passport photo resizer | resize passport photo, custom size in mm/px/KB | Tool |
 | /tools/application-photos | exam photo size | photo size for government exams | Hub |
+| /tools/image-upscaler | image upscaler (374K, KD 81) | upscale image (273K), image upscaler free (38K), enlarge image | Tool |
+| /tools/image-size-increase | increase image size (143K, KD 71) | photo size increase (103K), increase image size in kb (30K, KD 10) | Tool |
+| /tools/image-quality-enhancer | image quality enhancer | enhance image quality (82K, KD 80), improve photo quality | Tool |
+| /tools/background-remover | background remover | photo background (305K), image background remover (172K), remove background from image (152K), background remover free (105K), background remover online (79K) | Tool |
+| /tools/photo-to-pdf | photo to pdf | image to pdf, convert image to pdf | Tool |
+| /tools/jpg-to-pdf | jpg to pdf | jpg to pdf converter, jpeg to pdf | Tool |
+| /tools/merge-images | merge images (75K, KD 29) | combine images, merge photos | Tool |
+| /tools/jpeg-to-jpg | jpeg to jpg (180K, KD 13) | jpeg to jpg converter, jfif to jpg | Tool |
+| /tools/mb-to-kb-converter | mb to kb converter (80K, KD 11) | kb converter (68K, KD 11), mb to kb, kb to mb | Tool |
 | /tools/ssc-photo, upsc-photo, ibps-photo, sbi-photo, neet-photo | "<exam> photo" | "<exam> photo size", "<exam> signature size" | Application |
 
 ### Cannibalization decisions
@@ -77,7 +89,10 @@ Volumes and difficulty (KD) are approximate global figures from competitor keywo
 | Image size reducer / photo size reducer | Assigned to `/tools/resize-image-to-kb`: in the research these searches mostly come from people with a KB limit to meet. The compressor owns "reduce image size" (no target). |
 | Passport size photo vs passport photo resizer | `/tools/passport-photo` owns "passport size photo" and "maker": official sizes by country plus a tool preset for each. `/tools/passport-photo-resizer` owns "resizer" and custom sizes (any mm, px or KB). Each page links to the other and explains the difference in an FAQ. |
 | SSC "photo resizer" | The SSC 2026 notices capture the photo live in the form, so the page is titled for requirements plus the signature tool. Calling it an SSC photo resizer would mislead. |
-| "kb converter", "mb to kb converter" | Not targeted. Most of these searches want a unit converter (MB → KB arithmetic), which no page provides. Roadmap item. |
+| "kb converter", "mb to kb converter" | `/tools/mb-to-kb-converter` (built in Phase 4): a unit converter, not an image tool. It links to the KB tools for people whose real goal is shrinking a photo. |
+| Image resizer / upscaler / size increase / enhancer | Resizer = any new dimensions (mostly smaller). Upscaler = "image upscaler", "upscale image": 2×/4× enlargement with sharpening. Size increase = "increase image size", "photo size increase", "… in KB": bigger in pixels **or** bigger in KB, with the KB case as its distinct job. Enhancer = "enhance/improve quality": same size, better look. Each page explains the others in one sentence and links to them. |
+| Photo to PDF vs JPG to PDF | Photo to PDF owns the broad "image/photo to PDF" intent and every format. JPG to PDF owns "jpg to pdf": its copy is about byte-for-byte JPEG embedding, EXIF rotation, CMYK and .jfif. Both use the same tool; the duplicate-content check keeps their text apart. |
+| JPEG to JPG vs JPG to PNG / PNG to JPG | JPEG to JPG is about the extension only (same format) and says so; the conversions between formats stay on their own pages. |
 
 ## Internal-link graph
 
@@ -92,6 +107,14 @@ page also links contextually from its body text. Main paths:
 - HEIC → image resizer, image compressor, JPG to PNG
 - PNG to JPG ↔ WebP to JPG ↔ JPG to PNG
 - Every exam page → hub (breadcrumb); hub → every exam page and the general tools
+- Image upscaler → image resizer, image size increase, image quality enhancer, image compressor
+- Image size increase → image upscaler, image resizer, image quality enhancer, resize to KB (and resize to KB → size increase for minimums)
+- Image quality enhancer → image upscaler, image compressor, image resizer, background remover
+- Background remover → image compressor, image resizer, PNG to JPG, image cropper
+- Photo to PDF → JPG to PDF, merge images, JPG to PNG, PNG to JPG; JPG to PDF → Photo to PDF, JPEG to JPG
+- Merge images → photo to PDF, image resizer, image compressor, image cropper
+- JPEG to JPG → JPG to PNG, PNG to JPG, image compressor, image resizer, JPG to PDF
+- MB to KB converter → resize to KB, 20/50/100/200KB, image compressor
 
 ## Programmatic pages
 
@@ -124,20 +147,16 @@ in `tests/e2e/seo.mjs`.
 
 ## Future opportunities
 
-Searches with real demand that the site can't serve yet. Ordered by (volume × winnability) and how
-much existing code each one reuses. None of these should get a page until the feature works.
+Phase 4 (2026-10-07) built the high-demand tools that could run reliably in the browser: image upscaler,
+background remover, photo to PDF, JPG to PDF, merge images, JPEG to JPG, image size increase, image
+quality enhancer and MB to KB converter. What remains, ordered by (volume × winnability) and reuse:
 
-| Priority | Feature | Keywords (approx. volume, KD) | Why this priority | Reuses |
+| Priority | Feature | Keywords (approx. volume, KD) | Why | Reuses |
 |---|---|---|---|---|
-| P0 | **Passport photo print sheet** (several 35×45 mm photos on a 4×6 in / A4 page) | passport size photo (351K, KD 10), passport size photo maker (189K, KD 58) | Largest low-difficulty term; competitors' "makers" all offer a printable sheet. Strengthens an existing page instead of adding one. | Passport presets, DPI writer, canvas |
-| P0 | **Increase image size in KB** (pad a file up to a minimum) | photo size increase (103K), increase image size in kb (30K, KD 10) | Exam forms have minimums (10 KB, 20 KB); the engine already enlarges to reach a minimum. | `growToMinimum`, target-size engine |
-| P0 | **Convert any image to JPG** (one page for PNG/WebP/HEIC/GIF/BMP/AVIF → JPG) and **JPEG → JPG** | image to jpg converter (48K, KD 14), photo to jpg (46K, KD 14), jpeg to jpg (180K, KD 13) | Low difficulty and the converter already exists; JPEG→JPG needs an honest explanation (same format) plus re-saving with a .jpg name for portals that check the extension. | Format converter |
-| P0 | **MB to KB converter** (calculator + link to the reducer) | mb to kb converter (80K, KD 11), kb converter (68K, KD 11) | Very low difficulty; small page with a calculator and the 1000 vs 1024 explanation. | — |
-| P1 | **Photo / JPG to PDF** | photo to pdf, jpg to pdf | Common for document uploads. Needs a small PDF writer (no new dependency required for JPEG-in-PDF). | Image decode, ZIP-style binary writer |
-| P1 | **Merge images** (side by side / vertical) | merge images (75K, KD 29) | Moderate difficulty, simple canvas feature. | Canvas, worker |
-| P1 | **Image upscaler / enlarger** | image upscaler (374K, KD 81), upscale image (273K, KD 73), increase image size (143K, KD 71) | Huge demand but high difficulty, and users expect AI upscaling. A plain resampling enlarger can rank only for "increase image size"; AI upscaling needs an in-browser model (large download) to stay private. | Resizer |
-| P1 | **JPG compressor / PNG compressor** pages | compress jpeg, jpeg compressor, png compressor | Only worthwhile once they do something the general compressor doesn't (e.g. JPEG progressive/chroma options, PNG palette quantization controls). | Compressor, PNG quantizer |
-| P1 | **JPG → WebP** | jpg to webp | Encoder exists; needs its own guidance (browser support, transparency). | Format converter |
-| P2 | **Background remover** | photo background (305K), image background remover (172K), remove background from image (152K) | Very high difficulty (KD 75–90) and needs an in-browser segmentation model. A plain "whiten background" for passport photos is a smaller, privacy-friendly step. | Signature clean-up |
-| P2 | **Image quality enhancer** | enhance image quality (82K, KD 80) | High difficulty; same model problem as upscaling. | — |
+| P0 | **Passport photo print sheet** (several 35×45 mm photos on a 4×6 in / A4 page) | passport size photo (351K, KD 10), passport size photo maker (189K, KD 58) | Largest low-difficulty term; competitors' "makers" all offer a printable sheet. Strengthens an existing page instead of adding one. | Passport presets, DPI writer, PDF writer |
+| P0 | **Convert any image to JPG** (PNG/WebP/HEIC/GIF/BMP/AVIF → JPG on one page) | image to jpg converter (48K, KD 14), photo to jpg (46K, KD 14) | Low difficulty; the converter exists, GIF/BMP/AVIF decoding needs checking per browser. | Format converter |
+| P1 | **JPG → WebP** | jpg to webp | Encoder exists; needs its own guidance (support, transparency). | Format converter |
+| P1 | **JPG / PNG compressor pages** | compress jpeg, png compressor | Only once they offer format-specific controls the general compressor doesn't. | Compressor, PNG quantizer |
+| P2 | **AI upscaling / AI enhancement** | image upscaler, enhance image quality | Would need a super-resolution model running on the device (WebGPU), tested on phones; current tools are honest about being non-AI. | Upscaler UI, ONNX Runtime |
+| P2 | **Higher-accuracy background removal** | background remover | A larger model (e.g. ISNet, ~40–170 MB) would improve hair and edges at a big download cost; could be an opt-in "high quality" mode. | Background remover |
 | P2 | Social-media size presets, more exam/document presets | various | Only with verified, sourced specs. | Resizer, requirement data |

@@ -17,7 +17,7 @@ export default function PrivacyPage() {
     <ContentPage
       title="Privacy policy"
       path="/privacy"
-      updated="2026-10-06"
+      updated="2026-10-07"
       intro={
         <p>
           The short version: your images are processed in your browser and are never uploaded to us or anyone else. There
@@ -41,9 +41,10 @@ export default function PrivacyPage() {
           afterwards.
         </li>
         <li>
-          Some tools load extra processing code only when you use them, for example the HEIC decoder (about 2 MB) or the
-          SVG tracing engine. This code is downloaded from this website to your browser; nothing is sent in the other
-          direction, and your image is never part of the request.
+          Some tools load extra processing code only when you use them, for example the HEIC decoder (about 2 MB), the
+          SVG tracing engine, or the background remover&apos;s neural-network model (about 4.6 MB) and the ONNX Runtime
+          engine that runs it (about 14 MB). These files are downloaded from this website to your browser; nothing is sent
+          in the other direction, and your image is never part of the request.
         </li>
         <li>
           Batch downloads (ZIP files) are assembled in your browser. Passport photos and signatures, which are especially

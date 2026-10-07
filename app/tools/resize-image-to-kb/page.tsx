@@ -154,7 +154,10 @@ export default function ResizeImageToKbPage() {
               Just want a smaller file without a specific target? <Link href="/tools/image-compressor">Compress the image</Link>{" "}
               instead.
             </li>
-            <li>If your form needs a minimum size as well as a maximum, choose a target near the top of the allowed range.</li>
+            <li>
+              If your form needs a minimum size as well as a maximum, choose a target near the top of the allowed range. If a
+              file is below the minimum, <Link href="/tools/image-size-increase">increase its size in KB</Link>.
+            </li>
           </ul>
 
           <PrivacyNote>

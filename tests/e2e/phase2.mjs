@@ -121,7 +121,7 @@ const jfifDpi = (buf) => (buf[2] === 0xff && buf[3] === 0xe0 && buf[13] === 1 ? 
   check("heic: HEIC → JPG with original dimensions", kind(dl.buf) === "jpeg" && info.width === 1280 && info.height === 854, `${info.width}×${info.height} in ${ms} ms`);
   check("heic: shown size equals downloaded size", bytes === dl.buf.length, `${bytes} vs ${dl.buf.length}`);
   check("heic: download name", dl.name === "example-converted.jpg", dl.name);
-  check("heic: preview of the HEIC original is displayed", await page.locator('img[alt="Original image"]').evaluate((img) => img.complete && img.naturalWidth > 0));
+  check("heic: preview of the HEIC original is displayed", await page.locator('img[alt^="Original image"]').evaluate((img) => img.complete && img.naturalWidth > 0));
   await page.screenshot({ path: path.join(OUT, "heic-desktop.png") });
 
   // Quality slider → smaller file.
@@ -209,8 +209,8 @@ const jfifDpi = (buf) => (buf[2] === 0xff && buf[3] === 0xe0 && buf[13] === 1 ? 
   const ip = await inspector.newPage();
   await ip.goto(BASE + route, { waitUntil: "networkidle" });
   await ip.locator('input[type="file"]').first().setInputFiles(files["malicious.svg"]);
-  await ip.locator('img[alt="Original image"]').waitFor({ timeout: 30_000 });
-  const sanitized = await ip.evaluate(async () => (await (await fetch(document.querySelector('img[alt="Original image"]').src)).text()));
+  await ip.locator('img[alt^="Original image"]').waitFor({ timeout: 30_000 });
+  const sanitized = await ip.evaluate(async () => (await (await fetch(document.querySelector('img[alt^="Original image"]').src)).text()));
   await inspector.close();
   check("svg: sanitized markup has no script, handlers, foreignObject or external links", !/<script|onload|onclick|foreignObject|evil\.example|javascript:/i.test(sanitized), sanitized.slice(0, 80));
 

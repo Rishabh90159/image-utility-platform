@@ -84,4 +84,9 @@ export const LIMITS = {
   maxOutputSide: 16_384,
   /** Largest output canvas area in pixels. Some mobile browsers fail earlier; that is handled gracefully. */
   maxOutputPixels: 50_000_000,
+  /**
+   * Largest enlarged output (pixels). Lanczos resampling holds the full output
+   * in memory several times over, so this is lower than the general limit.
+   */
+  maxUpscalePixels: 32_000_000,
 } as const;

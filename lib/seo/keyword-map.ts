@@ -189,6 +189,69 @@ export const KEYWORD_MAP: KeywordTarget[] = [
     intent: "application",
     supportedBy: ["/tools/200kb-photo", "/tools/100kb-photo", "/tools/application-photos"],
   },
+  {
+    path: "/tools/image-upscaler",
+    primary: "image upscaler",
+    secondary: ["upscale image", "image upscaler free", "enlarge image", "upscale image 2x", "upscale image 4x"],
+    intent: "tool",
+    supportedBy: ["/tools/image-resizer", "/tools/image-size-increase", "/tools/image-quality-enhancer"],
+  },
+  {
+    path: "/tools/image-size-increase",
+    primary: "increase image size",
+    secondary: ["photo size increase", "increase image size in kb", "increase photo size in kb", "increase image dimensions", "increase file size of image"],
+    intent: "tool",
+    supportedBy: ["/tools/image-upscaler", "/tools/resize-image-to-kb", "/tools/image-resizer"],
+  },
+  {
+    path: "/tools/image-quality-enhancer",
+    primary: "image quality enhancer",
+    secondary: ["enhance image quality", "improve image quality", "improve photo quality", "photo enhancer"],
+    intent: "tool",
+    supportedBy: ["/tools/image-upscaler", "/tools/image-size-increase", "/tools/background-remover"],
+  },
+  {
+    path: "/tools/background-remover",
+    primary: "background remover",
+    secondary: ["image background remover", "remove background from image", "background remover free", "background remover online", "online background remover", "photo background remove", "photo background", "transparent background"],
+    intent: "tool",
+    supportedBy: ["/tools/image-quality-enhancer", "/tools/png-to-jpg"],
+  },
+  {
+    path: "/tools/photo-to-pdf",
+    primary: "photo to pdf",
+    secondary: ["image to pdf", "convert image to pdf", "images to pdf", "combine photos into pdf"],
+    intent: "tool",
+    supportedBy: ["/tools/jpg-to-pdf", "/tools/merge-images"],
+  },
+  {
+    path: "/tools/jpg-to-pdf",
+    primary: "jpg to pdf",
+    secondary: ["jpg to pdf converter", "jpeg to pdf", "convert jpg to pdf"],
+    intent: "tool",
+    supportedBy: ["/tools/photo-to-pdf", "/tools/jpeg-to-jpg", "/tools/jpg-to-png"],
+  },
+  {
+    path: "/tools/merge-images",
+    primary: "merge images",
+    secondary: ["combine images", "merge photos", "combine photos into one image", "photo joiner"],
+    intent: "tool",
+    supportedBy: ["/tools/photo-to-pdf"],
+  },
+  {
+    path: "/tools/jpeg-to-jpg",
+    primary: "jpeg to jpg",
+    secondary: ["jpeg to jpg converter", "convert jpeg to jpg", "jpeg file to jpg", "jfif to jpg"],
+    intent: "tool",
+    supportedBy: ["/tools/jpg-to-png", "/tools/jpg-to-pdf"],
+  },
+  {
+    path: "/tools/mb-to-kb-converter",
+    primary: "mb to kb converter",
+    secondary: ["mb to kb", "kb converter", "convert mb to kb", "kb to mb"],
+    intent: "tool",
+    supportedBy: ["/tools/resize-image-to-kb"],
+  },
 ];
 
 /**
@@ -196,28 +259,4 @@ export const KEYWORD_MAP: KeywordTarget[] = [
  * tool that does the job. Building a page for these without the feature would
  * be a thin page. Prioritised in docs/seo-architecture.md.
  */
-export const UNSERVED_INTENTS = [
-  "image upscaler",
-  "upscale image",
-  "image upscaler free",
-  "enhance image quality",
-  "photo background",
-  "image background remover",
-  "remove background from image",
-  "background remover free",
-  "background remover online",
-  "online background remover",
-  "photo background remove",
-  "increase image size",
-  "photo size increase",
-  "increase image size in kb",
-  "merge images",
-  "jpeg to jpg",
-  "image to jpg converter",
-  "photo to jpg",
-  "mb to kb converter",
-  "kb converter",
-  "photo to pdf",
-  "jpg to pdf",
-  "photo editor online",
-] as const;
+export const UNSERVED_INTENTS = ["image to jpg converter", "photo to jpg", "photo editor online"] as const;

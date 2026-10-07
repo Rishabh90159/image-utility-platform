@@ -3,6 +3,7 @@ import { ImageToolError } from "./errors";
 import { LIMITS, type OutputMime } from "./formats";
 import { setJpegDpi } from "./jpeg-dpi";
 import { canEncodeIndexedPng, encodeIndexedPng } from "./png-encode";
+import { enhance, inflate, merge, pdfImage, upscale } from "./pixel-jobs";
 import { quantize } from "./png-quantize";
 import { searchTargetSize, type EncodedImage } from "./target-size";
 import { prepareSource } from "./transform";
@@ -46,6 +47,18 @@ export async function runJob(job: Job, onProgress?: (fraction: number) => void):
         return await encode(job);
       case "target":
         return await target(job, onProgress);
+      case "upscale":
+        return await upscale(job, await getBitmap(job.sourceId, job.file), onProgress);
+      case "enhance":
+        return await enhance(job, await getBitmap(job.sourceId, job.file));
+      case "pdf-image":
+        return await pdfImage(job, await getBitmap(job.sourceId, job.file));
+      case "merge":
+        // Merging decodes each image itself and keeps none of them cached.
+        releaseSource();
+        return await merge(job, onProgress);
+      case "inflate":
+        return await inflate(job, await getBitmap(job.sourceId, job.file), onProgress);
       default:
         throw new ImageToolError("UNKNOWN", "Unknown processing request.");
     }

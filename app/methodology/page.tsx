@@ -225,6 +225,60 @@ export default function MethodologyPage() {
         above it, so the file may end up well under the target). The size shown is always the size of the file you download.
       </p>
 
+      <h2>Enlarging: upscaler and image size increase</h2>
+      <p>
+        Enlarging uses Lanczos-3 resampling: each new pixel is a weighted average of the original pixels in a 6 × 6
+        neighbourhood, with weights from a windowed sinc function. It keeps edges crisper than the bilinear or bicubic
+        scaling browsers use, and is applied with premultiplied alpha so transparent edges don&apos;t get dark fringes. An
+        optional unsharp mask then sharpens brightness only. This is interpolation, not AI super-resolution: no detail is
+        invented. Results are limited to 32 megapixels because the enlarged image is held in memory several times over.
+      </p>
+      <p>
+        Increasing a file&apos;s size in KB without changing the picture works by adding JPEG comment (COM) segments filled
+        with spaces. The JPEG standard defines these segments and decoders skip them, so the pixels are identical; the file
+        reaches the requested size exactly (or at most 3 bytes over, a limit of the segment format). The alternative method
+        re-encodes at higher JPG quality and, if needed, larger dimensions.
+      </p>
+
+      <h2>Background removal</h2>
+      <p>
+        The background remover runs U²-Netp, a small salient-object segmentation network (Qin et al., 2020, Apache 2.0
+        licence), with ONNX Runtime&apos;s WebAssembly engine on a single thread. The model receives a 320 × 320 copy of the
+        photo and returns a mask of the most prominent subject. That mask is refined with a guided filter (He et al., 2010),
+        which fits it to the edges of the photo itself at up to 1024 pixels, and the refined coefficients are applied at the
+        photo&apos;s full resolution to set each pixel&apos;s transparency. The model file and the runtime are served by this
+        site and downloaded only when the tool is first used. Because the model is small enough for phones, it is less
+        precise than large server-side models, especially with hair, glass, low contrast and several subjects.
+      </p>
+
+      <h2>Photo to PDF and JPG to PDF</h2>
+      <p>
+        PDFs are written by a small built-in PDF 1.4 writer: one page per image, each image embedded as JPEG data. A JPG that
+        needs no resizing and uses RGB or greyscale colour is copied into the PDF byte-for-byte; if the photo has an EXIF
+        rotation, the page&apos;s transformation matrix turns it upright instead of re-encoding it. PNG, WebP, HEIC and CMYK
+        JPEG images are drawn on white and saved as 92% JPEG. Page sizes are A4 (595.28 × 841.89 points) and US Letter (612 ×
+        792 points); &ldquo;fit&rdquo; scales the image to fit inside the margins and &ldquo;fill&rdquo; covers that area and
+        clips the overflow.
+      </p>
+
+      <h2>Merging and enhancing</h2>
+      <p>
+        Merging scales images in proportion so they share a width (vertical), a height (horizontal) or a cell size (grid),
+        then draws them on one canvas; large reductions go through the stepped downscaler. If the result would exceed
+        browser canvas limits, the whole layout is scaled down uniformly and the tool says so. The image quality enhancer
+        applies a tone curve (auto levels from the 0.5th and 99.5th brightness percentiles, brightness and contrast), a
+        saturation and warmth adjustment, and two unsharp masks on brightness: a wide one for clarity and a narrow one for
+        sharpening. The live preview is computed on a copy up to 1000 pixels; the download is processed at full size.
+      </p>
+
+      <h2>JPEG to JPG and file-size units</h2>
+      <p>
+        &ldquo;Change extension only&rdquo; copies the file&apos;s bytes unchanged under a .jpg name, after checking its
+        content really is JPEG. &ldquo;Re-save&rdquo; decodes and encodes it at 92% quality. The MB to KB converter shows
+        decimal units (1 KB = 1000 bytes) and binary units (1 KiB = 1024 bytes). The image tools themselves display sizes in
+        binary units labelled KB and MB, as most upload forms count them.
+      </p>
+
       <h2>Batch processing</h2>
       <p>
         The bulk resizer processes images through a small pool of background workers, usually two or three depending on
@@ -253,6 +307,8 @@ export default function MethodologyPage() {
         <li>Some versions of Safari can&apos;t create WebP files; the WebP option is disabled when that&apos;s the case.</li>
         <li>Colour profiles other than standard sRGB may be converted to sRGB by the browser.</li>
         <li>Animated images are not supported; only the first frame would be used.</li>
+        <li>The upscaler and enhancer use classic image processing, not AI models, so they can&apos;t recreate missing detail.</li>
+        <li>The background remover finds one main subject and can struggle with fine hair, glass and busy scenes.</li>
       </ul>
     </ContentPage>
   );

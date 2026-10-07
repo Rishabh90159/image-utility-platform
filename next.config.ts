@@ -49,7 +49,12 @@ const nextConfig: NextConfig = {
       { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), interest-cohort=()" },
     ];
     if (isProd) security.push({ key: "Content-Security-Policy", value: contentSecurityPolicy() });
-    return [{ source: "/:path*", headers: security }];
+    // The background-removal model is large and rarely changes: let browsers reuse it.
+    const longCache = [{ key: "Cache-Control", value: "public, max-age=2592000, stale-while-revalidate=86400" }];
+    return [
+      { source: "/:path*", headers: security },
+      { source: "/models/:file*", headers: longCache },
+    ];
   },
 };
 

@@ -29,7 +29,16 @@ export type AnalyticsEvent =
   | "application_photo_started"
   | "application_photo_completed"
   | "photo_downloaded"
-  | "requirement_source_clicked";
+  | "requirement_source_clicked"
+  | "processing_started"
+  | "upscale_completed"
+  | "background_removed"
+  | "pdf_created"
+  | "images_merged"
+  | "jpeg_converted"
+  | "size_increase_completed"
+  | "enhance_completed"
+  | "unit_converted";
 
 export interface AnalyticsProps {
   tool?: string;

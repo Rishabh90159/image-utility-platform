@@ -146,6 +146,8 @@ export default function JpgToPngPage() {
           </p>
           <p>
             Going the other way? <Link href="/tools/png-to-jpg">Convert PNG to JPG</Link> to get a smaller file from a PNG.
+            Only need a .jpeg file renamed to .jpg? Use <Link href="/tools/jpeg-to-jpg">JPEG to JPG</Link>; to put JPGs in a
+            document, <Link href="/tools/jpg-to-pdf">JPG to PDF</Link>.
           </p>
 
           <PrivacyNote>

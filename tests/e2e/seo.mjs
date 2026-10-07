@@ -29,6 +29,26 @@ const toolPages = [
   "/tools/sbi-photo",
   "/tools/neet-photo",
   "/tools/passport-photo",
+  "/tools/image-upscaler",
+  "/tools/background-remover",
+  "/tools/photo-to-pdf",
+  "/tools/merge-images",
+  "/tools/jpeg-to-jpg",
+  "/tools/jpg-to-pdf",
+  "/tools/image-size-increase",
+  "/tools/image-quality-enhancer",
+  "/tools/mb-to-kb-converter",
+];
+// Pages with overlapping intent whose text must stay distinct.
+const overlapPages = [
+  "/tools/photo-to-pdf",
+  "/tools/jpg-to-pdf",
+  "/tools/image-upscaler",
+  "/tools/image-size-increase",
+  "/tools/image-quality-enhancer",
+  "/tools/image-resizer",
+  "/tools/jpeg-to-jpg",
+  "/tools/jpg-to-png",
 ];
 const kbPages = ["/tools/20kb-photo", "/tools/50kb-photo", "/tools/100kb-photo", "/tools/200kb-photo", "/tools/resize-image-to-kb"];
 const HUB = "/tools/application-photos";
@@ -115,7 +135,7 @@ for (const route of pages) {
   const h1 = decode((html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1] ?? "").replace(/<[^>]+>/g, ""));
   if (h1Texts.has(h1)) check(`${route}: unique H1`, false, `same as ${h1Texts.get(h1)}`);
   h1Texts.set(h1, route);
-  if (kbPages.includes(route) || applicationPages.includes(route)) mainTexts.set(route, mainText(html));
+  if (kbPages.includes(route) || applicationPages.includes(route) || overlapPages.includes(route)) mainTexts.set(route, mainText(html));
   if (applicationPages.includes(route)) {
     const text = decode(html);
     check(`${route}: links an official source (new tab)`, OFFICIAL.test(html) && /target="_blank" rel="noopener noreferrer"/.test(html));
@@ -148,8 +168,8 @@ check("all H1s unique", h1Texts.size === pages.length);
     }
   }
   check(
-    "no near-duplicate content between size/application pages (6-word overlap < 15%)",
-    entries.length === 12 && worst.score < 0.15,
+    "no near-duplicate content between size, application and overlapping-intent pages (6-word overlap < 15%)",
+    entries.length === 20 && worst.score < 0.15,
     (worst.score * 100).toFixed(1) + "% max (" + worst.pair + ")",
   );
 }
@@ -163,15 +183,15 @@ for (const route of toolPages) {
 }
 
 // Heavy tool libraries must not load on pages that don't need them.
-for (const route of ["/", "/tools", "/tools/image-resizer"]) {
+for (const route of ["/", "/tools", "/tools/image-resizer", "/tools/background-remover", "/tools/photo-to-pdf", "/tools/image-upscaler"]) {
   const html = await (await fetch(BASE + route)).text();
   const srcs = [...new Set([...html.matchAll(/<script src="([^"]+)"/g)].map((m) => m[1]))];
   let heavy = false;
   for (const src of srcs) {
     const js = await (await fetch(BASE + src)).text();
-    if (/HeifDecoder|imagedataToTracedata|DOMPurify/.test(js)) heavy = true;
+    if (/HeifDecoder|imagedataToTracedata|DOMPurify|InferenceSession|ort-wasm/.test(js)) heavy = true;
   }
-  check(`${route}: no HEIC/tracing/sanitizer code in initial JS`, !heavy);
+  check(`${route}: no HEIC/tracing/sanitizer/ONNX code in initial JS`, !heavy);
 }
 
 // Parameters and trailing slashes must not create indexable duplicates.

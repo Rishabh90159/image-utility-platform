@@ -93,6 +93,48 @@ export function ToolIcon({ id, category }: { id: ToolId; category: ToolCategory 
       </svg>
     );
   }
+  if (id === "background-remover") {
+    return (
+      <svg {...common}>
+        <rect x="2.5" y="2.5" width="15" height="15" rx="1.5" strokeDasharray="2 2" />
+        <circle cx="10" cy="8" r="2.5" />
+        <path d="M5.5 15.5c.8-2.4 2.4-3.8 4.5-3.8s3.7 1.4 4.5 3.8" />
+      </svg>
+    );
+  }
+  if (id === "merge-images") {
+    return (
+      <svg {...common}>
+        <rect x="2.5" y="3.5" width="6.5" height="13" rx="1" />
+        <rect x="11" y="3.5" width="6.5" height="13" rx="1" />
+      </svg>
+    );
+  }
+  if (id === "photo-to-pdf" || id === "jpg-to-pdf") {
+    return (
+      <svg {...common}>
+        <path d="M5 2.5h7l3.5 3.5v11.5H5z" />
+        <path d="M12 2.5V6h3.5" />
+        <path d="M7.5 14.5l2-2.5 1.5 1.5 1.5-2 1 3z" />
+      </svg>
+    );
+  }
+  if (id === "image-quality-enhancer") {
+    return (
+      <svg {...common}>
+        <path d="M10 2.5l1.6 4.3 4.4 1.2-4.4 1.2L10 13.5l-1.6-4.3L4 8l4.4-1.2z" />
+        <path d="M15.5 13v4M13.5 15h4" />
+      </svg>
+    );
+  }
+  if (category === "units") {
+    return (
+      <svg {...common}>
+        <path d="M3 6h14M3 14h14" />
+        <path d="M6 3.5v5M14 11.5v5" />
+      </svg>
+    );
+  }
   if (category === "resize") {
     return (
       <svg {...common}>

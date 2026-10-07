@@ -155,6 +155,10 @@ export default function ImageResizerPage() {
               <Link href="/tools/resize-image-to-kb">resize image to a specific KB size</Link> instead.
             </li>
             <li>
+              Making a small image much bigger? The <Link href="/tools/image-upscaler">image upscaler</Link> uses a sharper
+              enlargement filter.
+            </li>
+            <li>
               Only want part of the picture? <Link href="/tools/image-cropper">Crop the image</Link> first, then resize what&apos;s
               left. To apply the same size to a whole folder of photos, use the{" "}
               <Link href="/tools/bulk-image-resizer">bulk image resizer</Link>.

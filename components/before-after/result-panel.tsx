@@ -29,13 +29,29 @@ interface ResultPanelProps {
   extraRows?: { label: string; before: string; after: string }[];
   /** Additional analytics event sent when the download is clicked. */
   downloadEvent?: AnalyticsEvent;
+  /** Replaces the side-by-side previews (e.g. with a before/after slider). */
+  comparison?: React.ReactNode;
+  /** The tool is meant to make files bigger (upscaling, size increase), so growth isn't shown as a warning. */
+  growthExpected?: boolean;
 }
 
 /**
  * Before/after comparison. Every size shown comes from the actual output
  * Blob that the download button saves, so the numbers always match the file.
  */
-export function ResultPanel({ tool, heading, original, output, fileName, downloadLabel, status, extraRows = [], downloadEvent }: ResultPanelProps) {
+export function ResultPanel({
+  tool,
+  heading,
+  original,
+  output,
+  fileName,
+  downloadLabel,
+  status,
+  extraRows = [],
+  downloadEvent,
+  comparison,
+  growthExpected = false,
+}: ResultPanelProps) {
   const url = useObjectUrl(output.blob);
   const headingRef = useRef<HTMLHeadingElement>(null);
 
@@ -70,7 +86,7 @@ export function ResultPanel({ tool, heading, original, output, fileName, downloa
               "same size as the original"
             ) : (
               <>
-                <span className={saved > 0 ? "font-medium text-success" : "font-medium text-warning"}>
+                <span className={saved > 0 ? "font-medium text-success" : growthExpected ? "font-medium text-ink" : "font-medium text-warning"}>
                   {formatSavings(original.size, output.blob.size)}
                 </span>{" "}
                 than the original
@@ -93,20 +109,22 @@ export function ResultPanel({ tool, heading, original, output, fileName, downloa
       <div className="space-y-5 p-4 sm:p-5">
         {status ? <div className="space-y-3">{status}</div> : null}
 
+        {comparison ?? (
         <div className="grid gap-4 sm:grid-cols-2">
           <figure>
-            <ImagePreview src={original.url} alt="Original image" width={original.width} height={original.height} className="h-48 sm:h-64" />
+            <ImagePreview src={original.url} alt={`Original image, ${formatDimensions(original.width, original.height)}`} width={original.width} height={original.height} className="h-48 sm:h-64" />
             <figcaption className="mt-2 text-sm text-muted">Original</figcaption>
           </figure>
           <figure>
             {url ? (
-              <ImagePreview src={url} alt="Processed image" width={output.width} height={output.height} className="h-48 sm:h-64" />
+              <ImagePreview src={url} alt={`Result image, ${formatDimensions(output.width, output.height)}`} width={output.width} height={output.height} className="h-48 sm:h-64" />
             ) : (
               <div className="h-48 rounded-md border border-line bg-surface sm:h-64" />
             )}
             <figcaption className="mt-2 text-sm text-muted">Result</figcaption>
           </figure>
         </div>
+        )}
 
         <div className="relative overflow-x-auto">
           <table className="w-full min-w-[20rem] text-sm">

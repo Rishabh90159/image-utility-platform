@@ -26,15 +26,34 @@ export type ToolId =
   | "ibps-photo"
   | "sbi-photo"
   | "neet-photo"
-  | "passport-photo";
+  | "passport-photo"
+  | "image-upscaler"
+  | "background-remover"
+  | "photo-to-pdf"
+  | "merge-images"
+  | "jpeg-to-jpg"
+  | "jpg-to-pdf"
+  | "image-size-increase"
+  | "image-quality-enhancer"
+  | "mb-to-kb-converter";
 
-export type ToolCategory = "resize" | "compress" | "convert" | "edit" | "size" | "application";
+export type ToolCategory = "resize" | "compress" | "convert" | "edit" | "size" | "application" | "units";
 
-/** Navigation groups: general image tools, file-size pages, and exam/passport photo pages. */
-export type NavGroup = "image" | "size" | "application";
+/** Navigation groups: general image tools, format converters, file-size tools, and exam/passport photo pages. */
+export type NavGroup = "image" | "convert" | "size" | "application";
 
 export function navGroupOf(tool: ToolDefinition): NavGroup {
-  return tool.category === "size" ? "size" : tool.category === "application" ? "application" : "image";
+  switch (tool.category) {
+    case "convert":
+      return "convert";
+    case "size":
+    case "units":
+      return "size";
+    case "application":
+      return "application";
+    default:
+      return "image";
+  }
 }
 
 /** Hub page for the exam, recruitment and passport photo pages. */
@@ -115,7 +134,7 @@ export const tools: Record<ToolId, ToolDefinition> = {
     linkText: "Convert JPG to PNG",
     category: "convert",
     related: ["png-to-jpg", "heic-to-jpg", "image-resizer", "image-compressor"],
-    updated: "2026-10-06",
+    updated: "2026-10-07",
   },
   "png-to-jpg": {
     id: "png-to-jpg",
@@ -326,6 +345,105 @@ export const tools: Record<ToolId, ToolDefinition> = {
     related: ["passport-photo-resizer", "image-cropper", "image-compressor", "resize-image-to-kb"],
     updated: "2026-10-07",
   },
+  "image-upscaler": {
+    id: "image-upscaler",
+    path: "/tools/image-upscaler",
+    name: "Image Upscaler",
+    navLabel: "Upscale",
+    summary: "Enlarge an image 2× or 4× with Lanczos resampling and optional sharpening, for crisper results than a plain stretch.",
+    linkText: "Upscale an image 2× or 4×",
+    category: "resize",
+    related: ["image-size-increase", "image-quality-enhancer", "image-resizer", "image-compressor"],
+    updated: "2026-10-07",
+  },
+  "background-remover": {
+    id: "background-remover",
+    path: "/tools/background-remover",
+    name: "Background Remover",
+    navLabel: "Remove background",
+    summary: "Cut out the main subject of a photo and download it as a transparent PNG or on a new background colour.",
+    linkText: "Remove the background from an image",
+    category: "edit",
+    related: ["image-compressor", "image-resizer", "png-to-jpg", "image-cropper"],
+    updated: "2026-10-07",
+  },
+  "photo-to-pdf": {
+    id: "photo-to-pdf",
+    path: "/tools/photo-to-pdf",
+    name: "Photo to PDF",
+    navLabel: "Photo to PDF",
+    summary: "Combine JPG, PNG, WebP and HEIC photos into one PDF, with page size, orientation, fit and margins.",
+    linkText: "Convert photos to a PDF",
+    category: "convert",
+    related: ["jpg-to-pdf", "merge-images", "jpg-to-png", "png-to-jpg"],
+    updated: "2026-10-07",
+  },
+  "merge-images": {
+    id: "merge-images",
+    path: "/tools/merge-images",
+    name: "Merge Images",
+    navLabel: "Merge images",
+    summary: "Combine several images into one, side by side, stacked or in a grid, with optional spacing and background.",
+    linkText: "Merge several images into one",
+    category: "edit",
+    related: ["photo-to-pdf", "image-resizer", "image-compressor", "image-cropper"],
+    updated: "2026-10-07",
+  },
+  "jpeg-to-jpg": {
+    id: "jpeg-to-jpg",
+    path: "/tools/jpeg-to-jpg",
+    name: "JPEG to JPG Converter",
+    navLabel: "JPEG to JPG",
+    summary: "Change .jpeg, .jpe and .jfif files to .jpg, unchanged or re-saved, one at a time or in a batch.",
+    linkText: "Convert JPEG files to .jpg",
+    category: "convert",
+    related: ["jpg-to-png", "png-to-jpg", "image-compressor", "image-resizer"],
+    updated: "2026-10-07",
+  },
+  "jpg-to-pdf": {
+    id: "jpg-to-pdf",
+    path: "/tools/jpg-to-pdf",
+    name: "JPG to PDF Converter",
+    navLabel: "JPG to PDF",
+    summary: "Turn JPG photos and scans into a PDF without recompressing them, one page per image.",
+    linkText: "Convert JPG to PDF",
+    category: "convert",
+    related: ["photo-to-pdf", "jpeg-to-jpg", "merge-images", "image-compressor"],
+    updated: "2026-10-07",
+  },
+  "image-size-increase": {
+    id: "image-size-increase",
+    path: "/tools/image-size-increase",
+    name: "Image Size Increase",
+    navLabel: "Increase size",
+    summary: "Make an image bigger in pixels, or make the file bigger in KB to meet a minimum upload size.",
+    linkText: "Increase image size in pixels or KB",
+    category: "resize",
+    related: ["image-upscaler", "image-resizer", "image-quality-enhancer", "resize-image-to-kb"],
+    updated: "2026-10-07",
+  },
+  "image-quality-enhancer": {
+    id: "image-quality-enhancer",
+    path: "/tools/image-quality-enhancer",
+    name: "Image Quality Enhancer",
+    navLabel: "Enhance",
+    summary: "Improve dull, dark or slightly soft photos with auto levels, contrast, colour, clarity and sharpening.",
+    linkText: "Enhance image quality",
+    category: "edit",
+    related: ["image-upscaler", "image-compressor", "image-resizer", "background-remover"],
+    updated: "2026-10-07",
+  },
+  "mb-to-kb-converter": {
+    id: "mb-to-kb-converter",
+    path: "/tools/mb-to-kb-converter",
+    name: "MB to KB Converter",
+    navLabel: "MB to KB",
+    summary: "Convert MB to KB and back, in both decimal (1 MB = 1000 KB) and binary (1 MiB = 1024 KiB) units.",
+    linkText: "Convert MB to KB",
+    category: "units",
+    related: ["resize-image-to-kb", "50kb-photo", "100kb-photo", "image-compressor"],
+    updated: "2026-10-07",
+  },
 };
 
 /** Display order used across the site. */
@@ -333,6 +451,11 @@ export const toolOrder: ToolId[] = [
   "image-resizer",
   "image-compressor",
   "resize-image-to-kb",
+  "image-upscaler",
+  "image-size-increase",
+  "image-quality-enhancer",
+  "background-remover",
+  "merge-images",
   "jpg-to-png",
   "png-to-jpg",
   "webp-to-jpg",
@@ -343,10 +466,14 @@ export const toolOrder: ToolId[] = [
   "heic-to-jpg",
   "svg-to-png",
   "png-to-svg",
+  "jpeg-to-jpg",
+  "photo-to-pdf",
+  "jpg-to-pdf",
   "20kb-photo",
   "50kb-photo",
   "100kb-photo",
   "200kb-photo",
+  "mb-to-kb-converter",
   "ssc-photo",
   "upsc-photo",
   "ibps-photo",
@@ -363,6 +490,7 @@ export function getTool(id: ToolId): ToolDefinition {
 
 export const NAV_GROUPS: { id: NavGroup; label: string }[] = [
   { id: "image", label: "Image tools" },
+  { id: "convert", label: "Convert" },
   { id: "size", label: "Photo size" },
   { id: "application", label: "Exam & passport" },
 ];

@@ -348,7 +348,7 @@ async function makeFile(page, fileName, kindLabel) {
   await page.screenshot({ path: path.join(OUT, "ibps-mobile.png"), fullPage: true });
   const menu = await openPage("/tools/neet-photo", mobile);
   await menu.locator("header summary >> visible=true").tap();
-  check("mobile: menu groups tools into three sections", (await menu.locator("header nav >> visible=true").locator("p").allInnerTexts()).join("|") === "IMAGE TOOLS|PHOTO SIZE|EXAM & PASSPORT");
+  check("mobile: menu groups tools into four sections", (await menu.locator("header nav >> visible=true").locator("p").allInnerTexts()).join("|") === "IMAGE TOOLS|CONVERT|PHOTO SIZE|EXAM & PASSPORT");
   await menu.screenshot({ path: path.join(OUT, "menu-mobile.png") });
   await menu.close();
   await mobile.close();

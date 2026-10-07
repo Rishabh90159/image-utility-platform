@@ -8,7 +8,7 @@ import { allTools, APPLICATION_HUB, type ToolCategory } from "@/lib/tools/regist
 export const metadata: Metadata = pageMetadata({
   title: "All Image Tools – Resize, Crop, Compress and Convert Images",
   description:
-    "Every free image tool in one place: resize and crop images, hit 20KB–200KB limits, prepare exam and passport photos, and convert HEIC, WebP, SVG, PNG and JPG.",
+    "Every free image tool in one place: resize, upscale, crop and enhance images, remove backgrounds, make PDFs, hit 20KB–200KB limits and convert formats.",
   path: "/tools",
 });
 
@@ -16,12 +16,12 @@ const groups: { category: ToolCategory; heading: string; text: string }[] = [
   {
     category: "resize",
     heading: "Resize images",
-    text: "Change dimensions in pixels for one image or a whole batch, or reduce an image to a file size limit such as 50 KB.",
+    text: "Change dimensions in pixels for one image or a whole batch, enlarge small images, or meet a file size limit such as 50 KB.",
   },
   {
     category: "edit",
-    heading: "Crop and prepare images",
-    text: "Crop to any ratio, and prepare passport photos and signatures for application forms.",
+    heading: "Edit and prepare images",
+    text: "Crop, remove backgrounds, enhance photos, merge several images into one, and prepare passport photos and signatures.",
   },
   {
     category: "compress",
@@ -31,12 +31,12 @@ const groups: { category: ToolCategory; heading: string; text: string }[] = [
   {
     category: "convert",
     heading: "Convert image formats",
-    text: "Convert iPhone HEIC photos and WebP images to JPG, render SVG to PNG, trace PNG into vector SVG, and switch between JPG and PNG.",
+    text: "Convert iPhone HEIC photos and WebP images to JPG, photos to PDF, SVG to PNG and back, and switch between JPG and PNG.",
   },
   {
     category: "size",
     heading: "Photo size tools",
-    text: "Get a photo under a common file-size limit in one step: 20 KB, 50 KB, 100 KB or 200 KB.",
+    text: "Get a photo under a common file-size limit in one step: 20 KB, 50 KB, 100 KB or 200 KB, and convert between MB and KB.",
   },
   {
     category: "application",
@@ -78,7 +78,7 @@ export default function ToolsIndexPage() {
           </p>
           <ul className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {allTools
-              .filter((tool) => tool.category === group.category)
+              .filter((tool) => tool.category === group.category || (group.category === "size" && tool.category === "units"))
               .map((tool) => (
                 <li key={tool.id}>
                   <ToolCard tool={tool} />
