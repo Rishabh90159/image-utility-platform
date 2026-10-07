@@ -1,6 +1,6 @@
 import { ogSize, renderOgImage } from "@/lib/seo/og-image";
 
-export const alt = "Pixfit UPSC Photo Resizer tool";
+export const alt = "Imgifyr UPSC Photo Resizer tool";
 export const size = ogSize;
 export const contentType = "image/png";
 

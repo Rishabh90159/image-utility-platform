@@ -9,10 +9,10 @@ import { getTool } from "@/lib/tools/registry";
 const tool = getTool("image-resizer");
 
 const description =
-  "Resize JPG, PNG and WebP images online for free. Set exact pixel dimensions or a percentage, keep the aspect ratio, and download instantly — no upload needed.";
+  "Free online image resizer for JPG, PNG and WebP photos. Set new pixel dimensions or a percentage, keep the aspect ratio, and download instantly. No upload.";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Image Resizer – Resize Images & Photos Online Free",
+  title: "Free Image Resizer – Resize JPG, PNG & WebP Online",
   description,
   path: tool.path,
 });
@@ -59,7 +59,7 @@ export default function ImageResizerPage() {
   return (
     <ToolPageShell
       tool={tool}
-      h1="Image Resizer: Resize JPG, PNG and WebP Images"
+      h1="Image Resizer – Resize Images & Photos Online"
       intro={
         <p>
           Change the width and height of a photo in pixels or by percentage, keep its proportions locked, and download the
@@ -70,7 +70,7 @@ export default function ImageResizerPage() {
       faqs={faqs}
       content={
         <>
-          <h2>How to resize an image</h2>
+          <h2>How to Resize an Image Online</h2>
           <ol>
             <li>Choose, drop or paste a JPG, PNG or WebP image.</li>
             <li>
@@ -94,7 +94,11 @@ export default function ImageResizerPage() {
             <li>No sign-up, no watermark, no limit on how many images you resize.</li>
           </ul>
 
-          <h2>Supported formats</h2>
+          <h2>Resize JPG, PNG and WebP Images</h2>
+          <p>
+            The resizer opens the three formats used for almost every photo and web graphic. A JPG resize keeps the file a
+            JPG unless you pick another format, so it still opens everywhere; PNGs keep their transparency; WebP stays small.
+          </p>
           <table>
             <thead>
               <tr>
@@ -126,6 +130,19 @@ export default function ImageResizerPage() {
             </tbody>
           </table>
 
+          <h2>Photo Size Reducer</h2>
+          <p>
+            Most photos are too big for what people need them for: a 12-megapixel phone picture is around 4000 pixels wide and
+            several megabytes. Bringing it down to 1280 or 1600 pixels makes it a fraction of the size and still looks sharp
+            on screens. That&apos;s why resizing is usually the first step when an upload is too large. When the limit is a
+            file size rather than a width, such as &ldquo;under 100 KB&rdquo;, the{" "}
+            <Link href="/tools/resize-image-to-kb">image size reducer for KB limits</Link> finds the right dimensions and
+            quality for you, and there are ready-made pages for <Link href="/tools/50kb-photo">50KB</Link> and{" "}
+            <Link href="/tools/100kb-photo">100KB</Link> photos. Photos for passports and exam forms often need an exact
+            pixel size and a KB range together; the <Link href="/tools/passport-photo-resizer">passport photo resizer</Link>{" "}
+            and the <Link href="/tools/application-photos">exam photo requirement pages</Link> handle both at once.
+          </p>
+
           <h2>When to resize an image</h2>
           <ul>
             <li>
@@ -144,7 +161,13 @@ export default function ImageResizerPage() {
             </li>
           </ul>
 
-          <h2>Tips for better results</h2>
+          <h2>Resize Image Without Losing Quality</h2>
+          <p>
+            Making an image smaller always discards pixels, but it doesn&apos;t have to look worse. The resizer reduces large
+            images in several halving steps with high-quality smoothing, which avoids the jagged edges of a single big jump.
+            Keep the aspect ratio locked, save photos as JPG or WebP at 90% or higher, and use PNG for screenshots and
+            graphics with text. Enlarging is different: no resizer can add detail that isn&apos;t there.
+          </p>
           <ul>
             <li>
               Resize before you compress. Reducing dimensions first is the most effective way to cut file size; then{" "}

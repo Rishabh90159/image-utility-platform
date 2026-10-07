@@ -12,7 +12,7 @@ const description =
   "Convert WebP images to JPG online for free. Turn pictures saved from websites into JPGs that any app or upload form accepts. Converted in your browser.";
 
 export const metadata: Metadata = pageMetadata({
-  title: "WebP to JPG Converter – Convert WebP to JPG Online Free",
+  title: "WebP to JPG Converter – Convert WebP to JPG Online",
   description,
   path: tool.path,
 });

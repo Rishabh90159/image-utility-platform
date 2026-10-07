@@ -12,7 +12,7 @@ const description =
   "Convert JPG and JPEG images to PNG online for free. Lossless PNG output with no extra compression, converted in your browser with no upload.";
 
 export const metadata: Metadata = pageMetadata({
-  title: "JPG to PNG Converter – Convert JPG to PNG Online Free",
+  title: "JPG to PNG Converter – Convert JPG Images to PNG Online",
   description,
   path: tool.path,
 });

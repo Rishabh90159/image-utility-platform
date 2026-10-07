@@ -1,6 +1,6 @@
 import { ogSize, renderOgImage } from "@/lib/seo/og-image";
 
-export const alt = "Pixfit photo to PDF converter";
+export const alt = "Imgifyr photo to PDF converter";
 export const size = ogSize;
 export const contentType = "image/png";
 

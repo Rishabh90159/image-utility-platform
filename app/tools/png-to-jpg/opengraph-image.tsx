@@ -1,6 +1,6 @@
 import { ogSize, renderOgImage } from "@/lib/seo/og-image";
 
-export const alt = "Pixfit PNG to JPG converter";
+export const alt = "Imgifyr PNG to JPG converter";
 export const size = ogSize;
 export const contentType = "image/png";
 

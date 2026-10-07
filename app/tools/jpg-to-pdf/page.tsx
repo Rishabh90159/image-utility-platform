@@ -12,7 +12,7 @@ const description =
   "Convert JPG to PDF without recompressing your photos: each JPG is placed in the PDF exactly as it is, one per page. A4 or Letter, any order. Free, in your browser.";
 
 export const metadata: Metadata = pageMetadata({
-  title: "JPG to PDF Converter – Convert JPG to PDF Without Quality Loss",
+  title: "JPG to PDF – Convert JPG Images to PDF Without Quality Loss",
   description,
   path: tool.path,
 });

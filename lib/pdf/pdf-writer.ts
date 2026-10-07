@@ -137,7 +137,7 @@ export function buildPdf(pages: { image: PdfImage; placement: Placement }[]): Bl
   startObject(2);
   push(`<< /Type /Pages /Count ${pages.length} /Kids [${pages.map((_, i) => `${pageId(i)} 0 R`).join(" ")}] >>\nendobj\n`);
   startObject(3);
-  push("<< /Producer (Pixfit) >>\nendobj\n");
+  push("<< /Producer (Imgifyr) >>\nendobj\n");
 
   pages.forEach(({ image, placement: p }, i) => {
     const id = pageId(i);

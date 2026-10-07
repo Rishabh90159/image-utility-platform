@@ -12,7 +12,7 @@ const description =
   "Make a photo under 50KB that still shows a clear face. Built for application forms: preset 50 KB target, honest results, optional width limit. No upload.";
 
 export const metadata: Metadata = pageMetadata({
-  title: "50KB Photo Resizer – Resize Image to 50KB Online",
+  title: "Resize Image to 50KB Online – Free 50KB Image Compressor",
   description,
   path: tool.path,
 });
@@ -59,7 +59,7 @@ export default function FiftyKbPhotoPage() {
   return (
     <ToolPageShell
       tool={tool}
-      h1="50KB Photo Resizer: Get a Clear Photo Under 50KB"
+      h1="Resize Image to 50KB Online"
       intro={
         <p>
           Under 50 KB is a common limit for photos on recruitment, exam and admission forms. It&apos;s enough for a clear,
@@ -71,7 +71,7 @@ export default function FiftyKbPhotoPage() {
       faqs={faqs}
       content={
         <>
-          <h2>How to resize a photo to 50KB</h2>
+          <h2>How to Resize an Image to 50KB</h2>
           <ol>
             <li>
               <Link href="/tools/image-cropper">Crop the photo</Link> to head and shoulders. A larger face means a clearer
@@ -83,7 +83,7 @@ export default function FiftyKbPhotoPage() {
             <li>Download the JPG and upload it to your form.</li>
           </ol>
 
-          <h2>What 50KB looks like in practice</h2>
+          <h2>Compress an Image to 50KB</h2>
           <p>
             With 50 KB, quality stays high and only large photos need to shrink. Results from our test images (detailed and
             noisy, so a harder case than most real photos):
@@ -149,7 +149,21 @@ export default function FiftyKbPhotoPage() {
             </li>
           </ul>
 
-          <h2>Forms with a 50KB photo limit</h2>
+          <h2>Reduce JPG Image Size to 50KB</h2>
+          <p>
+            For a JPG portrait, 50 KB is enough to keep a face sharp at the few hundred pixels most forms display. The tool
+            holds the quality around 78% or higher and trims the dimensions only as far as needed. A scanned document page
+            with fine text is harder: if letters look soft, crop away the margins first so more of the 50 KB goes to the text.
+          </p>
+
+          <h2>Reduce PNG Image Size to 50KB</h2>
+          <p>
+            A PNG photo or screenshot is converted to JPG on the way, since a lossless PNG of a photo is usually many times
+            larger than 50 KB. Any transparent background is filled with white. Choose WebP as the output format only if the
+            site you&apos;re uploading to accepts it.
+          </p>
+
+          <h2>Image Requirements for Online Forms</h2>
           <p>
             Current IBPS Common Recruitment Process notifications and SBI recruitment advertisements ask for a photo of 20–50
             KB at 200 × 230 pixels (preferred). The <Link href="/tools/ibps-photo">IBPS photo resizer</Link> and{" "}

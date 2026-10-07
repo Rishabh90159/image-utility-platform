@@ -1,6 +1,6 @@
 # SEO architecture
 
-How Pixfit's pages map to search intent, and the rules for adding pages. The machine-readable
+How Imgifyr's pages map to search intent, and the rules for adding pages. The machine-readable
 version of the keyword map is [`lib/seo/keyword-map.ts`](../lib/seo/keyword-map.ts). Tests fail if
 two pages claim the same keyword, or if a page's primary keyword is missing from its title or H1.
 

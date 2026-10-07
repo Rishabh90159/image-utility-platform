@@ -1,6 +1,6 @@
 import { ogSize, renderOgImage } from "@/lib/seo/og-image";
 
-export const alt = "Pixfit image quality enhancer";
+export const alt = "Imgifyr image quality enhancer";
 export const size = ogSize;
 export const contentType = "image/png";
 

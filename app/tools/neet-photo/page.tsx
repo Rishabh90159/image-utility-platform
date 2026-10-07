@@ -67,14 +67,25 @@ export default function NeetPhotoPage() {
       faqs={faqs}
       content={
         <>
-          <h2>How to prepare your NEET photo</h2>
+          <h2>How to Resize Your NEET Photo</h2>
           <ol>
             <li>Take a recent photo against a white wall, in good light, without a mask, with both ears visible.</li>
             <li>Add it to the tool with <strong>Photograph</strong> selected.</li>
             <li>Crop so your face fills about 80% of the frame, as the bulletin requires.</li>
-            <li>Select <strong>Create photo file</strong>. The checklist confirms the size is within 10–200 KB.</li>
-            <li>Repeat with <strong>Signature</strong> for your signature (10–100 KB), then download both.</li>
+            <li>Select <strong>Create photo file</strong>. The checklist confirms the size is within 10–200 KB, then download.</li>
           </ol>
+
+          <h2>How to Resize Your NEET Signature</h2>
+          <ol>
+            <li>Sign on white paper, photograph or scan it, and switch the tool to <strong>Signature</strong>.</li>
+            <li>Crop tightly around the signature so the strokes fill the image.</li>
+            <li>Create the file; the checklist confirms it&apos;s within 10–100 KB. Download it.</li>
+          </ol>
+          <p>
+            Preparing images for other forms as well? The <Link href="/tools/image-resizer">image resizer</Link>,{" "}
+            <Link href="/tools/image-compressor">image compressor</Link> and{" "}
+            <Link href="/tools/100kb-photo">100KB photo resizer</Link> cover the usual limits.
+          </p>
 
           <h2>No pixel size? What that means</h2>
           <p>
@@ -139,7 +150,7 @@ export default function NeetPhotoPage() {
       }
     >
       <div className="space-y-6">
-        <RequirementSummary heading="Current NEET photo and signature requirements" app={app} />
+        <RequirementSummary heading="NEET Photo and Signature Size Requirements" app={app} />
         <RequirementPhotoTool tool="neet-photo" sets={app.sets} setLabel="Information bulletin" appName="NEET" />
       </div>
     </ToolPageShell>

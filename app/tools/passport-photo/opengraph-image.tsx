@@ -1,6 +1,6 @@
 import { ogSize, renderOgImage } from "@/lib/seo/og-image";
 
-export const alt = "Pixfit passport size photo requirements and maker";
+export const alt = "Imgifyr passport size photo requirements and maker";
 export const size = ogSize;
 export const contentType = "image/png";
 

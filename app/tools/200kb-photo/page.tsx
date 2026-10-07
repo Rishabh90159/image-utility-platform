@@ -12,7 +12,7 @@ const description =
   "Compress a large photo to 200KB while keeping high resolution. Preset 200 KB target, optional width cap, exact result size shown. Free, in your browser.";
 
 export const metadata: Metadata = pageMetadata({
-  title: "200KB Photo Resizer – Resize Image to 200KB Online",
+  title: "Resize Image to 200KB Online – Free 200KB Image Compressor",
   description,
   path: tool.path,
 });
@@ -54,7 +54,7 @@ export default function TwoHundredKbPhotoPage() {
   return (
     <ToolPageShell
       tool={tool}
-      h1="200KB Photo Resizer: Compress a Photo to 200KB"
+      h1="Resize Image to 200KB Online"
       intro={
         <p>
           200 KB gives you room for a detailed, high-resolution photo, about the right size for portals that accept larger
@@ -66,7 +66,7 @@ export default function TwoHundredKbPhotoPage() {
       faqs={faqs}
       content={
         <>
-          <h2>How to resize a photo to 200KB</h2>
+          <h2>How to Resize an Image to 200KB</h2>
           <ol>
             <li>Add your photo. JPG, PNG and WebP are supported; 200 KB is preselected.</li>
             <li>
@@ -77,7 +77,7 @@ export default function TwoHundredKbPhotoPage() {
             <li>Check the dimensions and quality in the comparison, then download.</li>
           </ol>
 
-          <h2>What 200KB keeps</h2>
+          <h2>Compress an Image to 200KB</h2>
           <p>
             At 200 KB the tool rarely has to compromise much. It can usually keep quality around 70–90% and either the full size
             or a large share of it. From our test images (deliberately detailed and noisy):
@@ -110,7 +110,23 @@ export default function TwoHundredKbPhotoPage() {
             when it doesn&apos;t.
           </p>
 
-          <h2>Typical uses for a 200KB limit</h2>
+          <h2>Reduce JPG Image Size to 200KB</h2>
+          <p>
+            Many JPGs from older phones or messaging apps are already near 200 KB. The tool checks first: a JPG that&apos;s
+            already under the limit is returned exactly as it is, so you don&apos;t lose quality to a pointless re-save.
+            Larger originals are compressed at a high quality first and only reduced in size if that isn&apos;t enough.
+          </p>
+
+          <h2>Reduce PNG Image Size to 200KB</h2>
+          <p>
+            Large PNG exports, such as a design or a screenshot of a full web page, are saved as a JPG under 200 KB with any
+            transparency filled white. If the PNG has to stay a PNG, the{" "}
+            <Link href="/tools/image-compressor">image compressor</Link> can shrink it with a colour palette instead, though
+            it can&apos;t aim at an exact size.
+          </p>
+
+          <h2>Image Requirements for Online Forms</h2>
+          <p>Forms that allow 200 KB usually want a clear photo or scan rather than a tiny one. Typical places include:</p>
           <ul>
             <li>
               <strong>Application portals with generous limits.</strong> For example, the NEET (UG) 2026 information bulletin

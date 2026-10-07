@@ -23,8 +23,10 @@ const defaultImage = {
  * Builds complete per-page metadata: unique title and description, a canonical
  * URL on the production domain, and matching Open Graph / Twitter tags.
  */
-export function pageMetadata({ title, description, path }: PageMetadataInput): Metadata {
+export function pageMetadata({ title: pageTitle, description, path }: PageMetadataInput): Metadata {
   const url = absoluteUrl(path);
+  // Every title ends with the brand once, e.g. "Image Resizer – … | Imgifyr".
+  const title = pageTitle.includes(siteConfig.name) ? pageTitle : `${pageTitle} | ${siteConfig.name}`;
   return {
     title: { absolute: title },
     description,

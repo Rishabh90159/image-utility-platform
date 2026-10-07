@@ -13,7 +13,7 @@ const description =
   "Crop and resize a photo for a passport, visa or ID application. Set the size in mm, inches or pixels plus a KB limit, or use an officially sourced preset.";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Passport Photo Resizer – Resize Photos for Passport & Visa Forms",
+  title: "Passport Photo Resizer – Resize Photos for Passport & Visa",
   description,
   path: tool.path,
 });

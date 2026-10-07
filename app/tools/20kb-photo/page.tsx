@@ -12,7 +12,7 @@ const description =
   "Resize a photo or signature to 20KB or less in your browser. The tool finds the best quality that fits, shows the exact result in KB and never uploads your image.";
 
 export const metadata: Metadata = pageMetadata({
-  title: "20KB Photo Resizer – Resize Image to 20KB Online",
+  title: "Resize Image to 20KB Online – Free 20KB Image Compressor",
   description,
   path: tool.path,
 });
@@ -59,7 +59,7 @@ export default function TwentyKbPhotoPage() {
   return (
     <ToolPageShell
       tool={tool}
-      h1="20KB Photo Resizer: Reduce a Photo or Signature to 20KB"
+      h1="Resize Image to 20KB Online"
       intro={
         <p>
           20 KB is one of the tightest limits you&apos;ll meet on upload forms, often for signatures and small ID photos. Add
@@ -71,7 +71,7 @@ export default function TwentyKbPhotoPage() {
       faqs={faqs}
       content={
         <>
-          <h2>How to resize an image to 20KB</h2>
+          <h2>How to Resize an Image to 20KB</h2>
           <ol>
             <li>Crop first if you can: everything outside the face or signature still uses up your 20 KB.</li>
             <li>Add the photo here. The target is already set to 20 KB.</li>
@@ -82,7 +82,7 @@ export default function TwentyKbPhotoPage() {
             <li>Zoom into the preview to check the face or strokes are still clear, then download.</li>
           </ol>
 
-          <h2>What fits in 20KB</h2>
+          <h2>Compress an Image to 20KB</h2>
           <p>
             20 KB is about 20,000 bytes for every pixel, colour and edge in the image. That is plenty for a small photo or a
             signature, but not for a full-resolution phone picture. Here is what the tool produced from our test images
@@ -150,7 +150,22 @@ export default function TwentyKbPhotoPage() {
             </li>
           </ul>
 
-          <h2>Forms that use small limits</h2>
+          <h2>Reduce JPG Image Size to 20KB</h2>
+          <p>
+            A JPG from a phone camera is usually 2–5 MB, so 20 KB is roughly one percent of it. No quality setting alone gets
+            that far on a full-size photo, which is why the tool reduces the dimensions too and shows you the pixel size it
+            settled on. If your JPG is already under 20 KB, it&apos;s handed back unchanged instead of being re-compressed.
+          </p>
+
+          <h2>Reduce PNG Image Size to 20KB</h2>
+          <p>
+            PNG files are lossless and rarely get anywhere near 20 KB unless they&apos;re tiny graphics, so the result is
+            saved as a JPG. Transparent areas become white, which is what forms expect behind a signature or photo. If a form
+            insists on PNG for a signature, the <Link href="/tools/signature-resizer">signature resizer</Link> can save a
+            cleaned-up PNG instead.
+          </p>
+
+          <h2>Image Requirements for Online Forms</h2>
           <p>
             Small limits are common on recruitment and exam applications. For example, current IBPS and SBI notifications ask
             for signatures of 10–20 KB, and SSC asks for a 10–20 KB signature. Each of those pages lists the official source:{" "}

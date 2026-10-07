@@ -5,16 +5,20 @@
  * Server-only values (like VERCEL_PROJECT_PRODUCTION_URL) are read here, so
  * import `siteConfig.url` from server components, metadata and route handlers.
  */
+/** The one canonical origin: www, HTTPS. imgifyr.com and http:// redirect here. */
+export const PRODUCTION_URL = "https://www.imgifyr.com";
+
 function resolveSiteUrl(): string {
   const explicit = process.env.NEXT_PUBLIC_SITE_URL?.trim();
   if (explicit) return explicit.replace(/\/+$/, "");
-  const vercelProduction = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
-  if (vercelProduction) return `https://${vercelProduction.replace(/\/+$/, "")}`;
+  // Production builds (and Vercel previews, which are noindex) always point canonicals at the real
+  // domain. Using Vercel's project URL here would make *.vercel.app the canonical host.
+  if (process.env.VERCEL || process.env.NODE_ENV === "production") return PRODUCTION_URL;
   return "http://localhost:3000";
 }
 
 export const siteConfig = {
-  name: "Pixfit",
+  name: "Imgifyr",
   tagline: "Fast, private image tools that make your image fit the exact requirement.",
   description:
     "Free online image tools to resize, crop, compress and convert JPG, PNG, WebP, HEIC and SVG images. Everything runs in your browser, so your images are never uploaded.",

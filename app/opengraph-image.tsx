@@ -1,6 +1,6 @@
 import { ogSize, renderOgImage } from "@/lib/seo/og-image";
 
-export const alt = "Pixfit free online image tools";
+export const alt = "Imgifyr free online image tools";
 export const size = ogSize;
 export const contentType = "image/png";
 

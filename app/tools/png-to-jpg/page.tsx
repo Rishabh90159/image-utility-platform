@@ -12,7 +12,7 @@ const description =
   "Convert PNG images to JPG online for free. Choose a background colour for transparent areas, set the JPG quality and download a smaller file. No upload.";
 
 export const metadata: Metadata = pageMetadata({
-  title: "PNG to JPG Converter – Convert PNG to JPG Online Free",
+  title: "PNG to JPG Converter – Convert PNG Images to JPG Online",
   description,
   path: tool.path,
 });

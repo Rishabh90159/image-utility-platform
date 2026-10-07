@@ -9,10 +9,10 @@ import { getTool } from "@/lib/tools/registry";
 const tool = getTool("background-remover");
 
 const description =
-  "Remove the background from a photo in your browser with a small neural network. Download a transparent PNG, or place the subject on white or any colour.";
+  "Free background remover that runs in your browser. Remove the background from an image automatically, then download a transparent PNG or a white background.";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Background Remover – Remove Background from Image Free",
+  title: "Free Background Remover – Remove Image Background Online",
   description,
   path: tool.path,
 });
@@ -59,7 +59,7 @@ export default function BackgroundRemoverPage() {
   return (
     <ToolPageShell
       tool={tool}
-      h1="Background Remover: Remove the Background from an Image"
+      h1="Remove Background from Image Online"
       intro={
         <p>
           Cut out a person, pet or product and download it as a transparent PNG, or put it on a white or coloured background. A
@@ -70,7 +70,7 @@ export default function BackgroundRemoverPage() {
       faqs={faqs}
       content={
         <>
-          <h2>How to remove a background</h2>
+          <h2>How to Remove Background from an Image</h2>
           <ol>
             <li>Choose, drop or paste a photo. The background is removed straight away.</li>
             <li>Drag the divider to compare the original and the cut-out.</li>
@@ -78,7 +78,7 @@ export default function BackgroundRemoverPage() {
             <li>Switch the edges between soft and crisp if the outline needs it, then download.</li>
           </ol>
 
-          <h2>What happens to your photo</h2>
+          <h2>Remove Image Background Automatically</h2>
           <p>
             The tool uses U²-Netp, a compact version of the U²-Net salient-object model published by Xuebin Qin and colleagues
             in 2020 (<a href="/models/u2netp-LICENSE.txt">Apache 2.0 licence</a>). It runs with ONNX Runtime&apos;s WebAssembly
@@ -99,7 +99,12 @@ export default function BackgroundRemoverPage() {
             <li>Very fine strands of hair, glass, smoke and shadows are hard for any automatic tool, and especially a small one.</li>
           </ul>
 
-          <h2>What people use it for</h2>
+          <h2>Free Online Background Remover</h2>
+          <p>
+            There&apos;s no account, no credit system and no watermark, and the result keeps your photo&apos;s full
+            resolution. Because the work happens on your own device, speed depends on it: a few seconds on a recent phone or
+            laptop, longer on older devices. What people use it for:
+          </p>
           <ul>
             <li>Product photos on a clean white background for online shops and listings.</li>
             <li>Profile pictures and avatars on a plain or brand-coloured background.</li>

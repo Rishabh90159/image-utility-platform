@@ -1,6 +1,6 @@
 import { ogSize, renderOgImage } from "@/lib/seo/og-image";
 
-export const alt = "Pixfit MB to KB converter";
+export const alt = "Imgifyr MB to KB converter";
 export const size = ogSize;
 export const contentType = "image/png";
 

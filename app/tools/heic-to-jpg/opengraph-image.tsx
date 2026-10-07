@@ -1,6 +1,6 @@
 import { ogSize, renderOgImage } from "@/lib/seo/og-image";
 
-export const alt = "Pixfit HEIC to JPG Converter tool";
+export const alt = "Imgifyr HEIC to JPG Converter tool";
 export const size = ogSize;
 export const contentType = "image/png";
 

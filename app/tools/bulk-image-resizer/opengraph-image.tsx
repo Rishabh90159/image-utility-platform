@@ -1,6 +1,6 @@
 import { ogSize, renderOgImage } from "@/lib/seo/og-image";
 
-export const alt = "Pixfit Bulk Image Resizer tool";
+export const alt = "Imgifyr Bulk Image Resizer tool";
 export const size = ogSize;
 export const contentType = "image/png";
 

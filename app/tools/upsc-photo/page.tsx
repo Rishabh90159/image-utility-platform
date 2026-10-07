@@ -64,7 +64,7 @@ export default function UpscPhotoPage() {
       faqs={faqs}
       content={
         <>
-          <h2>How to prepare a UPSC photo</h2>
+          <h2>How to Resize Your UPSC Photo and Signature</h2>
           <ol>
             <li>
               Open the UPSC instructions for photos and signature (link above) and note the minimum and maximum pixel size and
@@ -137,7 +137,7 @@ export default function UpscPhotoPage() {
       }
     >
       <div className="space-y-6">
-        <RequirementSummary heading="UPSC photo requirements" app={app} />
+        <RequirementSummary heading="UPSC Photo and Signature Requirements" app={app} />
         <RequirementPhotoTool tool="upsc-photo" sets={app.sets} setLabel="Requirement" appName="UPSC" />
       </div>
     </ToolPageShell>

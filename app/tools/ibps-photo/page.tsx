@@ -68,14 +68,30 @@ export default function IbpsPhotoPage() {
       faqs={faqs}
       content={
         <>
-          <h2>How to prepare your IBPS photo and signature</h2>
+          <h2>How to Resize Your IBPS Photo</h2>
           <ol>
             <li>Choose your notification: PO/MT, CSA (clerk) or Specialist Officers.</li>
             <li>Select <strong>Photograph</strong>, add a recent colour photo and frame your head and shoulders in the crop box.</li>
             <li>Select <strong>Create photo file</strong>. The checklist confirms 200 × 230 px and a size between 20 and 50 KB.</li>
-            <li>Switch to <strong>Signature</strong>, add a photo of your signature, crop it closely and create the file.</li>
-            <li>Download both JPGs and upload them in the IBPS application.</li>
+            <li>Download the JPG and upload it in the IBPS application.</li>
           </ol>
+
+          <h2>How to Resize Your IBPS Signature</h2>
+          <ol>
+            <li>Sign on plain white paper and take a straight, well-lit photo of it, or scan it.</li>
+            <li>Switch to <strong>Signature</strong>, add the image and crop tightly around the signature.</li>
+            <li>
+              Create the file. A clean signature at the preferred 140 × 60 px can come out below the 10 KB minimum; when that
+              happens the checklist says so and offers to make it larger, which the notification allows because the pixel
+              size is only &ldquo;preferred&rdquo;.
+            </li>
+            <li>Download the JPG and upload it next to your photo.</li>
+          </ol>
+          <p>
+            Need a different size for another form? The <Link href="/tools/signature-resizer">signature resizer</Link> takes
+            any pixel size and KB limit, and the <Link href="/tools/image-resizer">image resizer</Link> and{" "}
+            <Link href="/tools/image-compressor">image compressor</Link> handle general photos.
+          </p>
 
           <h2>Other images in the application</h2>
           <p>
@@ -140,7 +156,7 @@ export default function IbpsPhotoPage() {
       }
     >
       <div className="space-y-6">
-        <RequirementSummary heading="Current IBPS photo and signature requirements" app={app} />
+        <RequirementSummary heading="IBPS Photo and Signature Size Requirements" app={app} />
         <RequirementPhotoTool tool="ibps-photo" sets={app.sets} setLabel="IBPS notification" appName="IBPS" />
       </div>
     </ToolPageShell>

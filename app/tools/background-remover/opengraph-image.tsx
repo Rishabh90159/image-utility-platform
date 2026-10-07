@@ -1,6 +1,6 @@
 import { ogSize, renderOgImage } from "@/lib/seo/og-image";
 
-export const alt = "Pixfit background remover";
+export const alt = "Imgifyr background remover";
 export const size = ogSize;
 export const contentType = "image/png";
 

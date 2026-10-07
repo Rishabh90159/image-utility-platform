@@ -13,7 +13,7 @@ const description =
   "Convert photos to PDF in your browser: combine JPG, PNG, WebP and iPhone HEIC images into one file, reorder pages, choose A4 or Letter, and download.";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Photo to PDF – Convert Images to PDF Online Free",
+  title: "Photo to PDF Converter – Convert Images to PDF Online",
   description,
   path: tool.path,
 });
@@ -66,7 +66,7 @@ export default function PhotoToPdfPage() {
   return (
     <ToolPageShell
       tool={tool}
-      h1="Photo to PDF: Convert Images to a PDF"
+      h1="Photo to PDF Converter"
       intro={
         <p>
           Turn photos, scans and screenshots into one PDF: JPG, PNG, WebP or iPhone HEIC, in any mix. Put the pages in order,

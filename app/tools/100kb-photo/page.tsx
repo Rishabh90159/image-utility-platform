@@ -12,7 +12,7 @@ const description =
   "Reduce a photo to 100KB online while keeping it sharp. See the before and after size, dimensions and quality, then download. Runs in your browser, no upload.";
 
 export const metadata: Metadata = pageMetadata({
-  title: "100KB Photo Resizer – Resize Image to 100KB Online",
+  title: "Resize Image to 100KB Online – Free 100KB Image Compressor",
   description,
   path: tool.path,
 });
@@ -59,7 +59,7 @@ export default function HundredKbPhotoPage() {
   return (
     <ToolPageShell
       tool={tool}
-      h1="100KB Photo Resizer: Resize Any Image to 100KB"
+      h1="Resize Image to 100KB Online"
       intro={
         <p>
           100 KB is a popular upload limit for profile pictures, job portals and application forms, and it&apos;s a comfortable
@@ -71,7 +71,7 @@ export default function HundredKbPhotoPage() {
       faqs={faqs}
       content={
         <>
-          <h2>How to reduce an image to 100KB</h2>
+          <h2>How to Resize an Image to 100KB</h2>
           <ol>
             <li>Add, drop or paste a JPG, PNG or WebP photo. 100 KB is preselected.</li>
             <li>
@@ -88,7 +88,7 @@ export default function HundredKbPhotoPage() {
             </li>
           </ol>
 
-          <h2>Why the result varies slightly</h2>
+          <h2>Compress an Image to 100KB</h2>
           <p>
             You can&apos;t ask a JPG encoder for &ldquo;exactly 100 KB&rdquo;. You choose a quality level, and the file size follows
             from the picture: smooth skies compress tiny, while grass, hair and low-light noise produce big files. So the tool
@@ -151,7 +151,28 @@ export default function HundredKbPhotoPage() {
             </li>
           </ul>
 
-          <h2>If an application rejects your image</h2>
+          <h2>Reduce JPG Image Size to 100KB</h2>
+          <p>
+            100 KB is roomy for a JPG: a photo can stay well over 1000 pixels wide, which is plenty for profile pictures,
+            listings and most document uploads. If you need to keep the exact pixel size, turn off{" "}
+            <strong>Allow smaller dimensions</strong>; the tool then only lowers the quality and tells you if 100 KB can&apos;t
+            be reached that way.
+          </p>
+
+          <h2>Reduce PNG Image Size to 100KB</h2>
+          <p>
+            Screenshots and PNG exports become a JPG under 100 KB, with transparency filled white. For a screenshot full of
+            small text, check the preview closely: JPG can blur letter edges, and reducing the width a little is often better
+            than lowering the quality further.
+          </p>
+
+          <h2>Image Requirements for Online Forms</h2>
+          <p>
+            A 100 KB maximum is common on job portals and application forms. Read the form&apos;s instructions for a minimum
+            size, pixel dimensions and accepted formats as well; a file can be rejected for any of them.
+          </p>
+
+          <h3>If an application rejects your image</h3>
           <ol>
             <li>
               <strong>Size:</strong> some systems use 1 KB = 1,000 bytes, so 100 KB to them is 97.6 KB here. Choose Custom and

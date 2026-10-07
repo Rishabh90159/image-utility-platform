@@ -87,7 +87,7 @@ const made = await fx.evaluate(async () => {
     g.fillStyle = "#111";
     for (let x = 10; x < 190; x += 12) g.fillRect(x, 10, 5, 60);
     g.font = "bold 28px sans-serif";
-    g.fillText("Pixfit", 30, 120);
+    g.fillText("Imgifyr", 30, 120);
     out.small = await enc(c, "image/png");
   }
   // Pages for PDF tests.

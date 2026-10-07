@@ -1,6 +1,6 @@
 import { ogSize, renderOgImage } from "@/lib/seo/og-image";
 
-export const alt = "Pixfit Image Cropper tool";
+export const alt = "Imgifyr Image Cropper tool";
 export const size = ogSize;
 export const contentType = "image/png";
 

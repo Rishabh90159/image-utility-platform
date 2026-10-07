@@ -50,7 +50,7 @@ export function SiteFooter() {
             </ul>
           </nav>
         ))}
-        <nav aria-label="About Pixfit">
+        <nav aria-label={`About ${siteConfig.name}`}>
           <h2 className="text-sm font-semibold text-ink">{siteConfig.name}</h2>
           <ul className="mt-3 space-y-2">
             {companyLinks.map((link) => (

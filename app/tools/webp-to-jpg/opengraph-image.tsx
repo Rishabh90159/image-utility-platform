@@ -1,6 +1,6 @@
 import { ogSize, renderOgImage } from "@/lib/seo/og-image";
 
-export const alt = "Pixfit WebP to JPG converter";
+export const alt = "Imgifyr WebP to JPG converter";
 export const size = ogSize;
 export const contentType = "image/png";
 

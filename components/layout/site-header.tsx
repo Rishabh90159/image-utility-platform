@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { siteConfig } from "@/lib/site";
 import { NAV_GROUPS, toolsIn } from "@/lib/tools/registry";
 import { DisclosureMenu } from "./disclosure-menu";
 import { Logo } from "./logo";
@@ -19,7 +20,7 @@ export function SiteHeader() {
   return (
     <header className="border-b border-line bg-canvas">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-6 px-4 sm:px-6">
-        <Link href="/" className="rounded-md" aria-label="Pixfit home">
+        <Link href="/" className="rounded-md" aria-label={`${siteConfig.name} home`}>
           <Logo />
         </Link>
 

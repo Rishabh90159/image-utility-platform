@@ -9,10 +9,10 @@ import { getTool } from "@/lib/tools/registry";
 const tool = getTool("image-upscaler");
 
 const description =
-  "Upscale an image 2× or 4× in your browser with Lanczos resampling and adjustable sharpening. Compare before and after, then download a PNG or JPG. Free.";
+  "Free image upscaler: enlarge a photo 2× or 4× to increase its resolution, using Lanczos resampling and adjustable sharpening. Compare, then download. No upload.";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Image Upscaler – Upscale Images 2× or 4× Online Free",
+  title: "Free Image Upscaler – Increase Image Resolution Online",
   description,
   path: tool.path,
 });
@@ -58,7 +58,7 @@ export default function ImageUpscalerPage() {
   return (
     <ToolPageShell
       tool={tool}
-      h1="Image Upscaler: Enlarge Images 2× or 4×"
+      h1="Image Upscaler – Upscale Images Online"
       intro={
         <p>
           Make a small image bigger: 2×, 4× or to an exact width. The upscaler uses Lanczos-3 resampling with optional
@@ -70,7 +70,7 @@ export default function ImageUpscalerPage() {
       faqs={faqs}
       content={
         <>
-          <h2>How to upscale an image</h2>
+          <h2>Upscale Image Online</h2>
           <ol>
             <li>Choose, drop or paste an image.</li>
             <li>Pick 2×, 4× or a custom width. The height follows automatically, so nothing is stretched.</li>
@@ -79,7 +79,7 @@ export default function ImageUpscalerPage() {
             <li>Download the enlarged image.</li>
           </ol>
 
-          <h2>How this upscaler works</h2>
+          <h2>How Image Upscaling Works</h2>
           <p>
             Every new pixel is calculated from the original pixels around it. Lanczos-3 looks at a wider neighbourhood than the
             bilinear or bicubic scaling most apps use, so edges and fine lines stay defined instead of turning mushy. After
@@ -93,7 +93,12 @@ export default function ImageUpscalerPage() {
             about what it can&apos;t add.
           </p>
 
-          <h2>Upscaling vs resizing</h2>
+          <h2>Increase Image Size and Resolution</h2>
+          <p>
+            Resolution here means the number of pixels: a 600 × 400 image upscaled 4× becomes 2400 × 1600, sixteen times as
+            many pixels, which is what print shops, marketplaces and slide templates check. The extra pixels are calculated
+            from the existing ones, so the picture gets bigger and stays smooth, but it doesn&apos;t gain new detail.
+          </p>
           <p>
             The <Link href="/tools/image-resizer">image resizer</Link> changes dimensions in either direction and is the right
             tool for making images smaller. This page is built for the opposite job: it only enlarges, uses a higher-quality

@@ -9,10 +9,10 @@ import { getTool } from "@/lib/tools/registry";
 const tool = getTool("image-compressor");
 
 const description =
-  "Compress JPG, PNG and WebP images online for free. Reduce image file size without changing dimensions, see exactly how much you saved, and download — no upload.";
+  "Free image compressor for JPG, PNG and WebP. Reduce image file size without changing the dimensions, see exactly how much you saved, then download. No upload.";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Image Compressor – Compress JPG, PNG & WebP Images Online",
+  title: "Image Compressor – Compress JPG, PNG & WebP Online",
   description,
   path: tool.path,
 });
@@ -59,7 +59,7 @@ export default function ImageCompressorPage() {
   return (
     <ToolPageShell
       tool={tool}
-      h1="Image Compressor: Reduce Image File Size"
+      h1="Image Compressor – Reduce Image File Size Online"
       intro={
         <p>
           Make JPG, PNG and WebP images smaller without changing their dimensions. Use Automatic for a good balance or
@@ -82,20 +82,34 @@ export default function ImageCompressorPage() {
             <li>Download the compressed image.</li>
           </ol>
 
-          <h2>How compression works for each format</h2>
-          <p>Different formats get smaller in different ways, so the same setting doesn&apos;t behave identically for all of them.</p>
-          <h3>JPG</h3>
+          <h2>How Image Compression Works</h2>
+          <p>
+            A compressed image has the same width and height as before, but it&apos;s stored more efficiently. Lossy
+            compression throws away detail your eyes are unlikely to notice, such as tiny colour variations in a sky. Lossless
+            compression only finds a shorter way to write the same pixels. This compressor uses lossy settings by default
+            because they save far more; the only fully lossless option is PNG with <strong>Lossless</strong> selected in
+            Manual mode. Different formats get smaller in different ways, so the same setting doesn&apos;t behave identically
+            for all of them.
+          </p>
+
+          <h2>Compress JPG and JPEG Images Online</h2>
+          <p>
+            JPG and JPEG are the same format, so there&apos;s nothing different to do for a .jpeg file.
+          </p>
           <p>
             JPG compression is lossy. The quality setting controls how much fine detail is simplified: high settings keep
             images looking identical to the eye, while low settings produce visible blockiness, especially around edges and
             text. Re-saving a JPG that was already compressed gives smaller savings than compressing a camera original.
           </p>
-          <h3>PNG</h3>
+          <h2>Compress PNG Images Online</h2>
           <p>
             PNG is lossless, so it can&apos;t simply be &ldquo;saved at lower quality&rdquo;. To shrink it, the compressor reduces the
             image to a palette of at most 256 carefully chosen colours (the same idea as tools like pngquant). Savings are
             usually largest for screenshots, graphics and illustrations. It is lossy, though often hard to notice.
-            Choose <strong>Lossless</strong> in Manual mode to keep every pixel exactly, with smaller savings.
+            Choose <strong>Lossless</strong> in Manual mode to keep every pixel exactly, with smaller savings. If your PNG is
+            actually a photo, it will shrink far more as a JPG: use <Link href="/tools/png-to-jpg">PNG to JPG</Link>. Going the
+            other way, <Link href="/tools/jpg-to-png">JPG to PNG</Link> makes files bigger, not smaller; it&apos;s for
+            editing without further loss.
           </p>
           <h3>WebP</h3>
           <p>
@@ -113,13 +127,32 @@ export default function ImageCompressorPage() {
             <li>Dimensions are never changed, and metadata such as GPS location is removed from the output.</li>
           </ul>
 
-          <h2>When to compress an image</h2>
+          <h2>Reduce Image Size Online</h2>
+          <p>
+            &ldquo;Image size&rdquo; can mean the file size in KB or MB, or the dimensions in pixels. This tool reduces the
+            file size and leaves the dimensions alone. If a photo is several thousand pixels wide, reducing the dimensions
+            with the <Link href="/tools/image-resizer">image resizer</Link> usually saves more than any quality setting, and
+            the two work well together. Common reasons to compress:
+          </p>
           <ul>
             <li>Speeding up a website: smaller images load faster, especially on mobile data.</li>
             <li>Fitting under an email or upload size limit.</li>
             <li>Saving storage when archiving many screenshots or scans.</li>
             <li>Sharing photos over slow connections.</li>
           </ul>
+
+          <h2>Photo Size Reducer</h2>
+          <p>
+            Application portals, email services and websites often cap uploads at a fixed size. Automatic mode is a good first
+            try for a photo; if the result is still above the limit, a target-size tool is quicker than adjusting quality by
+            hand, because it tests settings until the file fits.
+          </p>
+          <h3>Using it as a JPG size reducer</h3>
+          <p>
+            For a JPG photo, Manual quality between 75% and 85% typically cuts the file substantially with little visible
+            change. Below about 60%, blockiness starts to show around edges and text. When a form names an exact limit, go
+            straight to <Link href="/tools/resize-image-to-kb">resize image to KB</Link>.
+          </p>
 
           <h2>Tips for smaller files</h2>
           <ul>

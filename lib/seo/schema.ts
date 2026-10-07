@@ -20,6 +20,18 @@ export function websiteSchema() {
     url: absoluteUrl("/"),
     description: siteConfig.description,
     inLanguage: "en",
+    publisher: { "@type": "Organization", name: siteConfig.name, url: absoluteUrl("/") },
+  };
+}
+
+/** The organisation behind the site. Only facts that are true and visible on the site. */
+export function organizationSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: siteConfig.name,
+    url: absoluteUrl("/"),
+    logo: absoluteUrl("/icon.svg"),
   };
 }
 

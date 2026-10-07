@@ -68,7 +68,7 @@ export default function SscPhotoPage() {
       faqs={faqs}
       content={
         <>
-          <h2>How to prepare your SSC signature</h2>
+          <h2>How to Resize Your SSC Signature</h2>
           <ol>
             <li>Sign on plain white paper with a dark pen, in your normal signature.</li>
             <li>Photograph it straight-on in good light, or scan it.</li>
@@ -145,7 +145,7 @@ export default function SscPhotoPage() {
       }
     >
       <div className="space-y-6">
-        <RequirementSummary heading="Current SSC photo and signature requirements" app={app} />
+        <RequirementSummary heading="SSC Photo and Signature Requirements" app={app} />
         <RequirementPhotoTool tool="ssc-photo" sets={app.sets} setLabel="SSC examination" appName="SSC" />
       </div>
     </ToolPageShell>

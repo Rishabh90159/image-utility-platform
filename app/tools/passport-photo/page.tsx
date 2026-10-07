@@ -15,7 +15,7 @@ const description =
   "Passport size photo requirements by country from official government sources, printed and digital, plus a free maker that crops your photo to size.";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Passport Size Photo – Official Sizes by Country & Photo Maker",
+  title: "Passport Size Photo Maker – Official Sizes by Country",
   description,
   path: tool.path,
 });

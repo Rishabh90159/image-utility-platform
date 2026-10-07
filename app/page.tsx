@@ -6,9 +6,9 @@ import { siteConfig } from "@/lib/site";
 import { allTools } from "@/lib/tools/registry";
 
 export const metadata: Metadata = pageMetadata({
-  title: `Free Online Image Tools – Resize, Crop, Compress & Convert | ${siteConfig.name}`,
+  title: `Free Online Image Tools – Resize, Compress & Convert | ${siteConfig.name}`,
   description:
-    "Resize, crop, compress and convert images for free, including HEIC and SVG. Hit exact sizes like 50KB or 100KB. Images are processed in your browser, never uploaded.",
+    "Free online image tools to resize, compress, crop and convert photos, hit exact KB sizes, remove backgrounds and prepare exam photos. Runs in your browser.",
   path: "/",
 });
 
@@ -52,7 +52,8 @@ export default function HomePage() {
           </h1>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-ink-soft">
             Resize, crop, compress and convert images quickly with privacy-first tools that work directly in your browser.
-            Make your image fit the exact requirement — dimensions, file size or format.
+            Make your image fit the exact requirement: dimensions, file size in KB or format, for a website, an email or an
+            application form.
           </p>
 
           <h2 className="sr-only">Image tools</h2>
@@ -125,6 +126,59 @@ export default function HomePage() {
             </li>
           ))}
         </ul>
+      </section>
+
+      <section aria-labelledby="overview-heading" className="mx-auto max-w-6xl px-4 pt-16 sm:px-6">
+        <h2 id="overview-heading" className="text-2xl font-bold tracking-tight text-ink">
+          What you can do here
+        </h2>
+        <div className="mt-6 grid gap-x-12 gap-y-6 text-[0.9375rem] leading-relaxed text-ink-soft md:grid-cols-2">
+          <p>
+            <strong className="text-ink">Resize and compress.</strong> The{" "}
+            <Link href="/tools/image-resizer" className="text-accent underline underline-offset-2">image resizer</Link>{" "}
+            changes dimensions in pixels or percent, and the{" "}
+            <Link href="/tools/image-compressor" className="text-accent underline underline-offset-2">image compressor</Link>{" "}
+            makes JPG, PNG and WebP files smaller without changing them. Together they cover most &ldquo;photo too
+            big&rdquo; problems, one image or a{" "}
+            <Link href="/tools/bulk-image-resizer" className="text-accent underline underline-offset-2">whole batch</Link>.
+          </p>
+          <p>
+            <strong className="text-ink">Hit an exact file size.</strong> Forms often say &ldquo;under 50 KB&rdquo;.{" "}
+            <Link href="/tools/resize-image-to-kb" className="text-accent underline underline-offset-2">Resize image to KB</Link>{" "}
+            reaches any limit, with one-step pages for{" "}
+            <Link href="/tools/20kb-photo" className="text-accent underline underline-offset-2">20KB</Link>,{" "}
+            <Link href="/tools/50kb-photo" className="text-accent underline underline-offset-2">50KB</Link>,{" "}
+            <Link href="/tools/100kb-photo" className="text-accent underline underline-offset-2">100KB</Link> and{" "}
+            <Link href="/tools/200kb-photo" className="text-accent underline underline-offset-2">200KB</Link>.
+          </p>
+          <p>
+            <strong className="text-ink">Convert formats.</strong> Change{" "}
+            <Link href="/tools/png-to-jpg" className="text-accent underline underline-offset-2">PNG to JPG</Link>,{" "}
+            <Link href="/tools/jpg-to-png" className="text-accent underline underline-offset-2">JPG to PNG</Link>, iPhone{" "}
+            <Link href="/tools/heic-to-jpg" className="text-accent underline underline-offset-2">HEIC to JPG</Link> and{" "}
+            <Link href="/tools/webp-to-jpg" className="text-accent underline underline-offset-2">WebP to JPG</Link>, or turn
+            several pictures into a document with{" "}
+            <Link href="/tools/photo-to-pdf" className="text-accent underline underline-offset-2">photo to PDF</Link>.
+          </p>
+          <p>
+            <strong className="text-ink">Edit and improve.</strong>{" "}
+            <Link href="/tools/image-cropper" className="text-accent underline underline-offset-2">Crop images</Link>,{" "}
+            <Link href="/tools/background-remover" className="text-accent underline underline-offset-2">remove image backgrounds</Link>,{" "}
+            <Link href="/tools/image-upscaler" className="text-accent underline underline-offset-2">upscale small images</Link>{" "}
+            and brighten dull photos with the{" "}
+            <Link href="/tools/image-quality-enhancer" className="text-accent underline underline-offset-2">quality enhancer</Link>.
+          </p>
+          <p className="md:col-span-2">
+            <strong className="text-ink">Passport and exam photos.</strong> Make a{" "}
+            <Link href="/tools/passport-photo" className="text-accent underline underline-offset-2">passport size photo</Link>{" "}
+            from official sizes by country, resize a{" "}
+            <Link href="/tools/signature-resizer" className="text-accent underline underline-offset-2">signature</Link>, or
+            prepare photos for SSC, UPSC, IBPS, SBI and NEET applications using requirements taken from their notifications,
+            compared on the{" "}
+            <Link href="/tools/application-photos" className="text-accent underline underline-offset-2">exam photo requirements</Link>{" "}
+            page.
+          </p>
+        </div>
       </section>
 
       <section aria-labelledby="principles-heading" className="mx-auto max-w-6xl px-4 pt-16 sm:px-6">

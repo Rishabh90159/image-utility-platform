@@ -12,7 +12,7 @@ const description =
   "Convert MB to KB, KB to MB and more. Shows decimal (1 MB = 1000 KB) and binary (1 MiB = 1024 KiB) results side by side, and the exact size of any file.";
 
 export const metadata: Metadata = pageMetadata({
-  title: "MB to KB Converter – Megabytes to Kilobytes (1000 or 1024)",
+  title: "MB to KB Converter – Convert MB to KB Online",
   description,
   path: tool.path,
 });
@@ -60,7 +60,8 @@ export default function MbToKbPage() {
       intro={
         <p>
           Convert megabytes to kilobytes and back, and see both meanings at once: decimal, where 1 MB = 1000 KB, and binary,
-          where 1 MiB = 1024 KiB. You can also check the exact size of any file on your device.
+          where 1 MiB = 1024 KiB. The same file size converter also handles bytes and GB, and shows the exact size of any
+          file on your device.
         </p>
       }
       schemaDescription={description}

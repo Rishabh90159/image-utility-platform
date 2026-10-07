@@ -1,6 +1,6 @@
 import { ogSize, renderOgImage } from "@/lib/seo/og-image";
 
-export const alt = "Pixfit PNG to SVG Converter tool";
+export const alt = "Imgifyr PNG to SVG Converter tool";
 export const size = ogSize;
 export const contentType = "image/png";
 

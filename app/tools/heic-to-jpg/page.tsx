@@ -12,7 +12,7 @@ const description =
   "Convert HEIC and HEIF photos from your iPhone to JPG online. Adjust quality, preview the result and download a JPG that opens anywhere. No upload.";
 
 export const metadata: Metadata = pageMetadata({
-  title: "HEIC to JPG Converter – Convert iPhone HEIC Photos to JPG",
+  title: "HEIC to JPG Converter – Convert HEIC Images to JPG Online",
   description,
   path: tool.path,
 });

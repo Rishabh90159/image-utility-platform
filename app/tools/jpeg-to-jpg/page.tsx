@@ -12,7 +12,7 @@ const description =
   "Change .jpeg, .jfif and .jpe files to .jpg, unchanged or re-saved, one at a time or in a batch. JPEG and JPG are the same format; this fixes the extension.";
 
 export const metadata: Metadata = pageMetadata({
-  title: "JPEG to JPG Converter – Change .jpeg and .jfif to .jpg",
+  title: "JPEG to JPG Converter – Convert JPEG Images to JPG Online",
   description,
   path: tool.path,
 });

@@ -42,6 +42,18 @@ function contentSecurityPolicy(): string {
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  // The project's *.vercel.app address serves the same pages as www.imgifyr.com; send visitors and
+  // crawlers to the canonical domain so it isn't indexed twice. Preview URLs are unaffected.
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "image-utility-platform.vercel.app" }],
+        destination: "https://www.imgifyr.com/:path*",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     const security = [
       { key: "X-Content-Type-Options", value: "nosniff" },

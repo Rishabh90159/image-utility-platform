@@ -68,14 +68,28 @@ export default function SbiPhotoPage() {
       faqs={faqs}
       content={
         <>
-          <h2>How to prepare your SBI photo and signature</h2>
+          <h2>How to Resize Your SBI Photo</h2>
           <ol>
-            <li>Choose the advertisement you&apos;re applying under.</li>
+            <li>Choose the advertisement you&apos;re applying under; its values appear in the table above.</li>
             <li>Add a recent passport-style colour photo taken against a white or light wall.</li>
             <li>Frame your head and shoulders, then select <strong>Create photo file</strong>.</li>
-            <li>Then select <strong>Signature</strong>, load a picture of your signature on white paper, crop closely and create it.</li>
-            <li>Check both results against the checklist, then download and upload them in the SBI application.</li>
+            <li>Check the result against the checklist, then download it for the SBI application.</li>
           </ol>
+
+          <h2>How to Resize Your SBI Signature</h2>
+          <ol>
+            <li>Select <strong>Signature</strong> and load a picture of your signature on white paper.</li>
+            <li>Crop closely, keep the paper clean-up switched on, and create the file.</li>
+            <li>
+              If the checklist shows the file is under the minimum KB, use the offered button to enlarge it slightly, then
+              download.
+            </li>
+          </ol>
+          <p>
+            For any other pixel size or KB limit, use the <Link href="/tools/signature-resizer">signature resizer</Link>; for
+            ordinary photos, the <Link href="/tools/image-resizer">image resizer</Link> or{" "}
+            <Link href="/tools/image-compressor">image compressor</Link>.
+          </p>
 
           <h2>Requirements differ between advertisements</h2>
           <p>
@@ -139,7 +153,7 @@ export default function SbiPhotoPage() {
       }
     >
       <div className="space-y-6">
-        <RequirementSummary heading="Current SBI photo and signature requirements" app={app} />
+        <RequirementSummary heading="SBI Photo and Signature Size Requirements" app={app} />
         <RequirementPhotoTool tool="sbi-photo" sets={app.sets} setLabel="SBI advertisement" appName="SBI" />
       </div>
     </ToolPageShell>

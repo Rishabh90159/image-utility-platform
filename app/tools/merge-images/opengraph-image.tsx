@@ -1,6 +1,6 @@
 import { ogSize, renderOgImage } from "@/lib/seo/og-image";
 
-export const alt = "Pixfit merge images tool";
+export const alt = "Imgifyr merge images tool";
 export const size = ogSize;
 export const contentType = "image/png";
 
