@@ -108,7 +108,7 @@ export function ResultPanel({ tool, heading, original, output, fileName, downloa
           </figure>
         </div>
 
-        <div className="overflow-x-auto">
+        <div className="relative overflow-x-auto">
           <table className="w-full min-w-[20rem] text-sm">
             <caption className="sr-only">Comparison of the original and processed image</caption>
             <thead>

@@ -12,7 +12,7 @@ const description =
   "Reduce an image to a target file size such as 20KB, 50KB, 100KB or 200KB for application forms and uploads, keeping the best possible quality. Free, no upload.";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Resize Image to KB – 20KB, 50KB, 100KB, 200KB or Any Size",
+  title: "Resize Image in KB – 20KB, 50KB, 100KB, 200KB or Any Size",
   description,
   path: tool.path,
 });

@@ -48,6 +48,11 @@ const faqs: FaqItem[] = [
     answer:
       "JPG, unless the form asks for something else. It's accepted almost everywhere and compresses photos efficiently. WebP is smaller still but many government and recruitment portals don't accept it.",
   },
+  {
+    question: "Is compressing an image to 50KB the same as resizing it to 50KB?",
+    answer:
+      "Here they're the same job. The tool first lowers the JPG quality, which is compression, and only reduces the pixel dimensions if quality alone can't reach 50 KB at a level that still looks good. A signature scan usually stays full size, while a 12-megapixel photo in our tests came down to about 991 × 743 pixels.",
+  }
 ];
 
 export default function FiftyKbPhotoPage() {
@@ -107,7 +112,9 @@ export default function FiftyKbPhotoPage() {
           </table>
           <p>
             Forms that ask for a 50 KB photo rarely need more than a few hundred pixels across, so these sizes are more than
-            enough for a face to be recognisable.
+            enough for a face to be recognisable. If you&apos;d rather pick the quality yourself without a fixed target, use the{" "}
+            <Link href="/tools/image-compressor">image compressor</Link>; for a limit other than 50 KB, use{" "}
+            <Link href="/tools/resize-image-to-kb">resize image to KB</Link>.
           </p>
 
           <h2>Common problems with 50KB uploads</h2>

@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/breadcrumbs/breadcrumbs";
 import { ToolCard } from "@/components/tool-card/tool-card";
 import { pageMetadata } from "@/lib/seo/metadata";
-import { allTools, type ToolCategory } from "@/lib/tools/registry";
+import Link from "next/link";
+import { allTools, APPLICATION_HUB, type ToolCategory } from "@/lib/tools/registry";
 
 export const metadata: Metadata = pageMetadata({
   title: "All Image Tools – Resize, Crop, Compress and Convert Images",
   description:
-    "Every free image tool in one place: resize and crop images, hit 20KB–200KB limits, prepare exam and passport photos, and convert HEIC, SVG, PNG and JPG.",
+    "Every free image tool in one place: resize and crop images, hit 20KB–200KB limits, prepare exam and passport photos, and convert HEIC, WebP, SVG, PNG and JPG.",
   path: "/tools",
 });
 
@@ -30,7 +31,7 @@ const groups: { category: ToolCategory; heading: string; text: string }[] = [
   {
     category: "convert",
     heading: "Convert image formats",
-    text: "Convert iPhone HEIC photos, render SVG to PNG, trace PNG into vector SVG, and switch between JPG and PNG.",
+    text: "Convert iPhone HEIC photos and WebP images to JPG, render SVG to PNG, trace PNG into vector SVG, and switch between JPG and PNG.",
   },
   {
     category: "size",
@@ -50,7 +51,7 @@ export default function ToolsIndexPage() {
       <Breadcrumbs
         items={[
           { name: "Home", path: "/" },
-          { name: "Image tools", path: "/tools" },
+          { name: "Tools", path: "/tools" },
         ]}
       />
       <h1 className="mt-4 text-3xl font-bold tracking-tight text-ink sm:text-4xl">All image tools</h1>
@@ -63,7 +64,18 @@ export default function ToolsIndexPage() {
           <h2 id={`group-${group.category}`} className="text-xl font-semibold text-ink">
             {group.heading}
           </h2>
-          <p className="mt-1 text-muted">{group.text}</p>
+          <p className="mt-1 text-muted">
+            {group.text}
+            {group.category === "application" ? (
+              <>
+                {" "}
+                <Link href={APPLICATION_HUB.path} className="text-accent hover:underline">
+                  Compare every exam&apos;s photo and signature requirements
+                </Link>
+                .
+              </>
+            ) : null}
+          </p>
           <ul className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {allTools
               .filter((tool) => tool.category === group.category)

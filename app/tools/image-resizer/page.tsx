@@ -12,7 +12,7 @@ const description =
   "Resize JPG, PNG and WebP images online for free. Set exact pixel dimensions or a percentage, keep the aspect ratio, and download instantly — no upload needed.";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Image Resizer – Resize Images Online Free",
+  title: "Image Resizer – Resize Images & Photos Online Free",
   description,
   path: tool.path,
 });
@@ -153,6 +153,11 @@ export default function ImageResizerPage() {
             <li>
               If a form gives a file size limit rather than dimensions, use{" "}
               <Link href="/tools/resize-image-to-kb">resize image to a specific KB size</Link> instead.
+            </li>
+            <li>
+              Only want part of the picture? <Link href="/tools/image-cropper">Crop the image</Link> first, then resize what&apos;s
+              left. To apply the same size to a whole folder of photos, use the{" "}
+              <Link href="/tools/bulk-image-resizer">bulk image resizer</Link>.
             </li>
             <li>Keep screenshots, text and logos as PNG to avoid blurry edges around letters.</li>
             <li>

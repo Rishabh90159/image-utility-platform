@@ -117,7 +117,8 @@ export default function PngToJpgPage() {
           <p>
             Keep PNG for screenshots with small text, logos, and anything that must stay transparent. If you need a smaller
             transparent image, <Link href="/tools/image-compressor">compress the PNG</Link> instead. To keep editing a JPG
-            without further loss, you can <Link href="/tools/jpg-to-png">convert JPG to PNG</Link>.
+            without further loss, you can <Link href="/tools/jpg-to-png">convert JPG to PNG</Link>. Images saved from websites
+            are often WebP rather than PNG; the <Link href="/tools/webp-to-jpg">WebP to JPG converter</Link> handles those.
           </p>
 
           <h2>File size and quality</h2>

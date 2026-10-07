@@ -48,6 +48,11 @@ const faqs: FaqItem[] = [
     answer:
       "For viewing on screens, yes: 100 KB holds a sharp image around 1000–1200 pixels wide. It's not enough for large prints. For printing, keep the original.",
   },
+  {
+    question: "Should I compress or resize to get under 100KB?",
+    answer:
+      "Let the tool decide unless the form fixes the pixel size. It tries compression first and keeps the quality level high (around 78% or more) by also reducing the dimensions when needed: our 12-megapixel test photo became about 1245 × 933 pixels. If the dimensions must stay the same, turn off Allow smaller dimensions and the tool only compresses.",
+  }
 ];
 
 export default function HundredKbPhotoPage() {

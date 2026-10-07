@@ -12,10 +12,10 @@ import { getTool } from "@/lib/tools/registry";
 const tool = getTool("passport-photo");
 
 const description =
-  "Passport photo size and requirements by country, copied from official government sources with check dates: India, UK and Canada, printed and digital.";
+  "Passport size photo requirements by country from official government sources, printed and digital, plus a free maker that crops your photo to size.";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Passport Photo Size & Requirements by Country",
+  title: "Passport Size Photo – Official Sizes by Country & Photo Maker",
   description,
   path: tool.path,
 });
@@ -25,6 +25,11 @@ const faqs: FaqItem[] = [
     question: "What is the passport photo size?",
     answer:
       "It depends on the country and on whether you need a printed or a digital photo. For example, India and the United Kingdom use 35 × 45 mm printed photos, Canada uses 50 × 70 mm, and online applications in the UK and Canada set minimum pixel sizes and file-size ranges instead. The table on this page lists each requirement with its official source.",
+  },
+  {
+    question: "What is a passport size photo in pixels?",
+    answer:
+      "Printed passport photos are defined in millimetres, so the pixel size depends on the print resolution. At the 300 DPI this tool uses, a 35 × 45 mm photo (India and the UK) is 413 × 531 pixels, and Canada's 50 × 70 mm photo is 591 × 827 pixels. Online applications state pixel sizes directly instead, such as at least 600 × 750 pixels for a UK digital photo.",
   },
   {
     question: "Do I need a photo for an Indian passport application?",
@@ -71,7 +76,7 @@ function PassportComparison() {
         </a>
       </div>
       <p className="mt-1 text-sm text-muted">Each row is copied from the government source shown, on the date shown.</p>
-      <div className="mt-3 overflow-x-auto">
+      <div className="relative mt-3 overflow-x-auto">
         <table className="w-full min-w-[40rem] text-left text-sm">
           <caption className="sr-only">Passport photo requirements by country and application</caption>
           <thead>
@@ -135,12 +140,12 @@ export default function PassportPhotoPage() {
   return (
     <ToolPageShell
       tool={tool}
-      h1="Passport Photo Requirements by Country"
+      h1="Passport Size Photo: Official Sizes by Country"
       intro={
         <p>
-          Passport photo rules are different in every country, and often different for printed and online applications.
-          Compare the requirements we&apos;ve verified from official government sources, then pick your country and make a
-          photo that matches. Your photo stays on your device.
+          A passport size photo isn&apos;t one size: every country sets its own, and online applications often use pixel
+          and file-size limits instead of millimetres. Compare the requirements we&apos;ve verified from official government
+          sources, then pick your country and make a photo that matches. Your photo stays on your device.
         </p>
       }
       schemaDescription={description}

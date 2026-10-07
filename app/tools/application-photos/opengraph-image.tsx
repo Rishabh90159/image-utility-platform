@@ -1,12 +1,12 @@
 import { ogSize, renderOgImage } from "@/lib/seo/og-image";
 
-export const alt = "Pixfit passport size photo requirements and maker";
+export const alt = "Pixfit exam and passport photo requirements compared";
 export const size = ogSize;
 export const contentType = "image/png";
 
 export default function OpenGraphImage() {
   return renderOgImage({
-    title: "Passport Size Photo",
-    subtitle: "Officially sourced sizes by country.",
+    title: "Exam Photo Requirements",
+    subtitle: "IBPS, SBI, SSC, NEET and UPSC, from official sources.",
   });
 }

@@ -48,6 +48,11 @@ const faqs: FaqItem[] = [
     answer:
       "JPG. It reaches small sizes far better than PNG for photos, and nearly every form accepts it. PNG is lossless, so a PNG photo rarely gets near 20 KB without becoming tiny.",
   },
+  {
+    question: "Can I compress an image to 20KB without making it smaller in pixels?",
+    answer:
+      "Only if the image is small or simple to begin with. Turn off Allow smaller dimensions and the tool will only lower the quality; if 20 KB still can't be reached, it says so and shows the closest size. For a full phone photo, 20 KB is too little to keep every pixel, which is why our 12-megapixel test photo ended at about 606 × 455 pixels.",
+  }
 ];
 
 export default function TwentyKbPhotoPage() {

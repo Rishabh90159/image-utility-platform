@@ -12,7 +12,7 @@ const description =
   "Crop JPG, PNG, WebP and HEIC images online. Choose free crop or a ratio such as 1:1, 4:3 or 16:9, zoom, rotate and download the result. No upload.";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Image Cropper – Crop Photos Online to Any Aspect Ratio",
+  title: "Image Cropper – Crop Images Online Free, Any Aspect Ratio",
   description,
   path: tool.path,
 });
@@ -58,7 +58,7 @@ export default function ImageCropperPage() {
   return (
     <ToolPageShell
       tool={tool}
-      h1="Image Cropper: Crop Photos Online"
+      h1="Image Cropper: Crop Images and Photos Online"
       intro={
         <p>
           Crop a photo freely or to a fixed ratio such as 1:1, 4:3, 3:2 or 16:9. Zoom in for precision, rotate or mirror,

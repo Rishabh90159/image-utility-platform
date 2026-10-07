@@ -1,12 +1,12 @@
 import { ogSize, renderOgImage } from "@/lib/seo/og-image";
 
-export const alt = "Pixfit passport size photo requirements and maker";
+export const alt = "Pixfit WebP to JPG converter";
 export const size = ogSize;
 export const contentType = "image/png";
 
 export default function OpenGraphImage() {
   return renderOgImage({
-    title: "Passport Size Photo",
-    subtitle: "Officially sourced sizes by country.",
+    title: "WebP to JPG Converter",
+    subtitle: "Turn WebP images from websites into JPGs that open everywhere.",
   });
 }

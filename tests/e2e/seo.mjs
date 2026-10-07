@@ -1,5 +1,7 @@
 // SEO QA against the running production server. Usage: node tests/e2e/seo.mjs
 // Expects the build to have been made with NEXT_PUBLIC_SITE_URL=https://www.example.com
+import { KEYWORD_MAP } from "../../lib/seo/keyword-map.ts";
+
 const BASE = process.env.BASE_URL || "http://localhost:3100";
 const SITE = process.env.EXPECTED_SITE_URL || "https://www.example.com";
 
@@ -9,6 +11,7 @@ const toolPages = [
   "/tools/resize-image-to-kb",
   "/tools/jpg-to-png",
   "/tools/png-to-jpg",
+  "/tools/webp-to-jpg",
   "/tools/heic-to-jpg",
   "/tools/svg-to-png",
   "/tools/png-to-svg",
@@ -28,10 +31,11 @@ const toolPages = [
   "/tools/passport-photo",
 ];
 const kbPages = ["/tools/20kb-photo", "/tools/50kb-photo", "/tools/100kb-photo", "/tools/200kb-photo", "/tools/resize-image-to-kb"];
-const applicationPages = ["/tools/ssc-photo", "/tools/upsc-photo", "/tools/ibps-photo", "/tools/sbi-photo", "/tools/neet-photo", "/tools/passport-photo"];
+const HUB = "/tools/application-photos";
+const applicationPages = ["/tools/ssc-photo", "/tools/upsc-photo", "/tools/ibps-photo", "/tools/sbi-photo", "/tools/neet-photo", "/tools/passport-photo", HUB];
 const OFFICIAL = /href="https:\/\/(www\.ibps\.in|sbi\.bank\.in|ssc\.gov\.in|neet\.nta\.nic\.in|upsconline\.nic\.in|upsc\.gov\.in|www\.passportindia\.gov\.in|www\.gov\.uk|www\.canada\.ca)\//;
 const DISCLAIMER = "Application requirements can change. Always verify the final image against the latest official";
-const pages = ["/", "/tools", ...toolPages, "/about", "/methodology", "/privacy", "/terms", "/contact"];
+const pages = ["/", "/tools", HUB, ...toolPages, "/about", "/methodology", "/privacy", "/terms", "/contact"];
 
 const results = [];
 function check(name, ok, detail = "") {
@@ -85,6 +89,20 @@ for (const route of pages) {
   check(`${route}: Open Graph`, meta(html, "property", "og:title") && meta(html, "property", "og:url") === expectedCanonical && meta(html, "property", "og:image"), meta(html, "property", "og:image"));
   check(`${route}: internal links`, internalLinks.size >= 8, `${internalLinks.size} unique`);
   if (route !== "/") check(`${route}: breadcrumbs`, html.includes('aria-label="Breadcrumb"') && ldTypes.includes("BreadcrumbList"));
+  {
+    const crumbs = [...html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/g)]
+      .map((m) => JSON.parse(m[1]))
+      .find((d) => d["@type"] === "BreadcrumbList")?.itemListElement.map((i) => i.item.replace(SITE, "") || "/");
+    const parent = kbPages.slice(0, 4).includes(route) ? "/tools/resize-image-to-kb" : applicationPages.includes(route) && route !== HUB ? HUB : null;
+    if (parent) check(`${route}: breadcrumb goes through its category`, crumbs?.length === 4 && crumbs[2] === parent && crumbs[3] === route, crumbs?.join(" > "));
+  }
+  {
+    const target = KEYWORD_MAP.find((t) => t.path === route);
+    if (target) {
+      const h1Text = decode((html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1] ?? "").replace(/<[^>]+>/g, "")).toLowerCase();
+      check(`${route}: primary keyword "${target.primary}" in title or H1`, title.toLowerCase().includes(target.primary) || h1Text.includes(target.primary));
+    }
+  }
   if (toolPages.includes(route)) {
     check(`${route}: FAQ visible + FAQPage schema`, html.includes('id="faq-heading"') && ldTypes.includes("FAQPage"));
     check(`${route}: related tools`, html.includes('id="related-heading"'));
@@ -131,7 +149,7 @@ check("all H1s unique", h1Texts.size === pages.length);
   }
   check(
     "no near-duplicate content between size/application pages (6-word overlap < 15%)",
-    entries.length === 11 && worst.score < 0.15,
+    entries.length === 12 && worst.score < 0.15,
     (worst.score * 100).toFixed(1) + "% max (" + worst.pair + ")",
   );
 }
@@ -155,6 +173,17 @@ for (const route of ["/", "/tools", "/tools/image-resizer"]) {
   }
   check(`${route}: no HEIC/tracing/sanitizer code in initial JS`, !heavy);
 }
+
+// Parameters and trailing slashes must not create indexable duplicates.
+{
+  const html = await (await fetch(`${BASE}/tools/image-resizer?utm_source=test&target=50`)).text();
+  check("query-string URL canonicalises to the clean URL", html.includes(`<link rel="canonical" href="${SITE}/tools/image-resizer"`));
+  const slash = await fetch(`${BASE}/tools/image-resizer/`, { redirect: "manual" });
+  check("trailing slash redirects permanently to the canonical path", [301, 308].includes(slash.status) && slash.headers.get("location")?.endsWith("/tools/image-resizer"), `${slash.status} → ${slash.headers.get("location")}`);
+  const upper = await fetch(`${BASE}/tools/Image-Resizer`, { redirect: "manual" });
+  check("mixed-case URL is not served as a duplicate", upper.status === 404 || [301, 308].includes(upper.status), String(upper.status));
+}
+check("every keyword-map page is checked", KEYWORD_MAP.every((t) => pages.includes(t.path)));
 
 // Sitemap
 const sitemap = await (await fetch(`${BASE}/sitemap.xml`)).text();

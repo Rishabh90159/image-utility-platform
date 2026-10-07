@@ -73,7 +73,10 @@ export default function SscPhotoPage() {
             <li>Sign on plain white paper with a dark pen, in your normal signature.</li>
             <li>Photograph it straight-on in good light, or scan it.</li>
             <li>Choose your examination above, then add the image.</li>
-            <li>Drag the crop box around the signature. It&apos;s locked to about 3:1, matching 6.0 cm × 2.0 cm.</li>
+            <li>
+              Drag the crop box around the signature. It&apos;s locked to about 3:1, matching 6.0 cm × 2.0 cm. (For a free-form
+              crop of any other image, use the <Link href="/tools/image-cropper">image cropper</Link>.)
+            </li>
             <li>Keep &ldquo;Clean the paper background to white&rdquo; on, and select Create signature file.</li>
             <li>Check the result: it should read between 10 KB and 20 KB, JPG. Then download and upload it on the SSC portal.</li>
           </ol>

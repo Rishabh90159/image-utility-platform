@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { siteConfig } from "@/lib/site";
-import { NAV_GROUPS, toolsIn } from "@/lib/tools/registry";
+import { APPLICATION_HUB, NAV_GROUPS, toolsIn } from "@/lib/tools/registry";
 import { Logo } from "./logo";
 
 const companyLinks = [
@@ -37,6 +37,13 @@ export function SiteFooter() {
                 <li>
                   <Link href="/tools" className="text-sm text-muted hover:text-ink hover:underline">
                     All image tools
+                  </Link>
+                </li>
+              ) : null}
+              {group.id === "application" ? (
+                <li>
+                  <Link href={APPLICATION_HUB.path} className="text-sm text-muted hover:text-ink hover:underline">
+                    Compare requirements
                   </Link>
                 </li>
               ) : null}

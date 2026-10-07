@@ -122,7 +122,7 @@ function RequirementCard({ sets }: { sets: RequirementSet[] }) {
           </div>
         ) : null}
         {specs.length > 0 ? (
-          <div className="overflow-x-auto">
+          <div className="relative overflow-x-auto">
             <table className="w-full min-w-[18rem] text-left">
               <caption className="sr-only">Requirements for {set.name}</caption>
               <thead>
@@ -200,7 +200,7 @@ function RequirementCard({ sets }: { sets: RequirementSet[] }) {
   );
 }
 
-function pixelText(s: ImageSpec): string {
+export function pixelText(s: ImageSpec): string {
   if (!s.widthPx || !s.heightPx) return "Not specified";
   const size = `${s.widthPx} × ${s.heightPx} px`;
   switch (s.pixelBasis) {

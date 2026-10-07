@@ -9,6 +9,7 @@ export type ToolId =
   | "resize-image-to-kb"
   | "jpg-to-png"
   | "png-to-jpg"
+  | "webp-to-jpg"
   | "heic-to-jpg"
   | "svg-to-png"
   | "png-to-svg"
@@ -34,6 +35,24 @@ export type NavGroup = "image" | "size" | "application";
 
 export function navGroupOf(tool: ToolDefinition): NavGroup {
   return tool.category === "size" ? "size" : tool.category === "application" ? "application" : "image";
+}
+
+/** Hub page for the exam, recruitment and passport photo pages. */
+export const APPLICATION_HUB = { name: "Exam & passport photos", path: "/tools/application-photos" } as const;
+
+/**
+ * Breadcrumb trail for a tool page. Size pages sit under the general "resize
+ * image to KB" tool, which owns the broad file-size intent; application pages
+ * sit under their comparison hub. Other tools sit directly under /tools.
+ */
+export function breadcrumbTrail(tool: ToolDefinition): { name: string; path: string }[] {
+  const trail = [
+    { name: "Home", path: "/" },
+    { name: "Tools", path: "/tools" },
+  ];
+  if (tool.category === "size") trail.push({ name: tools["resize-image-to-kb"].name, path: tools["resize-image-to-kb"].path });
+  if (tool.category === "application") trail.push({ ...APPLICATION_HUB });
+  return [...trail, { name: tool.name, path: tool.path }];
 }
 
 export interface ToolDefinition {
@@ -62,8 +81,8 @@ export const tools: Record<ToolId, ToolDefinition> = {
     summary: "Change width and height in pixels or by percentage, with aspect ratio locked by default.",
     linkText: "Resize an image to new dimensions",
     category: "resize",
-    related: ["bulk-image-resizer", "resize-image-to-kb", "image-cropper", "image-compressor"],
-    updated: "2026-10-06",
+    related: ["image-compressor", "resize-image-to-kb", "image-cropper", "bulk-image-resizer"],
+    updated: "2026-10-07",
   },
   "image-compressor": {
     id: "image-compressor",
@@ -73,8 +92,8 @@ export const tools: Record<ToolId, ToolDefinition> = {
     summary: "Reduce the file size of JPG, PNG and WebP images while keeping their dimensions.",
     linkText: "Compress an image",
     category: "compress",
-    related: ["resize-image-to-kb", "image-resizer", "png-to-jpg"],
-    updated: "2026-10-06",
+    related: ["resize-image-to-kb", "100kb-photo", "50kb-photo", "image-resizer"],
+    updated: "2026-10-07",
   },
   "resize-image-to-kb": {
     id: "resize-image-to-kb",
@@ -106,8 +125,19 @@ export const tools: Record<ToolId, ToolDefinition> = {
     summary: "Turn PNG images into smaller JPG files, with a background of your choice for transparency.",
     linkText: "Convert PNG to JPG",
     category: "convert",
-    related: ["jpg-to-png", "image-compressor", "resize-image-to-kb"],
-    updated: "2026-10-06",
+    related: ["jpg-to-png", "webp-to-jpg", "image-compressor", "resize-image-to-kb"],
+    updated: "2026-10-07",
+  },
+  "webp-to-jpg": {
+    id: "webp-to-jpg",
+    path: "/tools/webp-to-jpg",
+    name: "WebP to JPG Converter",
+    navLabel: "WebP to JPG",
+    summary: "Convert WebP images saved from websites into JPG files that every app and upload form accepts.",
+    linkText: "Convert WebP to JPG",
+    category: "convert",
+    related: ["png-to-jpg", "image-compressor", "resize-image-to-kb", "image-resizer"],
+    updated: "2026-10-07",
   },
   "heic-to-jpg": {
     id: "heic-to-jpg",
@@ -117,7 +147,7 @@ export const tools: Record<ToolId, ToolDefinition> = {
     summary: "Convert iPhone HEIC and HEIF photos to JPG that opens everywhere, right in your browser.",
     linkText: "Convert HEIC photos to JPG",
     category: "convert",
-    related: ["image-compressor", "image-resizer", "jpg-to-png"],
+    related: ["image-resizer", "image-compressor", "jpg-to-png"],
     updated: "2026-10-06",
   },
   "svg-to-png": {
@@ -151,7 +181,7 @@ export const tools: Record<ToolId, ToolDefinition> = {
     linkText: "Crop an image to any aspect ratio",
     category: "edit",
     related: ["image-resizer", "image-compressor", "passport-photo-resizer", "signature-resizer"],
-    updated: "2026-10-06",
+    updated: "2026-10-07",
   },
   "passport-photo-resizer": {
     id: "passport-photo-resizer",
@@ -288,8 +318,8 @@ export const tools: Record<ToolId, ToolDefinition> = {
   "passport-photo": {
     id: "passport-photo",
     path: "/tools/passport-photo",
-    name: "Passport Photo Requirements",
-    navLabel: "Passport photo",
+    name: "Passport Size Photo",
+    navLabel: "Passport size photo",
     summary: "Officially sourced passport photo sizes by country, with a tool to make a photo that matches.",
     linkText: "Check passport photo size by country",
     category: "application",
@@ -305,6 +335,7 @@ export const toolOrder: ToolId[] = [
   "resize-image-to-kb",
   "jpg-to-png",
   "png-to-jpg",
+  "webp-to-jpg",
   "bulk-image-resizer",
   "image-cropper",
   "passport-photo-resizer",

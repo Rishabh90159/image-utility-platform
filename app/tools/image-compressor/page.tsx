@@ -12,7 +12,7 @@ const description =
   "Compress JPG, PNG and WebP images online for free. Reduce image file size without changing dimensions, see exactly how much you saved, and download — no upload.";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Image Compressor – Compress JPG, PNG and WebP Online",
+  title: "Image Compressor – Compress JPG, PNG & WebP Images Online",
   description,
   path: tool.path,
 });
@@ -130,7 +130,9 @@ export default function ImageCompressorPage() {
             <li>
               Have a strict limit such as 50 KB or 100 KB?{" "}
               <Link href="/tools/resize-image-to-kb">Reduce an image to an exact KB size</Link> instead of guessing quality
-              settings.
+              settings. For the most common limits there are one-step pages:{" "}
+              <Link href="/tools/20kb-photo">compress to 20KB</Link>, <Link href="/tools/50kb-photo">50KB</Link>,{" "}
+              <Link href="/tools/100kb-photo">100KB</Link> and <Link href="/tools/200kb-photo">200KB</Link>.
             </li>
             <li>
               Photos saved as PNG are often several times larger than needed.{" "}
