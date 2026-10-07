@@ -6,7 +6,7 @@ import { siteConfig } from "@/lib/site";
 import { allTools } from "@/lib/tools/registry";
 
 export const metadata: Metadata = pageMetadata({
-  title: `Free Online Image Tools – Resize, Compress & Convert | ${siteConfig.name}`,
+  title: `Free Online Image Tools – Resize, Crop, Compress & Convert | ${siteConfig.name}`,
   description:
     "Free online image tools to resize, compress, crop and convert photos, hit exact KB sizes, remove backgrounds and prepare exam photos. Runs in your browser.",
   path: "/",
