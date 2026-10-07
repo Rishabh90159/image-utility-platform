@@ -88,6 +88,8 @@ export interface TargetJob extends JobBase {
   height?: number;
   /** JPG only: pixels-per-inch to record in the file header. */
   dpi?: number;
+  /** Highest quality the search may use (0–1). */
+  maxQuality?: number;
 }
 
 export type Job = ProbeJob | EncodeJob | TargetJob;

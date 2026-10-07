@@ -7,10 +7,10 @@ import { allTools } from "@/lib/tools/registry";
  * Tool URLs come from the registry, so new tools are included automatically.
  */
 const staticPages: { path: string; updated: string; priority: number }[] = [
-  { path: "/", updated: "2026-10-06", priority: 1 },
-  { path: "/tools", updated: "2026-10-06", priority: 0.8 },
+  { path: "/", updated: "2026-10-07", priority: 1 },
+  { path: "/tools", updated: "2026-10-07", priority: 0.8 },
   { path: "/about", updated: "2026-10-06", priority: 0.4 },
-  { path: "/methodology", updated: "2026-10-06", priority: 0.5 },
+  { path: "/methodology", updated: "2026-10-07", priority: 0.5 },
   { path: "/privacy", updated: "2026-10-06", priority: 0.3 },
   { path: "/terms", updated: "2026-10-06", priority: 0.2 },
   { path: "/contact", updated: "2026-10-06", priority: 0.3 },

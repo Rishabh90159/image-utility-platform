@@ -21,7 +21,7 @@ export default function MethodologyPage() {
     <ContentPage
       title="How the tools work"
       path="/methodology"
-      updated="2026-10-06"
+      updated="2026-10-07"
       intro={
         <p>
           This page explains what happens to your image at each step, in plain language, so you can judge the results for
@@ -182,6 +182,47 @@ export default function MethodologyPage() {
       <p>
         The signature clean-up measures each pixel&apos;s brightness. Pixels lighter than the chosen threshold become white or
         transparent, darker ink is kept, and a narrow band in between is blended so pen edges stay smooth.
+      </p>
+
+      <h2>Exam, recruitment and passport requirements</h2>
+      <p>
+        Pages such as the IBPS, SBI, SSC, NEET and passport photo tools apply requirements published by the organisation
+        concerned. How that data is kept:
+      </p>
+      <ul>
+        <li>
+          <strong>Official sources only.</strong> Values are copied from the organisation&apos;s own notification, advertisement,
+          information bulletin or government website, never from coaching sites, blogs or photo services.
+        </li>
+        <li>
+          <strong>Nothing inferred.</strong> If a source doesn&apos;t state a pixel size, no pixel size is shown or applied. When a
+          source calls a size &ldquo;preferred&rdquo; or a minimum, the page says so.
+        </li>
+        <li>
+          <strong>Source and date on every requirement.</strong> Each one links to its document and shows when it was last read.
+          That date changes only when the document has actually been re-checked.
+        </li>
+        <li>
+          <strong>Unverifiable means not shown.</strong> When a current requirement couldn&apos;t be confirmed, for example
+          because official documents disagree or the instructions are behind a login, the page says so and lets you enter
+          the values from your own notification.
+        </li>
+        <li>
+          <strong>Data, not prose.</strong> Requirements are stored separately from page text, so a new notification can be
+          added or updated without rewriting the page, and the requirement table and the tool always use the same values.
+        </li>
+      </ul>
+      <p>
+        These tools check pixel size, file size and format. They can&apos;t judge pose, lighting, expression or how recent a
+        photo is, and they don&apos;t retouch faces or replace backgrounds. They are independent and not affiliated with any
+        examination body or government.
+      </p>
+
+      <h2>Photo size pages (20KB, 50KB, 100KB, 200KB)</h2>
+      <p>
+        These pages use the same target-size search as the Resize Image to KB tool, with the target preset. Optional settings
+        let you cap the width (the image is scaled down first, then the search runs) or cap the quality (the search never goes
+        above it, so the file may end up well under the target). The size shown is always the size of the file you download.
       </p>
 
       <h2>Batch processing</h2>

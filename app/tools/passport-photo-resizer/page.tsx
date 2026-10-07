@@ -149,6 +149,11 @@ export default function PassportPhotoResizerPage() {
           </ul>
           <p>This tool doesn&apos;t retouch or replace backgrounds, because many authorities reject edited photos.</p>
 
+          <p>
+            Not sure of your country&apos;s rules? <Link href="/tools/passport-photo">Compare passport photo requirements by
+            country</Link>, each with its official source.
+          </p>
+
           <h2>Printed vs digital photos</h2>
           <p>
             For printed photos, the tool records the resolution ({PRINT_DPI} DPI by default) in the JPG, so a 35 × 45 mm photo

@@ -7,7 +7,7 @@ import { allTools, type ToolCategory } from "@/lib/tools/registry";
 export const metadata: Metadata = pageMetadata({
   title: "All Image Tools – Resize, Crop, Compress and Convert Images",
   description:
-    "Every free image tool in one place: resize single or bulk images, crop, prepare passport photos and signatures, compress, and convert HEIC, SVG, PNG and JPG.",
+    "Every free image tool in one place: resize and crop images, hit 20KB–200KB limits, prepare exam and passport photos, and convert HEIC, SVG, PNG and JPG.",
   path: "/tools",
 });
 
@@ -31,6 +31,16 @@ const groups: { category: ToolCategory; heading: string; text: string }[] = [
     category: "convert",
     heading: "Convert image formats",
     text: "Convert iPhone HEIC photos, render SVG to PNG, trace PNG into vector SVG, and switch between JPG and PNG.",
+  },
+  {
+    category: "size",
+    heading: "Photo size tools",
+    text: "Get a photo under a common file-size limit in one step: 20 KB, 50 KB, 100 KB or 200 KB.",
+  },
+  {
+    category: "application",
+    heading: "Exam and passport photos",
+    text: "Photo and signature requirements copied from official notifications, with a tool that applies them. Each page shows its source and when it was last checked.",
   },
 ];
 

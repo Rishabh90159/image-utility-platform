@@ -23,6 +23,33 @@ export function ToolIcon({ id, category }: { id: ToolId; category: ToolCategory 
       </svg>
     );
   }
+  if (category === "size") {
+    return (
+      <svg {...common}>
+        <path d="M5 2.5h7l3.5 3.5v11.5H5z" />
+        <path d="M12 2.5V6h3.5" />
+        <path d="M7.5 13.5l2.5-3 2.5 3M10 10.5v5" />
+      </svg>
+    );
+  }
+  if (id === "passport-photo") {
+    return (
+      <svg {...common}>
+        <rect x="3.5" y="2" width="13" height="16" rx="1.5" />
+        <circle cx="10" cy="9" r="3.5" />
+        <path d="M6.5 9h7M10 5.5c1.2 1 1.2 6 0 7M10 5.5c-1.2 1-1.2 6 0 7" />
+      </svg>
+    );
+  }
+  if (category === "application") {
+    return (
+      <svg {...common}>
+        <path d="M5 2.5h10a1 1 0 011 1v13a1 1 0 01-1 1H5a1 1 0 01-1-1v-13a1 1 0 011-1z" />
+        <rect x="6.5" y="5" width="4" height="5" rx="0.5" />
+        <path d="M12.5 6h1.5M12.5 8.5h1.5M6.5 13h7M6.5 15.5h5" />
+      </svg>
+    );
+  }
   if (id === "bulk-image-resizer") {
     return (
       <svg {...common}>

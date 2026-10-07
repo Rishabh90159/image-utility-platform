@@ -23,7 +23,13 @@ export type AnalyticsEvent =
   | "passport_photo_completed"
   | "signature_resize_completed"
   | "bulk_resize_completed"
-  | "bulk_download_completed";
+  | "bulk_download_completed"
+  | "kb_photo_started"
+  | "kb_photo_completed"
+  | "application_photo_started"
+  | "application_photo_completed"
+  | "photo_downloaded"
+  | "requirement_source_clicked";
 
 export interface AnalyticsProps {
   tool?: string;

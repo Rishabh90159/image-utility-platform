@@ -76,6 +76,25 @@ async function smallCopy(bitmap: ImageBitmap, longSide: number, transparent: boo
   }
 }
 
+/**
+ * Scaled dimensions, rounded to whole pixels but never over the canvas limits.
+ * (Rounding both sides up can push a size computed to fit exactly, such as
+ * 8018 × 6236, a few hundred pixels over the limit.)
+ */
+export function scaledSize(W: number, H: number, scale: number): { width: number; height: number } {
+  let width = Math.max(1, Math.round(W * scale));
+  let height = Math.max(1, Math.round(H * scale));
+  if (width * height > LIMITS.maxOutputPixels || width > LIMITS.maxOutputSide || height > LIMITS.maxOutputSide) {
+    width = Math.max(1, Math.floor(W * scale));
+    height = Math.max(1, Math.floor(H * scale));
+    while (width * height > LIMITS.maxOutputPixels && width > 1 && height > 1) {
+      width--;
+      height = Math.max(1, Math.floor((width * H) / W));
+    }
+  }
+  return { width, height };
+}
+
 async function finishBlob(blob: Blob, mime: OutputMime, dpi: number | undefined): Promise<Blob> {
   return dpi && mime === "image/jpeg" ? setJpegDpi(blob, dpi) : blob;
 }
@@ -112,7 +131,7 @@ async function target(job: TargetJob, onProgress?: (fraction: number) => void): 
     throw new ImageToolError("INVALID_TARGET", "Please enter a target size of at least 1 KB.");
   }
   const bitmap = await getBitmap(job.sourceId, job.file);
-  const edited = Boolean(job.transform || job.cleanup || job.width || job.height || job.dpi);
+  const edited = Boolean(job.transform || job.cleanup || job.width || job.height || job.dpi || job.maxQuality);
 
   // Already small enough and in the requested format: re-encoding would only lose quality.
   if (!edited && job.file.size <= job.targetBytes && job.sourceMime === job.mime) {
@@ -141,8 +160,7 @@ async function target(job: TargetJob, onProgress?: (fraction: number) => void): 
   // Reuse the scaled canvas while only quality changes.
   let scaled: { width: number; height: number; canvas: AnyCanvas } | null = null;
   const encodeAt = async (scale: number, quality: number): Promise<EncodedImage> => {
-    const width = Math.max(1, Math.round(W * scale));
-    const height = Math.max(1, Math.round(H * scale));
+    const { width, height } = scaledSize(W, H, scale);
     if (!scaled || scaled.width !== width || scaled.height !== height) {
       if (scaled) releaseCanvas(scaled.canvas);
       scaled = { width, height, canvas: drawScaled(base, width, height, job.background) };
@@ -156,6 +174,7 @@ async function target(job: TargetJob, onProgress?: (fraction: number) => void): 
     const result = await searchTargetSize(encodeAt, {
       targetBytes: job.targetBytes,
       allowResize: job.allowResize,
+      maxQuality: job.maxQuality,
       minScale,
       maxScale,
       onProgress,

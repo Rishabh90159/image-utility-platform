@@ -226,7 +226,7 @@ describe("signature background clean-up", () => {
 describe("photo presets", () => {
   it("every preset has an official source, a verification date and consistent pixel sizes", () => {
     for (const preset of PHOTO_PRESETS) {
-      expect(preset.source.url).toMatch(/^https:\/\/(www\.)?(gov\.uk|canada\.ca)\//);
+      expect(preset.source.url).toMatch(/^https:\/\/(www\.)?(gov\.uk|canada\.ca|passportindia\.gov\.in)\//);
       expect(preset.lastVerified).toMatch(/^\d{4}-\d{2}-\d{2}$/);
       if (preset.widthMm && preset.heightMm && preset.dpi) {
         expect(preset.widthPx).toBe(mmToPx(preset.widthMm, preset.dpi));

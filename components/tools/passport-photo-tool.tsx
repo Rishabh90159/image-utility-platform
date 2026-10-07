@@ -12,12 +12,12 @@ import { toImageToolError } from "@/lib/image-processing/errors";
 import { FORMATS, LIMITS, RASTER_INPUT_FORMATS } from "@/lib/image-processing/formats";
 import type { ImageTransform } from "@/lib/image-processing/types";
 import { getPreset, PHOTO_PRESETS, PRINT_DPI, type PhotoPreset } from "@/lib/presets/photo-presets";
-import { formatBytes, formatDimensions, KB, outputFileName, sizeBucket } from "@/lib/utils/format";
+import { formatBytes, formatDimensions, outputFileName, sizeBucket } from "@/lib/utils/format";
 import { useJobRunner, useSourceImage, useToolOpen, type SourceImage } from "./hooks";
+import { runSpec } from "./spec-runner";
 import { ActionButton, ToolWorkspace } from "./tool-workspace";
 
 const TOOL = "passport-photo-resizer" as const;
-const QUALITY = 0.92;
 
 type Unit = "mm" | "in" | "px";
 
@@ -119,53 +119,10 @@ export function PassportPhotoTool() {
 
   const run = async (image: SourceImage, photo: PhotoSpec, transform: ImageTransform) => {
     setError(null);
-    const base = { sourceId: image.id, file: image.file, transform, dpi: photo.dpi };
     try {
-      let blob: Blob;
-      let overMax = false;
-      if (photo.maxKB) {
-        const found = await runner.run({
-          ...base,
-          kind: "target",
-          sourceMime: image.mime,
-          targetBytes: Math.floor(photo.maxKB * KB),
-          mime: "image/jpeg",
-          allowResize: false,
-          background: "#ffffff",
-          width: photo.widthPx,
-          height: photo.heightPx,
-        });
-        if (!found) return;
-        blob = found.blob;
-        overMax = found.outcome !== "met";
-      } else {
-        const encoded = await runner.run({
-          ...base,
-          kind: "encode",
-          width: photo.widthPx,
-          height: photo.heightPx,
-          mime: "image/jpeg",
-          quality: QUALITY,
-          background: "#ffffff",
-        });
-        if (!encoded) return;
-        blob = encoded.blob;
-      }
-      // Some portals also set a minimum size. Use maximum quality if that helps reach it.
-      if (photo.minKB && blob.size < photo.minKB * KB) {
-        const best = await runner.run({
-          ...base,
-          kind: "encode",
-          width: photo.widthPx,
-          height: photo.heightPx,
-          mime: "image/jpeg",
-          quality: 1,
-          background: "#ffffff",
-        });
-        if (!best) return;
-        if (best.blob.size > blob.size && (!photo.maxKB || best.blob.size <= photo.maxKB * KB)) blob = best.blob;
-      }
-      const underMin = Boolean(photo.minKB && blob.size < photo.minKB * KB);
+      const made = await runSpec(runner.run, image, photo, transform);
+      if (!made) return;
+      const { blob, overMax, underMin } = made;
       setResult({
         key: settingsKey,
         image: { blob, width: photo.widthPx, height: photo.heightPx, mime: "image/jpeg" },

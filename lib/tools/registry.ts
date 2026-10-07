@@ -15,9 +15,26 @@ export type ToolId =
   | "image-cropper"
   | "passport-photo-resizer"
   | "signature-resizer"
-  | "bulk-image-resizer";
+  | "bulk-image-resizer"
+  | "20kb-photo"
+  | "50kb-photo"
+  | "100kb-photo"
+  | "200kb-photo"
+  | "ssc-photo"
+  | "upsc-photo"
+  | "ibps-photo"
+  | "sbi-photo"
+  | "neet-photo"
+  | "passport-photo";
 
-export type ToolCategory = "resize" | "compress" | "convert" | "edit";
+export type ToolCategory = "resize" | "compress" | "convert" | "edit" | "size" | "application";
+
+/** Navigation groups: general image tools, file-size pages, and exam/passport photo pages. */
+export type NavGroup = "image" | "size" | "application";
+
+export function navGroupOf(tool: ToolDefinition): NavGroup {
+  return tool.category === "size" ? "size" : tool.category === "application" ? "application" : "image";
+}
 
 export interface ToolDefinition {
   id: ToolId;
@@ -32,8 +49,6 @@ export interface ToolDefinition {
   linkText: string;
   category: ToolCategory;
   related: ToolId[];
-  /** Shown in the desktop header navigation (the mobile menu and footer list every tool). */
-  inHeader?: boolean;
   /** ISO date of the last meaningful content or feature change. */
   updated: string;
 }
@@ -48,7 +63,6 @@ export const tools: Record<ToolId, ToolDefinition> = {
     linkText: "Resize an image to new dimensions",
     category: "resize",
     related: ["bulk-image-resizer", "resize-image-to-kb", "image-cropper", "image-compressor"],
-    inHeader: true,
     updated: "2026-10-06",
   },
   "image-compressor": {
@@ -60,7 +74,6 @@ export const tools: Record<ToolId, ToolDefinition> = {
     linkText: "Compress an image",
     category: "compress",
     related: ["resize-image-to-kb", "image-resizer", "png-to-jpg"],
-    inHeader: true,
     updated: "2026-10-06",
   },
   "resize-image-to-kb": {
@@ -71,9 +84,8 @@ export const tools: Record<ToolId, ToolDefinition> = {
     summary: "Hit a file size limit such as 20 KB, 50 KB, 100 KB or 200 KB for forms and uploads.",
     linkText: "Resize an image to 50KB, 100KB or any size",
     category: "resize",
-    related: ["image-compressor", "image-resizer", "passport-photo-resizer", "signature-resizer"],
-    inHeader: true,
-    updated: "2026-10-06",
+    related: ["100kb-photo", "image-compressor", "image-resizer", "passport-photo-resizer"],
+    updated: "2026-10-07",
   },
   "jpg-to-png": {
     id: "jpg-to-png",
@@ -106,7 +118,6 @@ export const tools: Record<ToolId, ToolDefinition> = {
     linkText: "Convert HEIC photos to JPG",
     category: "convert",
     related: ["image-compressor", "image-resizer", "jpg-to-png"],
-    inHeader: true,
     updated: "2026-10-06",
   },
   "svg-to-png": {
@@ -140,7 +151,6 @@ export const tools: Record<ToolId, ToolDefinition> = {
     linkText: "Crop an image to any aspect ratio",
     category: "edit",
     related: ["image-resizer", "image-compressor", "passport-photo-resizer", "signature-resizer"],
-    inHeader: true,
     updated: "2026-10-06",
   },
   "passport-photo-resizer": {
@@ -151,8 +161,8 @@ export const tools: Record<ToolId, ToolDefinition> = {
     summary: "Crop and resize a photo to a passport or application size in pixels, millimetres and KB.",
     linkText: "Resize a photo for a passport or visa application",
     category: "edit",
-    related: ["image-cropper", "resize-image-to-kb", "image-compressor"],
-    updated: "2026-10-06",
+    related: ["passport-photo", "image-cropper", "resize-image-to-kb", "image-compressor"],
+    updated: "2026-10-07",
   },
   "signature-resizer": {
     id: "signature-resizer",
@@ -176,6 +186,116 @@ export const tools: Record<ToolId, ToolDefinition> = {
     related: ["image-resizer", "image-compressor", "resize-image-to-kb"],
     updated: "2026-10-06",
   },
+  "20kb-photo": {
+    id: "20kb-photo",
+    path: "/tools/20kb-photo",
+    name: "20KB Photo Resizer",
+    navLabel: "20KB photo",
+    summary: "Reduce a photo or signature to 20 KB or less, the tightest limit on many application forms.",
+    linkText: "Resize a photo to 20KB",
+    category: "size",
+    related: ["50kb-photo", "signature-resizer", "resize-image-to-kb", "image-compressor"],
+    updated: "2026-10-07",
+  },
+  "50kb-photo": {
+    id: "50kb-photo",
+    path: "/tools/50kb-photo",
+    name: "50KB Photo Resizer",
+    navLabel: "50KB photo",
+    summary: "Get a photo under 50 KB while keeping a face clear and sharp, for recruitment and exam forms.",
+    linkText: "Resize a photo to 50KB",
+    category: "size",
+    related: ["20kb-photo", "100kb-photo", "ibps-photo", "resize-image-to-kb"],
+    updated: "2026-10-07",
+  },
+  "100kb-photo": {
+    id: "100kb-photo",
+    path: "/tools/100kb-photo",
+    name: "100KB Photo Resizer",
+    navLabel: "100KB photo",
+    summary: "Bring a phone photo down to 100 KB with good quality, for portals, profiles and email.",
+    linkText: "Resize a photo to 100KB",
+    category: "size",
+    related: ["50kb-photo", "200kb-photo", "image-compressor", "resize-image-to-kb"],
+    updated: "2026-10-07",
+  },
+  "200kb-photo": {
+    id: "200kb-photo",
+    path: "/tools/200kb-photo",
+    name: "200KB Photo Resizer",
+    navLabel: "200KB photo",
+    summary: "Shrink a large photo to 200 KB while keeping plenty of detail and resolution.",
+    linkText: "Resize a photo to 200KB",
+    category: "size",
+    related: ["100kb-photo", "neet-photo", "image-resizer", "resize-image-to-kb"],
+    updated: "2026-10-07",
+  },
+  "ssc-photo": {
+    id: "ssc-photo",
+    path: "/tools/ssc-photo",
+    name: "SSC Photo & Signature",
+    navLabel: "SSC photo",
+    summary: "What SSC currently asks for: live photo capture rules and a signature resized to 10–20 KB.",
+    linkText: "Prepare your SSC signature and photo",
+    category: "application",
+    related: ["signature-resizer", "20kb-photo", "image-cropper", "image-compressor"],
+    updated: "2026-10-07",
+  },
+  "upsc-photo": {
+    id: "upsc-photo",
+    path: "/tools/upsc-photo",
+    name: "UPSC Photo Resizer",
+    navLabel: "UPSC photo",
+    summary: "Crop and size a photo or signature for a UPSC application using the numbers in your notice.",
+    linkText: "Prepare a photo for a UPSC application",
+    category: "application",
+    related: ["image-cropper", "resize-image-to-kb", "passport-photo-resizer", "image-compressor"],
+    updated: "2026-10-07",
+  },
+  "ibps-photo": {
+    id: "ibps-photo",
+    path: "/tools/ibps-photo",
+    name: "IBPS Photo Resizer",
+    navLabel: "IBPS photo",
+    summary: "Make a 200 × 230 px, 20–50 KB photo and a 140 × 60 px signature for IBPS CRP applications.",
+    linkText: "Resize a photo for IBPS",
+    category: "application",
+    related: ["sbi-photo", "50kb-photo", "20kb-photo", "image-cropper"],
+    updated: "2026-10-07",
+  },
+  "sbi-photo": {
+    id: "sbi-photo",
+    path: "/tools/sbi-photo",
+    name: "SBI Photo Resizer",
+    navLabel: "SBI photo",
+    summary: "Prepare the photo and signature sizes stated in current SBI recruitment advertisements.",
+    linkText: "Resize a photo for SBI recruitment",
+    category: "application",
+    related: ["ibps-photo", "50kb-photo", "20kb-photo", "image-cropper"],
+    updated: "2026-10-07",
+  },
+  "neet-photo": {
+    id: "neet-photo",
+    path: "/tools/neet-photo",
+    name: "NEET Photo Resizer",
+    navLabel: "NEET photo",
+    summary: "Prepare a NEET (UG) photograph within 10–200 KB and a signature within 10–100 KB.",
+    linkText: "Resize a photo for NEET",
+    category: "application",
+    related: ["200kb-photo", "image-cropper", "signature-resizer", "image-compressor"],
+    updated: "2026-10-07",
+  },
+  "passport-photo": {
+    id: "passport-photo",
+    path: "/tools/passport-photo",
+    name: "Passport Photo Requirements",
+    navLabel: "Passport photo",
+    summary: "Officially sourced passport photo sizes by country, with a tool to make a photo that matches.",
+    linkText: "Check passport photo size by country",
+    category: "application",
+    related: ["passport-photo-resizer", "image-cropper", "image-compressor", "resize-image-to-kb"],
+    updated: "2026-10-07",
+  },
 };
 
 /** Display order used across the site. */
@@ -192,12 +312,30 @@ export const toolOrder: ToolId[] = [
   "heic-to-jpg",
   "svg-to-png",
   "png-to-svg",
+  "20kb-photo",
+  "50kb-photo",
+  "100kb-photo",
+  "200kb-photo",
+  "ssc-photo",
+  "upsc-photo",
+  "ibps-photo",
+  "sbi-photo",
+  "neet-photo",
+  "passport-photo",
 ];
-
-export const headerTools: ToolDefinition[] = toolOrder.map((id) => tools[id]).filter((tool) => tool.inHeader);
 
 export const allTools: ToolDefinition[] = toolOrder.map((id) => tools[id]);
 
 export function getTool(id: ToolId): ToolDefinition {
   return tools[id];
+}
+
+export const NAV_GROUPS: { id: NavGroup; label: string }[] = [
+  { id: "image", label: "Image tools" },
+  { id: "size", label: "Photo size" },
+  { id: "application", label: "Exam & passport" },
+];
+
+export function toolsIn(group: NavGroup): ToolDefinition[] {
+  return allTools.filter((tool) => navGroupOf(tool) === group);
 }

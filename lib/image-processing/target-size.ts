@@ -46,6 +46,8 @@ export interface TargetSearchOptions {
   minScale: number;
   /** Largest scale allowed (below 1 only when the browser can't hold full size). */
   maxScale?: number;
+  /** Highest quality the search may use (0–1). Lower it to trade detail for an even smaller file. */
+  maxQuality?: number;
   onProgress?: (fraction: number) => void;
 }
 
@@ -65,6 +67,8 @@ const EXPECTED_ATTEMPTS = 22;
 export async function searchTargetSize(encode: ScaledEncoder, options: TargetSearchOptions): Promise<TargetSearchResult> {
   const { targetBytes, allowResize, onProgress } = options;
   const maxScale = options.maxScale ?? 1;
+  const qMax = Math.min(QUALITY.max, Math.max(QUALITY.min, options.maxQuality ?? QUALITY.max));
+  const qGood = Math.min(QUALITY.good, qMax);
   const minScale = Math.min(options.minScale, maxScale);
 
   let attempts = 0;
@@ -102,13 +106,13 @@ export async function searchTargetSize(encode: ScaledEncoder, options: TargetSea
   };
 
   // 1. Full size at high quality.
-  const top = await tryEncode(maxScale, QUALITY.max);
+  const top = await tryEncode(maxScale, qMax);
   if (fits(top)) return finish(top, "met");
 
   // 2. Full size, lower quality.
-  const floor = allowResize ? QUALITY.fullSizeFloor : QUALITY.min;
+  const floor = Math.min(allowResize ? QUALITY.fullSizeFloor : QUALITY.min, qMax);
   const atFloor = await tryEncode(maxScale, floor);
-  if (fits(atFloor)) return finish(await maximizeQuality(atFloor, QUALITY.max, 6), "met");
+  if (fits(atFloor)) return finish(await maximizeQuality(atFloor, qMax, 6), "met");
   if (!allowResize) return finish(smallest!, "needs-resize");
   if (maxScale <= minScale) return finish(smallest!, "too-small");
 
@@ -120,7 +124,7 @@ export async function searchTargetSize(encode: ScaledEncoder, options: TargetSea
   const estimate = maxScale * Math.sqrt(targetBytes / atFloor.blob.size) * 0.9;
   for (let i = 0; i < 9 && hi / lo > 1.015; i++) {
     const mid = i === 0 ? clamp(estimate, lo * 1.001, hi * 0.999) : Math.sqrt(lo * hi);
-    const attempt = await tryEncode(mid, QUALITY.good);
+    const attempt = await tryEncode(mid, qGood);
     if (fits(attempt)) {
       bestFit = attempt;
       lo = mid;
@@ -129,14 +133,14 @@ export async function searchTargetSize(encode: ScaledEncoder, options: TargetSea
     }
   }
   if (!bestFit) {
-    const atMin = await tryEncode(minScale, QUALITY.good);
+    const atMin = await tryEncode(minScale, qGood);
     if (fits(atMin)) bestFit = atMin;
   }
-  if (bestFit) return finish(await maximizeQuality(bestFit, QUALITY.max, 4), "met");
+  if (bestFit) return finish(await maximizeQuality(bestFit, qMax, 4), "met");
 
   // 4. Smallest allowed dimensions: lower the quality as a last resort.
   const lowest = await tryEncode(minScale, QUALITY.min);
-  if (fits(lowest)) return finish(await maximizeQuality(lowest, QUALITY.good, 6), "met");
+  if (fits(lowest)) return finish(await maximizeQuality(lowest, qGood, 6), "met");
   return finish(smallest!, "too-small");
 }
 

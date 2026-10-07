@@ -115,6 +115,16 @@ export default function ResizeImageToKbPage() {
             the closest size it could achieve and explains why, instead of claiming success.
           </p>
 
+          <h2>Dedicated pages for common sizes</h2>
+          <p>
+            This page handles any target. For the most common limits there are pages with the target preset and advice for
+            that size: <Link href="/tools/20kb-photo">20KB photo</Link>, <Link href="/tools/50kb-photo">50KB photo</Link>,{" "}
+            <Link href="/tools/100kb-photo">100KB photo</Link> and <Link href="/tools/200kb-photo">200KB photo</Link>. Preparing
+            an exam or passport photo with a pixel size too? See the{" "}
+            <Link href="/tools/passport-photo">passport photo requirements</Link> or exam pages such as{" "}
+            <Link href="/tools/ibps-photo">IBPS photo</Link>.
+          </p>
+
           <h2>Typical size limits</h2>
           <p>
             Requirements vary widely, so always check the exact rules of the form you&apos;re filling in. Common examples include:
@@ -156,7 +166,7 @@ export default function ResizeImageToKbPage() {
         </>
       }
     >
-      <TargetSizeTool />
+      <TargetSizeTool readTargetFromUrl />
     </ToolPageShell>
   );
 }

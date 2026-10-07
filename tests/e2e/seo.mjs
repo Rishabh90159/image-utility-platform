@@ -16,7 +16,21 @@ const toolPages = [
   "/tools/passport-photo-resizer",
   "/tools/signature-resizer",
   "/tools/bulk-image-resizer",
+  "/tools/20kb-photo",
+  "/tools/50kb-photo",
+  "/tools/100kb-photo",
+  "/tools/200kb-photo",
+  "/tools/ssc-photo",
+  "/tools/upsc-photo",
+  "/tools/ibps-photo",
+  "/tools/sbi-photo",
+  "/tools/neet-photo",
+  "/tools/passport-photo",
 ];
+const kbPages = ["/tools/20kb-photo", "/tools/50kb-photo", "/tools/100kb-photo", "/tools/200kb-photo", "/tools/resize-image-to-kb"];
+const applicationPages = ["/tools/ssc-photo", "/tools/upsc-photo", "/tools/ibps-photo", "/tools/sbi-photo", "/tools/neet-photo", "/tools/passport-photo"];
+const OFFICIAL = /href="https:\/\/(www\.ibps\.in|sbi\.bank\.in|ssc\.gov\.in|neet\.nta\.nic\.in|upsconline\.nic\.in|upsc\.gov\.in|www\.passportindia\.gov\.in|www\.gov\.uk|www\.canada\.ca)\//;
+const DISCLAIMER = "Application requirements can change. Always verify the final image against the latest official";
 const pages = ["/", "/tools", ...toolPages, "/about", "/methodology", "/privacy", "/terms", "/contact"];
 
 const results = [];
@@ -30,6 +44,23 @@ const meta = (html, attr, value) =>
   decode(html.match(new RegExp(`<meta[^>]*${attr}="${value}"[^>]*content="([^"]*)"`))?.[1] ?? "");
 
 const titles = new Map();
+const mainTexts = new Map();
+const mainText = (html) =>
+  decode(
+    (html.split('class="prose-content"')[1] ?? "")
+      .split('id="related-heading"')[0]
+      .replace(/<script[\s\S]*?<\/script>/g, " ")
+      .replace(/<[^>]+>/g, " "),
+  )
+    .toLowerCase()
+    .replace(/\d+/g, "#")
+    .replace(/\s+/g, " ");
+const shingles = (text, n = 6) => {
+  const words = text.split(" ").filter(Boolean);
+  const set = new Set();
+  for (let i = 0; i + n <= words.length; i++) set.add(words.slice(i, i + n).join(" "));
+  return set;
+};
 const h1Texts = new Map();
 const descriptions = new Map();
 
@@ -66,6 +97,15 @@ for (const route of pages) {
   const h1 = decode((html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1] ?? "").replace(/<[^>]+>/g, ""));
   if (h1Texts.has(h1)) check(`${route}: unique H1`, false, `same as ${h1Texts.get(h1)}`);
   h1Texts.set(h1, route);
+  if (kbPages.includes(route) || applicationPages.includes(route)) mainTexts.set(route, mainText(html));
+  if (applicationPages.includes(route)) {
+    const text = decode(html);
+    check(`${route}: links an official source (new tab)`, OFFICIAL.test(html) && /target="_blank" rel="noopener noreferrer"/.test(html));
+    check(`${route}: shows a verification date`, /Last verified|Verified <!-- -->|Verified <time|Last checked/.test(html));
+    check(`${route}: requirement disclaimer visible`, text.includes(DISCLAIMER));
+    check(`${route}: says it is independent, never official`, !/official (SSC|UPSC|IBPS|SBI|NEET|NTA) tool/i.test(text) && /not affiliated/i.test(text));
+    check(`${route}: no fabricated schema types`, !/AggregateRating|"Review"|GovernmentOrganization/.test(html));
+  }
   if (titles.has(title)) check(`${route}: unique title`, false, `same as ${titles.get(title)}`);
   titles.set(title, route);
   if (descriptions.has(description)) check(`${route}: unique description`, false, `same as ${descriptions.get(description)}`);
@@ -74,6 +114,27 @@ for (const route of pages) {
 check("all titles unique", titles.size === pages.length);
 check("all descriptions unique", descriptions.size === pages.length);
 check("all H1s unique", h1Texts.size === pages.length);
+
+// Duplicate-content check: size pages and application pages must not share large blocks of text.
+{
+  const entries = [...mainTexts];
+  let worst = { pair: "", score: 0 };
+  for (let i = 0; i < entries.length; i++) {
+    for (let j = i + 1; j < entries.length; j++) {
+      const a = shingles(entries[i][1]);
+      const b = shingles(entries[j][1]);
+      let shared = 0;
+      for (const sh of a) if (b.has(sh)) shared++;
+      const score = shared / Math.max(1, Math.min(a.size, b.size));
+      if (score > worst.score) worst = { pair: entries[i][0] + " ~ " + entries[j][0], score };
+    }
+  }
+  check(
+    "no near-duplicate content between size/application pages (6-word overlap < 15%)",
+    entries.length === 11 && worst.score < 0.15,
+    (worst.score * 100).toFixed(1) + "% max (" + worst.pair + ")",
+  );
+}
 
 // Every tool page links to every one of its registry "related" tools.
 for (const route of toolPages) {

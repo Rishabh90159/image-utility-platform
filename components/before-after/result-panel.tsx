@@ -5,6 +5,7 @@ import { DownloadButton } from "@/components/download-button/download-button";
 import { ImagePreview } from "@/components/image-preview/image-preview";
 import { useObjectUrl, type SourceImage } from "@/components/tools/hooks";
 import { FORMATS, type ImageMime } from "@/lib/image-processing/formats";
+import type { AnalyticsEvent } from "@/lib/analytics";
 import type { ToolId } from "@/lib/tools/registry";
 import { formatBytes, formatDimensions, formatExactBytes, formatSavings, percentSaved } from "@/lib/utils/format";
 
@@ -26,13 +27,15 @@ interface ResultPanelProps {
   status?: React.ReactNode;
   /** Extra rows for the comparison table. */
   extraRows?: { label: string; before: string; after: string }[];
+  /** Additional analytics event sent when the download is clicked. */
+  downloadEvent?: AnalyticsEvent;
 }
 
 /**
  * Before/after comparison. Every size shown comes from the actual output
  * Blob that the download button saves, so the numbers always match the file.
  */
-export function ResultPanel({ tool, heading, original, output, fileName, downloadLabel, status, extraRows = [] }: ResultPanelProps) {
+export function ResultPanel({ tool, heading, original, output, fileName, downloadLabel, status, extraRows = [], downloadEvent }: ResultPanelProps) {
   const url = useObjectUrl(output.blob);
   const headingRef = useRef<HTMLHeadingElement>(null);
 
@@ -76,7 +79,14 @@ export function ResultPanel({ tool, heading, original, output, fileName, downloa
           </p>
         </div>
         {url ? (
-          <DownloadButton href={url} fileName={fileName} label={downloadLabel} tool={tool} outputFormat={FORMATS[output.mime].label} />
+          <DownloadButton
+            href={url}
+            fileName={fileName}
+            label={downloadLabel}
+            tool={tool}
+            outputFormat={FORMATS[output.mime].label}
+            extraEvent={downloadEvent}
+          />
         ) : null}
       </div>
 

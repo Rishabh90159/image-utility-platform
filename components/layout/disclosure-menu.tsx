@@ -4,17 +4,32 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 
 /**
- * Mobile "Tools" menu. A native <details> element, so it still opens without
- * JavaScript; this wrapper closes it after navigating (the header stays
- * mounted between pages), on a click or tap outside, and on Escape.
+ * Dropdown menu built on a native <details> element, so it still opens without
+ * JavaScript. This wrapper closes it after navigating (the header stays
+ * mounted between pages), on a click or tap outside, and on Escape. Opening
+ * one menu closes the others.
  */
-export function MobileMenu({ className, children }: { className?: string; children: React.ReactNode }) {
+export function DisclosureMenu({ className, children }: { className?: string; children: React.ReactNode }) {
   const ref = useRef<HTMLDetailsElement>(null);
   const pathname = usePathname();
 
   useEffect(() => {
     if (ref.current) ref.current.open = false;
   }, [pathname]);
+
+  // Only one menu open at a time.
+  useEffect(() => {
+    const menu = ref.current;
+    if (!menu) return;
+    const onToggle = () => {
+      if (!menu.open) return;
+      document.querySelectorAll<HTMLDetailsElement>("details[data-disclosure-menu][open]").forEach((other) => {
+        if (other !== menu) other.open = false;
+      });
+    };
+    menu.addEventListener("toggle", onToggle);
+    return () => menu.removeEventListener("toggle", onToggle);
+  }, []);
 
   useEffect(() => {
     const close = (event: Event) => {
@@ -39,7 +54,7 @@ export function MobileMenu({ className, children }: { className?: string; childr
   }, []);
 
   return (
-    <details ref={ref} className={className}>
+    <details ref={ref} className={className} data-disclosure-menu="">
       {children}
     </details>
   );

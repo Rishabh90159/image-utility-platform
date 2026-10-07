@@ -34,6 +34,12 @@ export interface PhotoPreset {
   source: { name: string; url: string };
   /** ISO date the source was last checked. */
   lastVerified: string;
+  /** File format as stated by the source, if any. */
+  format?: string;
+  /** Background requirement as stated by the source, if any. */
+  background?: string;
+  /** Situations where no photo file is needed at all (e.g. photo taken at the office). */
+  notNeededWhen?: string;
 }
 
 /** Resolution used to turn a physical print size into pixels. 300 DPI is the usual standard for photo printing. */
@@ -44,6 +50,34 @@ export function mmToPx(mm: number, dpi: number = PRINT_DPI): number {
 }
 
 export const PHOTO_PRESETS: PhotoPreset[] = [
+  {
+    id: "india-passport-print",
+    country: "India",
+    document: "Passport – printed photo (collection centres: DPC, SPC, CSC)",
+    kind: "print",
+    widthMm: 35,
+    heightMm: 45,
+    widthPx: mmToPx(35),
+    heightPx: mmToPx(45),
+    dpi: PRINT_DPI,
+    background: "Plain white",
+    notNeededWhen:
+      "Not needed if you submit your application at a Passport Seva Kendra (PSK) or Post Office Passport Seva Kendra (POPSK): your photograph is taken there.",
+    requirements: [
+      "Recent passport-size colour photograph, 4.5 cm length × 3.5 cm width, not smaller than the box on the form",
+      "Plain white background; dress in a dark colour",
+      "Frontal view of the full face, natural expression, eyes open, head centred, both ears visible",
+      "Printed on good-quality photo paper with clear, continuous-tone quality; computer prints are not accepted",
+      "No black-and-white photos, no dark background, no uniform, no coloured or dark glasses",
+      "Do not sign the photograph",
+    ],
+    sizeNote: `Pixel size is 35 × 45 mm at ${PRINT_DPI} DPI. Have it printed at a photo lab on photo paper, at 100% scale.`,
+    source: {
+      name: "Passport Seva – Instruction Booklet for Passport Application Form",
+      url: "https://www.passportindia.gov.in/AppOnlineProject/pdf/ApplicationformInstructionBooklet-V3.0.pdf",
+    },
+    lastVerified: "2026-10-07",
+  },
   {
     id: "uk-passport-digital",
     country: "United Kingdom",
@@ -60,7 +94,7 @@ export const PHOTO_PRESETS: PhotoPreset[] = [
     ],
     sizeNote: "GOV.UK gives a minimum size. The tool produces exactly 600 × 750 px, the minimum it accepts.",
     source: { name: "GOV.UK – Photos for passports", url: "https://www.gov.uk/photos-for-passports" },
-    lastVerified: "2026-10-06",
+    lastVerified: "2026-10-07",
   },
   {
     id: "uk-passport-print",
@@ -77,6 +111,7 @@ export const PHOTO_PRESETS: PhotoPreset[] = [
       "Taken against a plain cream or light grey background",
       "In clear contrast to the background",
     ],
+    background: "Plain cream or light grey",
     sizeNote: `Pixel size is 35 × 45 mm at ${PRINT_DPI} DPI. Print at 100% scale (no "fit to page").`,
     source: { name: "GOV.UK – Photo requirements", url: "https://www.gov.uk/photos-for-passports/photo-requirements" },
     lastVerified: "2026-10-06",
@@ -88,6 +123,7 @@ export const PHOTO_PRESETS: PhotoPreset[] = [
     kind: "digital",
     widthPx: 1200,
     heightPx: 1800,
+    format: "JPEG/JPG",
     minKB: 200,
     maxKB: 5 * 1024,
     requirements: [
@@ -102,7 +138,7 @@ export const PHOTO_PRESETS: PhotoPreset[] = [
       name: "Government of Canada – Passport photos",
       url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/canadian-passports/photos.html",
     },
-    lastVerified: "2026-10-06",
+    lastVerified: "2026-10-07",
   },
   {
     id: "canada-passport-print",
@@ -123,7 +159,7 @@ export const PHOTO_PRESETS: PhotoPreset[] = [
       name: "Government of Canada – Passport photos",
       url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/canadian-passports/photos.html",
     },
-    lastVerified: "2026-10-06",
+    lastVerified: "2026-10-07",
   },
 ];
 

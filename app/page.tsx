@@ -13,10 +13,14 @@ export const metadata: Metadata = pageMetadata({
 });
 
 const commonTasks = [
-  { href: "/tools/resize-image-to-kb?target=20", label: "Resize an image to 20KB" },
-  { href: "/tools/resize-image-to-kb?target=50", label: "Resize an image to 50KB" },
-  { href: "/tools/resize-image-to-kb?target=100", label: "Reduce a photo to 100KB" },
-  { href: "/tools/resize-image-to-kb?target=200", label: "Reduce an image to 200KB" },
+  { href: "/tools/20kb-photo", label: "Resize a photo to 20KB" },
+  { href: "/tools/50kb-photo", label: "Resize a photo to 50KB" },
+  { href: "/tools/100kb-photo", label: "Reduce a photo to 100KB" },
+  { href: "/tools/200kb-photo", label: "Reduce an image to 200KB" },
+  { href: "/tools/ibps-photo", label: "Make an IBPS photo and signature" },
+  { href: "/tools/neet-photo", label: "Prepare a NEET photo" },
+  { href: "/tools/passport-photo", label: "Check passport photo size by country" },
+  { href: "/tools/ssc-photo", label: "SSC photo and signature rules" },
   { href: "/tools/image-compressor", label: "Compress a PNG or JPG" },
   { href: "/tools/image-resizer", label: "Resize an image to 1920 px wide" },
   { href: "/tools/png-to-jpg", label: "Convert PNG to JPG with a white background" },
