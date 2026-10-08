@@ -8,16 +8,22 @@ interface PageMetadataInput {
   path: string;
 }
 
-/**
- * Site-wide social image. Pages with their own opengraph-image file (the tool
- * pages) override this automatically, because file-based metadata takes priority.
- */
-const defaultImage = {
+/** Site-wide social image (app/opengraph-image.tsx), for pages without their own. */
+const siteImage = {
   url: "/opengraph-image",
   width: 1200,
   height: 630,
   alt: `${siteConfig.name} – free online image tools`,
 };
+
+/**
+ * Every page under /tools/ has its own opengraph-image file. Setting `images`
+ * explicitly would override that file, so it is only set for the other pages,
+ * whose own `openGraph` object would otherwise drop the inherited site image.
+ */
+function hasOwnImage(path: string): boolean {
+  return path.startsWith("/tools/");
+}
 
 /**
  * Builds complete per-page metadata: unique title and description, a canonical
@@ -27,6 +33,7 @@ export function pageMetadata({ title: pageTitle, description, path }: PageMetada
   const url = absoluteUrl(path);
   // Every title ends with the brand once, e.g. "Image Resizer – … | Imgifyr".
   const title = pageTitle.includes(siteConfig.name) ? pageTitle : `${pageTitle} | ${siteConfig.name}`;
+  const images = hasOwnImage(path) ? undefined : [siteImage];
   return {
     title: { absolute: title },
     description,
@@ -38,13 +45,13 @@ export function pageMetadata({ title: pageTitle, description, path }: PageMetada
       siteName: siteConfig.name,
       locale: siteConfig.locale,
       type: "website",
-      images: [defaultImage],
+      ...(images ? { images } : {}),
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [defaultImage.url],
+      ...(images ? { images: [siteImage.url] } : {}),
     },
   };
 }

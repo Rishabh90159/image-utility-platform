@@ -19,7 +19,6 @@ export interface ValidateOptions {
 }
 
 const UNSUPPORTED_NAMES: Record<string, string> = {
-  "image/gif": "GIF",
   "image/bmp": "BMP",
   "image/tiff": "TIFF",
   "image/avif": "AVIF",
@@ -57,6 +56,12 @@ export async function validateImageFile(file: File, options: ValidateOptions): P
     throw new ImageToolError(
       "HEIC_NOT_SUPPORTED",
       `This tool can't open HEIC (iPhone) photos directly. Convert the photo to JPG first — that also runs in your browser. Supported formats here: ${accepted}.`,
+    );
+  }
+  if (detected === "image/gif" && !options.accept.includes("image/gif")) {
+    throw new ImageToolError(
+      "GIF_NOT_SUPPORTED",
+      `This tool can't open GIF images. To resize a GIF and keep its animation, use the GIF resizer. Supported formats here: ${accepted}.`,
     );
   }
   if (detected === null) {

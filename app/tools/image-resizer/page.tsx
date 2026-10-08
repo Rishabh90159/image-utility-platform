@@ -9,10 +9,10 @@ import { getTool } from "@/lib/tools/registry";
 const tool = getTool("image-resizer");
 
 const description =
-  "Free online image resizer for JPG, PNG and WebP photos. Set new pixel dimensions or a percentage, keep the aspect ratio, and download instantly. No upload.";
+  "Free online image resizer for JPG, PNG, WebP and HEIC photos. Resize by pixels or percentage, keep the aspect ratio, pick a popular size and download. No upload.";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Free Image Resizer – Resize JPG, PNG & WebP Online",
+  title: "Image Resizer – Resize Images Online by Pixels or Percentage",
   description,
   path: tool.path,
 });
@@ -29,7 +29,12 @@ const faqs: FaqItem[] = [
       "Usually, yes. Fewer pixels means less data, so halving the width and height typically cuts the file size to roughly a quarter. If you need to meet a specific limit such as 100 KB, use the Resize Image to KB tool, which adjusts quality and dimensions to hit the target for you.",
   },
   {
-    question: "What does “lock aspect ratio” do?",
+    question: "Should I resize by pixels or by percentage?",
+    answer:
+      "Use pixels when you've been given a number, such as “1200 px wide” for a website or “600 × 600” for a profile photo. Use percentage when you just want the image smaller or bigger by a fixed amount, such as 50%, without working out the new numbers yourself. Both keep the proportions unless you turn that off.",
+  },
+  {
+    question: "What does “maintain aspect ratio” do?",
     answer:
       "It keeps the width and height in the same proportion as the original. When you change one value, the other updates automatically so the image is never stretched or squashed. Turn it off only if you deliberately need exact dimensions with different proportions.",
   },
@@ -62,8 +67,8 @@ export default function ImageResizerPage() {
       h1="Image Resizer – Resize Images & Photos Online"
       intro={
         <p>
-          Change the width and height of a photo in pixels or by percentage, keep its proportions locked, and download the
-          resized image. Resizing happens in your browser, so your image is never uploaded.
+          Change the width and height of a JPG, PNG, WebP or iPhone HEIC photo in pixels or by percentage, keep its
+          proportions, and download the resized image. Resizing happens in your browser, so your image is never uploaded.
         </p>
       }
       schemaDescription={description}
@@ -72,10 +77,10 @@ export default function ImageResizerPage() {
         <>
           <h2>How to Resize an Image Online</h2>
           <ol>
-            <li>Choose, drop or paste a JPG, PNG or WebP image.</li>
+            <li>Choose, drop or paste a JPG, PNG, WebP or HEIC image.</li>
             <li>
-              Enter a new width or height in pixels, pick a common width, or switch to <strong>Percentage</strong> to scale
-              by a fixed amount such as 50%.
+              Enter a new width or height in pixels, pick a common width or a popular size, or switch to{" "}
+              <strong>Percentage</strong> to scale by a fixed amount such as 50%.
             </li>
             <li>Keep the original format or choose JPG, PNG or WebP, and set the quality for JPG and WebP.</li>
             <li>
@@ -85,19 +90,78 @@ export default function ImageResizerPage() {
 
           <h2>Features</h2>
           <ul>
-            <li>Resize by exact pixels or by percentage, with the aspect ratio locked by default.</li>
+            <li>Resize by exact pixels or by percentage, with the aspect ratio maintained by default.</li>
             <li>One-click common widths, from 640 px for email up to 3840 px for 4K screens.</li>
-            <li>Shows original and new dimensions and file size side by side.</li>
+            <li>Popular dimensions such as Full HD, square and portrait posts, stories and link previews, fitted without stretching.</li>
+            <li>Opens iPhone HEIC photos and saves them as JPG, PNG or WebP.</li>
+            <li>Shows original and new dimensions, file size and the percentage saved side by side.</li>
             <li>Multi-step downscaling for clean, sharp results on large reductions.</li>
             <li>Optional format change while resizing, with a quality control for JPG and WebP.</li>
             <li>Respects photo orientation from phone cameras, so images aren&apos;t sideways.</li>
             <li>No sign-up, no watermark, no limit on how many images you resize.</li>
           </ul>
 
-          <h2>Resize JPG, PNG and WebP Images</h2>
+          <h2>Resize an Image by Pixels or by Percentage</h2>
           <p>
-            The resizer opens the three formats used for almost every photo and web graphic. A JPG resize keeps the file a
-            JPG unless you pick another format, so it still opens everywhere; PNGs keep their transparency; WebP stays small.
+            <strong>Pixels</strong> is for when you have been given a number: a website that wants images 1200 px wide, a
+            profile photo of 400 × 400, a screen of 1920 × 1080. Type one side and the other follows, so the picture keeps its
+            shape. <strong>Percentage</strong> is for when you simply want it smaller or bigger: 50% halves both sides, 25%
+            makes a quick thumbnail, 200% doubles it. The new size is shown before you resize, so you always know what you
+            will get.
+          </p>
+
+          <h2>Popular Image Dimensions</h2>
+          <p>
+            The <strong>Popular dimensions</strong> menu scales the image to fit inside a common size without stretching it.
+            If your photo has a different shape from the target, one side will be shorter; to fill the exact shape,{" "}
+            <Link href="/tools/image-cropper">crop the image to the same ratio</Link> first.
+          </p>
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Size</th>
+                <th scope="col">Pixels</th>
+                <th scope="col">Typical use</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>HD / Full HD / 4K</td>
+                <td>1280 × 720 / 1920 × 1080 / 3840 × 2160</td>
+                <td>Wallpapers, slides, video thumbnails, website banners</td>
+              </tr>
+              <tr>
+                <td>Square post</td>
+                <td>1080 × 1080</td>
+                <td>Social media feeds, marketplace listings</td>
+              </tr>
+              <tr>
+                <td>Portrait post (4:5)</td>
+                <td>1080 × 1350</td>
+                <td>Taller feed posts that fill more of a phone screen</td>
+              </tr>
+              <tr>
+                <td>Vertical story (9:16)</td>
+                <td>1080 × 1920</td>
+                <td>Stories, reels and status updates</td>
+              </tr>
+              <tr>
+                <td>Link preview</td>
+                <td>1200 × 630</td>
+                <td>The image shown when a web page is shared</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>Resize JPG, PNG, WebP, HEIC and GIF Images</h2>
+          <p>
+            The resizer opens the formats used for almost every photo and web graphic. A JPG keeps being a JPG unless you pick
+            another format, so it still opens everywhere; PNGs keep their transparency; WebP stays small; iPhone HEIC photos are
+            saved as JPG. Each format also has its own page with extra settings: the{" "}
+            <Link href="/tools/resize-jpg">JPG resizer</Link> can set a print DPI, the{" "}
+            <Link href="/tools/resize-png">PNG resizer</Link> can reduce colours for a much smaller file, the{" "}
+            <Link href="/tools/resize-webp">WebP resizer</Link> flags animated files, and the{" "}
+            <Link href="/tools/resize-gif">GIF resizer</Link> resizes every frame of an animation.
           </p>
           <table>
             <thead>
@@ -126,6 +190,20 @@ export default function ImageResizerPage() {
                 <td>Yes</td>
                 <td>Most browsers</td>
                 <td>Small files with transparency support. Some Safari versions can&apos;t save WebP.</td>
+              </tr>
+              <tr>
+                <td>HEIC / HEIF</td>
+                <td>Yes</td>
+                <td>No (saved as JPG)</td>
+                <td>iPhone photos. Decoded on your device, then saved in a format everything opens.</td>
+              </tr>
+              <tr>
+                <td>GIF</td>
+                <td>
+                  <Link href="/tools/resize-gif">GIF resizer</Link>
+                </td>
+                <td>Yes</td>
+                <td>Animated GIFs need their own tool so every frame is kept.</td>
               </tr>
             </tbody>
           </table>
@@ -189,7 +267,8 @@ export default function ImageResizerPage() {
             <li>Keep screenshots, text and logos as PNG to avoid blurry edges around letters.</li>
             <li>
               Need a smaller file for a transparent PNG? <Link href="/tools/png-to-jpg">Convert PNG to JPG</Link> with a
-              background colour of your choice.
+              background colour of your choice, or go the other way and{" "}
+              <Link href="/tools/jpg-to-png">convert JPG to PNG</Link> to avoid further compression while editing.
             </li>
           </ul>
 

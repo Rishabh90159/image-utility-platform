@@ -70,6 +70,7 @@ export function ResultPanel({
       after: formatDimensions(output.width, output.height),
     },
     { label: "File size", before: formatBytes(original.size), after: formatBytes(output.blob.size) },
+    { label: "Size change", before: "—", after: formatSavings(original.size, output.blob.size) },
     ...extraRows,
   ];
 

@@ -60,6 +60,12 @@ export function ToolWorkspace({
               Convert HEIC to JPG
             </Link>
           </p>
+        ) : error.code === "GIF_NOT_SUPPORTED" ? (
+          <p className="mt-1">
+            <Link href="/tools/resize-gif" className="font-medium text-accent underline">
+              Resize a GIF and keep the animation
+            </Link>
+          </p>
         ) : null)}
     </Alert>
   ) : null;

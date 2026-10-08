@@ -25,6 +25,7 @@ answer to one clearly defined intent.
 /                                 Home
 /tools                            All tools, grouped
 ├── Image tools                   /tools/image-resizer, image-compressor, image-upscaler, image-size-increase,
+│   │                             (format resizers under Image Resizer: resize-jpg, resize-png, resize-webp, resize-gif)
 │                                 image-quality-enhancer, background-remover, merge-images, image-cropper,
 │                                 bulk-image-resizer, passport-photo-resizer, signature-resizer
 ├── Convert                       /tools/jpg-to-png, png-to-jpg, webp-to-jpg, heic-to-jpg, jpeg-to-jpg,
@@ -37,8 +38,8 @@ answer to one clearly defined intent.
 ```
 
 URLs stay flat (`/tools/<slug>`) so nothing had to move. The hierarchy is expressed through breadcrumbs
-(visible and `BreadcrumbList`), so size pages appear under "Resize Image to Exact KB" and application
-pages under "Exam & passport photos".
+(visible and `BreadcrumbList`), so size pages appear under "Resize Image to Exact KB", application pages
+under "Exam & passport photos", and the format resizers under "Image Resizer" (via the registry's `parent`).
 
 Category pages such as `/tools/resize` or `/tools/convert` were considered and **not** built: `/tools`
 already groups every tool, and those pages would have been lists with no content of their own. The
@@ -51,7 +52,11 @@ Volumes and difficulty (KD) are approximate global figures from competitor keywo
 
 | Page | Primary | Main secondary keywords | Intent |
 |---|---|---|---|
-| /tools/image-resizer | image resizer (1.5M, KD 85) | resize image (1M), photo resizer (834K), resize image online (44K), jpg resize (112K) | Tool |
+| /tools/image-resizer | image resizer (1.5M, KD 85) | resize image (1M), photo resizer (834K), resize image online (44K), image resizer online, resize image by pixels / by percentage | Tool |
+| /tools/resize-jpg | resize jpg | jpg resize (112K), resize jpeg, jpg resizer, jpg dpi | Tool |
+| /tools/resize-png | resize png | png resizer, resize transparent png | Tool |
+| /tools/resize-webp | resize webp | webp resizer, resize webp online | Tool |
+| /tools/resize-gif | resize gif | gif resizer, resize animated gif, make gif smaller | Tool |
 | /tools/image-compressor | image compressor (383K, KD 80) | compress image (462K), reduce image size (465K), photo compressor (203K), compress jpeg (194K), jpg compress (181K), jpeg compressor (89K), reduce jpg size (38K) | Tool |
 | /tools/resize-image-to-kb | resize image in kb (74K, KD 39) | image size reducer (226K), photo size reducer (231K), jpg size reducer (120K) | File size |
 | /tools/20kb-photo | resize image to 20kb (65K, KD 4) | compress image to 20kb (30K) | File size |
@@ -83,7 +88,8 @@ Volumes and difficulty (KD) are approximate global figures from competitor keywo
 
 | Conflict | Decision |
 |---|---|
-| Image resizer / resize image / photo resizer | One page: `/tools/image-resizer`. The title says "Images & Photos" so both nouns are covered without a second page. |
+| Image resizer / resize image / photo resizer | One page: `/tools/image-resizer`. The H1 says "Images & Photos" so both nouns are covered without a second page. |
+| Image resizer vs resize JPG / PNG / WebP / GIF | Built 2026-10-08 because each format page does something the general resizer doesn't: JPG adds a print DPI with the resulting print size; PNG adds palette colour reduction (keeps transparency); WebP adds animated-file detection and WebP/JPG/PNG output with a Safari fallback; GIF resizes every frame with its own decoder/encoder (`lib/gif`). "jpg resize"/"resize jpg" moved from the general resizer to `/tools/resize-jpg`. Each page accepts only its format and points other formats to the general resizer. |
 | Image compressor / compress image / photo compressor / compress jpeg | One page: `/tools/image-compressor`. A separate JPG compressor page would be the same tool with the same output, so it waits until it has JPEG-specific features (see roadmap). |
 | Resize image to KB vs 20/50/100/200KB | `/tools/resize-image-to-kb` owns the general and "any size" intent and is the breadcrumb parent. Each size page owns its exact number and has its own preset, measured examples, FAQs and links. No other sizes get pages (see below). |
 | Image size reducer / photo size reducer | Assigned to `/tools/resize-image-to-kb`: in the research these searches mostly come from people with a KB limit to meet. The compressor owns "reduce image size" (no target). |
@@ -99,8 +105,12 @@ Volumes and difficulty (KD) are approximate global figures from competitor keywo
 Related-tool lists live in the registry ([`lib/tools/registry.ts`](../lib/tools/registry.ts)) and every
 page also links contextually from its body text. Main paths:
 
-- Image resizer → image compressor, resize to KB, image cropper, bulk resizer
-- Image compressor → resize to KB, 20/50/100/200KB, image resizer
+- Image resizer → image compressor, 50KB, 100KB, bulk resizer, image cropper, JPG to PNG (registry); resize to KB and the four format resizers (body)
+- Resize JPG / PNG / WebP / GIF → Image Resizer (breadcrumb), each other, compressor, the matching converter
+- Passport photo resizer → signature resizer, 20KB, 50KB, passport size photo, cropper, resize to KB
+- Exam pages → signature resizer and the KB tools their limits need (20/50/100/200KB, resize to KB)
+- Homepage → every tool, grouped by navigation group, plus a contextual paragraph per group
+- Image compressor → image resizer, resize to KB, 20/50/100/200KB, PNG to JPG
 - 100KB → 50KB, 200KB, image compressor, resize to KB (other sizes link similarly)
 - Passport size photo → passport photo resizer, image cropper, image compressor, resize to KB
 - SSC → signature resizer, 20KB, image cropper, image compressor
@@ -134,9 +144,10 @@ in `tests/e2e/seo.mjs`.
   URL; trailing slashes 308-redirect; mixed-case paths return 404.
 - Sitemap: only canonical 200 pages, no parameters; `lastmod` is the registry's `updated` date, which is
   only changed when the page's content or tool changes.
-- Structured data: WebSite, WebApplication, BreadcrumbList, FAQPage (only for FAQs visible on the page).
+- Structured data: WebSite, Organization (layout), WebApplication, BreadcrumbList, FAQPage (only for FAQs visible on the page; the homepage FAQ is visible too).
+- Social images come from `opengraph-image` files: every `/tools/*` page has its own, other pages use the site image. `pageMetadata` only sets `images` for non-tool pages, because an explicit value overrides the per-tool files (this was a bug until 2026-10-08: every tool page showed the generic image).
   Never ratings, reviews, user counts or government organisation markup.
-- Heavy libraries (HEIC decoder, tracer, SVG sanitizer) load only on the pages that use them.
+- Heavy libraries (HEIC decoder, tracer, SVG sanitizer, GIF codec) load only on the pages that use them. The GIF codec runs in its own worker, created per job.
 
 ### Hosting (outside the codebase)
 

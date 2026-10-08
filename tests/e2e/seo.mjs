@@ -7,6 +7,10 @@ const SITE = process.env.EXPECTED_SITE_URL || "https://www.example.com";
 
 const toolPages = [
   "/tools/image-resizer",
+  "/tools/resize-jpg",
+  "/tools/resize-png",
+  "/tools/resize-webp",
+  "/tools/resize-gif",
   "/tools/image-compressor",
   "/tools/resize-image-to-kb",
   "/tools/jpg-to-png",
@@ -49,6 +53,10 @@ const overlapPages = [
   "/tools/image-resizer",
   "/tools/jpeg-to-jpg",
   "/tools/jpg-to-png",
+  "/tools/resize-jpg",
+  "/tools/resize-png",
+  "/tools/resize-webp",
+  "/tools/resize-gif",
 ];
 const kbPages = ["/tools/20kb-photo", "/tools/50kb-photo", "/tools/100kb-photo", "/tools/200kb-photo", "/tools/resize-image-to-kb"];
 const HUB = "/tools/application-photos";
@@ -169,7 +177,7 @@ check("all H1s unique", h1Texts.size === pages.length);
   }
   check(
     "no near-duplicate content between size, application and overlapping-intent pages (6-word overlap < 15%)",
-    entries.length === 20 && worst.score < 0.15,
+    entries.length === 24 && worst.score < 0.15,
     (worst.score * 100).toFixed(1) + "% max (" + worst.pair + ")",
   );
 }

@@ -33,5 +33,8 @@ describe("breadcrumbs", () => {
     expect(breadcrumbTrail(getTool("100kb-photo")).map((c) => c.path)).toEqual(["/", "/tools", "/tools/resize-image-to-kb", "/tools/100kb-photo"]);
     expect(breadcrumbTrail(getTool("ssc-photo")).map((c) => c.path)).toEqual(["/", "/tools", APPLICATION_HUB.path, "/tools/ssc-photo"]);
     expect(breadcrumbTrail(getTool("image-resizer")).map((c) => c.path)).toEqual(["/", "/tools", "/tools/image-resizer"]);
+    for (const id of ["resize-jpg", "resize-png", "resize-webp", "resize-gif"] as const) {
+      expect(breadcrumbTrail(getTool(id)).map((c) => c.path)).toEqual(["/", "/tools", "/tools/image-resizer", `/tools/${id}`]);
+    }
   });
 });

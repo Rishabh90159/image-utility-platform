@@ -2,10 +2,11 @@
  * Image formats the tools can read and write. Every tool reads its
  * capabilities from this table.
  *
- * HEIC and SVG are input-only: browsers can't encode them, so they never
- * appear as an output format (see OutputMime).
+ * HEIC, SVG and GIF are input-only for the canvas pipeline: browsers can't
+ * encode them, so they never appear as an output format (see OutputMime).
+ * Animated GIFs are written by the GIF resizer's own encoder (lib/gif).
  */
-export type ImageMime = "image/jpeg" | "image/png" | "image/webp" | "image/heic" | "image/svg+xml";
+export type ImageMime = "image/jpeg" | "image/png" | "image/webp" | "image/heic" | "image/svg+xml" | "image/gif";
 
 /** Formats the browser's canvas can encode. */
 export type OutputMime = "image/jpeg" | "image/png" | "image/webp";
@@ -40,6 +41,7 @@ export const FORMATS: Record<ImageMime, FormatInfo> = {
     encodable: false,
   },
   "image/svg+xml": { mime: "image/svg+xml", label: "SVG", extension: "svg", lossy: false, supportsTransparency: true, encodable: false },
+  "image/gif": { mime: "image/gif", label: "GIF", extension: "gif", lossy: false, supportsTransparency: true, encodable: false },
 };
 
 /** Formats every Phase 1 tool accepts. */
@@ -48,8 +50,9 @@ export const ALL_INPUT_FORMATS: ImageMime[] = ["image/jpeg", "image/png", "image
 /** Raster formats including HEIC, for tools that can decode iPhone photos. */
 export const RASTER_INPUT_FORMATS: ImageMime[] = ["image/jpeg", "image/png", "image/webp", "image/heic"];
 
-/** The format to save in when the user keeps "same as original". Input-only formats become JPG. */
+/** The format to save in when the user keeps "same as original". HEIC and SVG become JPG; GIF becomes PNG (keeps transparency). */
 export function outputMimeFor(mime: ImageMime): OutputMime {
+  if (mime === "image/gif") return "image/png";
   return mime === "image/heic" || mime === "image/svg+xml" ? "image/jpeg" : mime;
 }
 

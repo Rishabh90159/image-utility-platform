@@ -2,9 +2,10 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { buttonClass } from "@/components/controls/button";
+import { takeHandedOffFiles } from "@/lib/handoff";
 import { acceptAttribute, LIMITS, type ImageMime } from "@/lib/image-processing/formats";
 import { acceptedLabels } from "@/lib/image-processing/validate";
-import { formatBytes } from "@/lib/utils/format";
+import { MB } from "@/lib/utils/format";
 
 interface ImageDropzoneProps {
   accept: ImageMime[];
@@ -19,6 +20,10 @@ interface ImageDropzoneProps {
   loading?: boolean;
   /** Short line describing what happens next, e.g. "Choose a JPG to convert to PNG". */
   prompt?: string;
+  /** Open files handed over from the homepage upload box. Off for the homepage box itself. */
+  acceptHandOff?: boolean;
+  /** Overrides the default privacy line under the button. */
+  privacyNote?: string;
 }
 
 /**
@@ -32,7 +37,9 @@ export function ImageDropzone({
   acceptOverride,
   compact = false,
   loading = false,
-  prompt = "Drop an image here",
+  prompt = "Drop your image here",
+  acceptHandOff = true,
+  privacyNote,
 }: ImageDropzoneProps) {
   const multiple = Boolean(onFiles);
   const inputId = useId();
@@ -57,12 +64,21 @@ export function ImageDropzone({
     return () => window.removeEventListener("paste", onPaste);
   }, [onFile, onFiles]);
 
-  const handleFiles = (list: FileList | null) => {
+  const handleFiles = (list: FileList | File[] | null) => {
     const files = [...(list ?? [])];
     if (files.length === 0) return;
     if (onFiles) onFiles(files);
     else onFile?.(files[0]);
   };
+
+  // A file chosen on the homepage before navigating here opens straight away.
+  const handleRef = useRef(handleFiles);
+  handleRef.current = handleFiles;
+  useEffect(() => {
+    if (!acceptHandOff) return;
+    const files = takeHandedOffFiles();
+    if (files) handleRef.current(files);
+  }, [acceptHandOff]);
 
   return (
     <div
@@ -124,16 +140,16 @@ export function ImageDropzone({
       </label>
 
       <p id={hintId} className="mt-4 text-sm text-muted">
-        {acceptOverride?.label ?? acceptedLabels(accept)} · up to {formatBytes(LIMITS.maxFileBytes)}
+        {acceptOverride?.label ?? acceptedLabels(accept)} · up to {Math.round(LIMITS.maxFileBytes / MB)} MB
         {multiple ? " each · select as many as you need" : " · one image at a time"}
         <span className="hidden sm:inline"> · or paste with Ctrl+V</span>
       </p>
-      <p className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-ink-soft">
+      <p className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-success">
         <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
           <rect x="2.5" y="6" width="9" height="6.5" rx="1" fill="none" stroke="currentColor" strokeWidth="1.4" />
           <path d="M4.5 6V4.5a2.5 2.5 0 015 0V6" fill="none" stroke="currentColor" strokeWidth="1.4" />
         </svg>
-        {multiple ? "Processed in your browser. Your images are not uploaded." : "Processed in your browser. Your image is not uploaded."}
+        {privacyNote ?? (multiple ? "Processed locally — your images never leave your device." : "Processed locally — your image never leaves your device.")}
       </p>
     </div>
   );

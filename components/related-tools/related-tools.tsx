@@ -8,7 +8,7 @@ export function RelatedTools({ ids }: { ids: ToolId[] }) {
       <h2 id="related-heading" className="text-[1.375rem] font-[650] tracking-tight text-ink">
         Related tools
       </h2>
-      <ul className="mt-4 grid gap-3 sm:grid-cols-3">
+      <ul className={`mt-4 grid gap-3 ${ids.length % 3 === 0 ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
         {ids.map((id) => {
           const tool = getTool(id);
           return (

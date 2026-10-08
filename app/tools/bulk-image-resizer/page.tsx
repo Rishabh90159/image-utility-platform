@@ -131,7 +131,10 @@ export default function BulkImageResizerPage() {
             For a single image with more control, such as exact width and height presets, use the{" "}
             <Link href="/tools/image-resizer">image resizer</Link>. To make files smaller without changing dimensions, try
             the <Link href="/tools/image-compressor">image compressor</Link>, and to hit a strict size limit such as 100 KB,
-            use <Link href="/tools/resize-image-to-kb">resize image to KB</Link>.
+            use <Link href="/tools/resize-image-to-kb">resize image to KB</Link>. Format-specific single-image tools add extra
+            settings: <Link href="/tools/resize-jpg">resize JPG</Link> with a print DPI,{" "}
+            <Link href="/tools/resize-png">resize PNG</Link> with colour reduction, and{" "}
+            <Link href="/tools/resize-gif">resize animated GIFs</Link> frame by frame.
           </p>
 
           <PrivacyNote>

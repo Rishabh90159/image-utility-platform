@@ -163,6 +163,13 @@ export default function PassportPhotoResizerPage() {
             <Link href="/tools/image-cropper">image cropper</Link> offers free and fixed ratios; and to simply make a photo
             smaller, <Link href="/tools/image-compressor">compress the image</Link>.
           </p>
+          <p>
+            Most online applications ask for a signature alongside the photo. The{" "}
+            <Link href="/tools/signature-resizer">signature resizer</Link> crops and cleans a signed sheet to the pixel and KB
+            limits forms use. When the instructions only give a maximum file size, the{" "}
+            <Link href="/tools/20kb-photo">20KB photo resizer</Link> and{" "}
+            <Link href="/tools/50kb-photo">50KB photo resizer</Link> handle the two most common limits in one step.
+          </p>
 
           <PrivacyNote>
             <p>

@@ -5,6 +5,10 @@
  */
 export type ToolId =
   | "image-resizer"
+  | "resize-jpg"
+  | "resize-png"
+  | "resize-webp"
+  | "resize-gif"
   | "image-compressor"
   | "resize-image-to-kb"
   | "jpg-to-png"
@@ -62,7 +66,8 @@ export const APPLICATION_HUB = { name: "Exam & passport photos", path: "/tools/a
 /**
  * Breadcrumb trail for a tool page. Size pages sit under the general "resize
  * image to KB" tool, which owns the broad file-size intent; application pages
- * sit under their comparison hub. Other tools sit directly under /tools.
+ * sit under their comparison hub; tools with a `parent` (the format resizers)
+ * sit under it. Other tools sit directly under /tools.
  */
 export function breadcrumbTrail(tool: ToolDefinition): { name: string; path: string }[] {
   const trail = [
@@ -71,6 +76,7 @@ export function breadcrumbTrail(tool: ToolDefinition): { name: string; path: str
   ];
   if (tool.category === "size") trail.push({ name: tools["resize-image-to-kb"].name, path: tools["resize-image-to-kb"].path });
   if (tool.category === "application") trail.push({ ...APPLICATION_HUB });
+  if (tool.parent) trail.push({ name: tools[tool.parent].name, path: tools[tool.parent].path });
   return [...trail, { name: tool.name, path: tool.path }];
 }
 
@@ -87,6 +93,8 @@ export interface ToolDefinition {
   linkText: string;
   category: ToolCategory;
   related: ToolId[];
+  /** Broader tool this page specialises (shown in the breadcrumb trail). */
+  parent?: ToolId;
   /** ISO date of the last meaningful content or feature change. */
   updated: string;
 }
@@ -100,8 +108,56 @@ export const tools: Record<ToolId, ToolDefinition> = {
     summary: "Change width and height in pixels or by percentage, with aspect ratio locked by default.",
     linkText: "Resize an image to new dimensions",
     category: "resize",
-    related: ["image-compressor", "resize-image-to-kb", "image-cropper", "bulk-image-resizer"],
-    updated: "2026-10-07",
+    related: ["image-compressor", "50kb-photo", "100kb-photo", "bulk-image-resizer", "image-cropper", "jpg-to-png"],
+    updated: "2026-10-08",
+  },
+  "resize-jpg": {
+    id: "resize-jpg",
+    path: "/tools/resize-jpg",
+    name: "Resize JPG",
+    navLabel: "Resize JPG",
+    summary: "Resize JPG photos by pixels or percentage, with a quality control and an optional print resolution (DPI).",
+    linkText: "Resize a JPG image",
+    category: "resize",
+    parent: "image-resizer",
+    related: ["image-compressor", "resize-image-to-kb", "jpg-to-png", "jpg-to-pdf", "resize-png", "bulk-image-resizer"],
+    updated: "2026-10-08",
+  },
+  "resize-png": {
+    id: "resize-png",
+    path: "/tools/resize-png",
+    name: "Resize PNG",
+    navLabel: "Resize PNG",
+    summary: "Resize PNG images and keep their transparency, with optional colour reduction for a much smaller file.",
+    linkText: "Resize a PNG and keep transparency",
+    category: "resize",
+    parent: "image-resizer",
+    related: ["png-to-jpg", "image-compressor", "background-remover", "png-to-svg", "resize-jpg", "image-cropper"],
+    updated: "2026-10-08",
+  },
+  "resize-webp": {
+    id: "resize-webp",
+    path: "/tools/resize-webp",
+    name: "Resize WebP",
+    navLabel: "Resize WebP",
+    summary: "Resize WebP images and save them as WebP, JPG or PNG, with a warning for animated WebP files.",
+    linkText: "Resize a WebP image",
+    category: "resize",
+    parent: "image-resizer",
+    related: ["webp-to-jpg", "image-compressor", "resize-jpg", "resize-png", "resize-image-to-kb", "bulk-image-resizer"],
+    updated: "2026-10-08",
+  },
+  "resize-gif": {
+    id: "resize-gif",
+    path: "/tools/resize-gif",
+    name: "Resize GIF",
+    navLabel: "Resize GIF",
+    summary: "Resize animated GIFs and keep every frame, the timing and the loop, with smooth or sharp-pixel scaling.",
+    linkText: "Resize an animated GIF",
+    category: "resize",
+    parent: "image-resizer",
+    related: ["image-resizer", "resize-png", "merge-images", "image-compressor", "bulk-image-resizer", "image-cropper"],
+    updated: "2026-10-08",
   },
   "image-compressor": {
     id: "image-compressor",
@@ -111,7 +167,7 @@ export const tools: Record<ToolId, ToolDefinition> = {
     summary: "Reduce the file size of JPG, PNG and WebP images while keeping their dimensions.",
     linkText: "Compress an image",
     category: "compress",
-    related: ["resize-image-to-kb", "100kb-photo", "50kb-photo", "image-resizer"],
+    related: ["image-resizer", "resize-image-to-kb", "100kb-photo", "50kb-photo", "20kb-photo", "png-to-jpg"],
     updated: "2026-10-07",
   },
   "resize-image-to-kb": {
@@ -210,7 +266,7 @@ export const tools: Record<ToolId, ToolDefinition> = {
     summary: "Crop and resize a photo to a passport or application size in pixels, millimetres and KB.",
     linkText: "Resize a photo for a passport or visa application",
     category: "edit",
-    related: ["passport-photo", "image-cropper", "resize-image-to-kb", "image-compressor"],
+    related: ["passport-photo", "signature-resizer", "20kb-photo", "50kb-photo", "image-cropper", "resize-image-to-kb"],
     updated: "2026-10-07",
   },
   "signature-resizer": {
@@ -221,7 +277,7 @@ export const tools: Record<ToolId, ToolDefinition> = {
     summary: "Crop, clean up and resize a signature image to the pixel and KB limits of online forms.",
     linkText: "Resize a signature for an online form",
     category: "edit",
-    related: ["image-cropper", "resize-image-to-kb", "image-compressor"],
+    related: ["image-cropper", "20kb-photo", "resize-image-to-kb", "passport-photo-resizer", "50kb-photo", "image-compressor"],
     updated: "2026-10-06",
   },
   "bulk-image-resizer": {
@@ -232,7 +288,7 @@ export const tools: Record<ToolId, ToolDefinition> = {
     summary: "Resize many images at once and download them individually or together as a ZIP.",
     linkText: "Resize multiple images at once",
     category: "resize",
-    related: ["image-resizer", "image-compressor", "resize-image-to-kb"],
+    related: ["image-resizer", "image-compressor", "resize-image-to-kb", "resize-jpg", "heic-to-jpg", "photo-to-pdf"],
     updated: "2026-10-06",
   },
   "20kb-photo": {
@@ -287,7 +343,7 @@ export const tools: Record<ToolId, ToolDefinition> = {
     summary: "What SSC currently asks for: live photo capture rules and a signature resized to 10–20 KB.",
     linkText: "Prepare your SSC signature and photo",
     category: "application",
-    related: ["signature-resizer", "20kb-photo", "image-cropper", "image-compressor"],
+    related: ["signature-resizer", "20kb-photo", "image-cropper", "image-compressor", "resize-image-to-kb", "passport-photo-resizer"],
     updated: "2026-10-07",
   },
   "upsc-photo": {
@@ -298,7 +354,7 @@ export const tools: Record<ToolId, ToolDefinition> = {
     summary: "Crop and size a photo or signature for a UPSC application using the numbers in your notice.",
     linkText: "Prepare a photo for a UPSC application",
     category: "application",
-    related: ["image-cropper", "resize-image-to-kb", "passport-photo-resizer", "image-compressor"],
+    related: ["image-cropper", "resize-image-to-kb", "passport-photo-resizer", "signature-resizer", "50kb-photo", "image-compressor"],
     updated: "2026-10-07",
   },
   "ibps-photo": {
@@ -309,7 +365,7 @@ export const tools: Record<ToolId, ToolDefinition> = {
     summary: "Make a 200 × 230 px, 20–50 KB photo and a 140 × 60 px signature for IBPS CRP applications.",
     linkText: "Resize a photo for IBPS",
     category: "application",
-    related: ["sbi-photo", "50kb-photo", "20kb-photo", "image-cropper"],
+    related: ["sbi-photo", "50kb-photo", "20kb-photo", "signature-resizer", "image-cropper", "resize-image-to-kb"],
     updated: "2026-10-07",
   },
   "sbi-photo": {
@@ -320,7 +376,7 @@ export const tools: Record<ToolId, ToolDefinition> = {
     summary: "Prepare the photo and signature sizes stated in current SBI recruitment advertisements.",
     linkText: "Resize a photo for SBI recruitment",
     category: "application",
-    related: ["ibps-photo", "50kb-photo", "20kb-photo", "image-cropper"],
+    related: ["ibps-photo", "50kb-photo", "20kb-photo", "signature-resizer", "image-cropper", "resize-image-to-kb"],
     updated: "2026-10-07",
   },
   "neet-photo": {
@@ -331,7 +387,7 @@ export const tools: Record<ToolId, ToolDefinition> = {
     summary: "Prepare a NEET (UG) photograph within 10–200 KB and a signature within 10–100 KB.",
     linkText: "Resize a photo for NEET",
     category: "application",
-    related: ["200kb-photo", "image-cropper", "signature-resizer", "image-compressor"],
+    related: ["200kb-photo", "100kb-photo", "signature-resizer", "image-cropper", "image-compressor", "resize-image-to-kb"],
     updated: "2026-10-07",
   },
   "passport-photo": {
@@ -460,6 +516,10 @@ export const toolOrder: ToolId[] = [
   "png-to-jpg",
   "webp-to-jpg",
   "bulk-image-resizer",
+  "resize-jpg",
+  "resize-png",
+  "resize-webp",
+  "resize-gif",
   "image-cropper",
   "passport-photo-resizer",
   "signature-resizer",

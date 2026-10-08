@@ -146,11 +146,18 @@ const jfifDpi = (buf) => (buf[2] === 0xff && buf[3] === 0xe0 && buf[13] === 1 ? 
   check("heic: JPG dropped into HEIC tool explains itself", /already a JPG|needs a HEIC/i.test(await alertText(page)));
   await page.close();
 
-  // Phase 1 tools point HEIC users to the converter.
+  // Tools without HEIC support point HEIC users to the converter.
+  const compressor = await openPage("/tools/image-compressor");
+  await upload(compressor, "example.heic");
+  await alertText(compressor);
+  check("heic: tools without HEIC support link to the HEIC converter", await compressor.locator('[role="alert"] a[href="/tools/heic-to-jpg"]').count() === 1);
+  await compressor.close();
+
+  // The image resizer opens HEIC directly (since 2026-10-08).
   const resizer = await openPage("/tools/image-resizer");
   await upload(resizer, "example.heic");
-  await alertText(resizer);
-  check("heic: Phase 1 tool links to the HEIC converter", await resizer.locator('[role="alert"] a[href="/tools/heic-to-jpg"]').count() === 1);
+  await resizer.locator("#resize-width").waitFor({ timeout: 60_000 });
+  check("heic: image resizer opens HEIC photos", (await resizer.locator("#resize-width").inputValue()) === "1280");
   await resizer.close();
 }
 
