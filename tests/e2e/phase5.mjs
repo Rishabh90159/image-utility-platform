@@ -261,6 +261,24 @@ for (const [k, f] of Object.entries(files)) fs.writeFileSync(f, Buffer.from(made
   await page.close();
 }
 
+// ---------- FAQ accordion ----------
+{
+  const page = await openPage("/");
+  const items = page.locator('section[aria-labelledby="faq-heading"] details');
+  const first = items.first();
+  const answer = first.locator("p");
+  check("FAQ: questions listed, answers closed by default", (await items.count()) >= 5 && !(await answer.isVisible()));
+  await first.locator("summary").click();
+  check("FAQ: clicking a question shows its answer", await answer.isVisible());
+  await first.locator("summary").click();
+  check("FAQ: clicking again hides it", !(await answer.isVisible()));
+  await items.nth(1).locator("summary").focus();
+  await page.keyboard.press("Enter");
+  check("FAQ: opens with the keyboard", await items.nth(1).locator("p").isVisible());
+  await page.locator('section[aria-labelledby="faq-heading"]').screenshot({ path: path.join(OUT, "faq.png") });
+  await page.close();
+}
+
 // ---------- Homepage: choose an image, pick a tool, it opens there ----------
 for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 }]) {
   const page = await context.newPage();
