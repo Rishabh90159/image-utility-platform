@@ -1,5 +1,17 @@
-import { canvasToBlob, decodeImage, drawScaled, getContext2D, hasTransparency, releaseCanvas, type AnyCanvas, type DrawableSource } from "./canvas";
+import {
+  assertOutputSize,
+  canvasToBlob,
+  createCanvas,
+  decodeImage,
+  drawScaled,
+  getContext2D,
+  hasTransparency,
+  releaseCanvas,
+  type AnyCanvas,
+  type DrawableSource,
+} from "./canvas";
 import { ImageToolError } from "./errors";
+import { coverSourceRect } from "./fit";
 import { LIMITS, type OutputMime } from "./formats";
 import { setJpegDpi } from "./jpeg-dpi";
 import { canEncodeIndexedPng, encodeIndexedPng } from "./png-encode";
@@ -117,7 +129,9 @@ async function encode(job: EncodeJob): Promise<EncodeResult> {
   const prepared = prepareSource(bitmap, job.transform, job.cleanup);
   let canvas: AnyCanvas | null = null;
   try {
-    canvas = drawScaled(prepared.source, job.width, job.height, job.background);
+    canvas = job.fit
+      ? drawFitted(prepared.source, job.width, job.height, job.fit, job.background)
+      : drawScaled(prepared.source, job.width, job.height, job.background);
     if (job.mime === "image/png" && job.pngColors && canEncodeIndexedPng()) {
       const { blob, colors, lossless } = await encodePalettePng(canvas, job.pngColors, job.pngDither ?? true);
       return { kind: "encode", blob, width: job.width, height: job.height, paletteColors: colors, paletteLossless: lossless };
@@ -127,6 +141,72 @@ async function encode(job: EncodeJob): Promise<EncodeResult> {
   } finally {
     if (canvas) releaseCanvas(canvas);
     prepared.release();
+  }
+}
+
+/**
+ * Fit mode: the whole image, scaled into `fit.placement`, on a frame of
+ * width × height filled with a colour or a blurred, enlarged copy of the image.
+ */
+function drawFitted(
+  source: DrawableSource,
+  width: number,
+  height: number,
+  fit: NonNullable<EncodeJob["fit"]>,
+  background: string | null,
+): AnyCanvas {
+  assertOutputSize(width, height);
+  const x = Math.max(0, Math.min(width - 1, Math.round(fit.placement.x)));
+  const y = Math.max(0, Math.min(height - 1, Math.round(fit.placement.y)));
+  const w = Math.max(1, Math.min(width - x, Math.round(fit.placement.width)));
+  const h = Math.max(1, Math.min(height - y, Math.round(fit.placement.height)));
+  const out = createCanvas(width, height);
+  const ctx = getContext2D(out);
+  if (background) {
+    ctx.fillStyle = background;
+    ctx.fillRect(0, 0, width, height);
+  }
+  if (fit.fill === "blur") drawBlurredCover(ctx, source, width, height);
+  const scaled = drawScaled(source, w, h, null);
+  try {
+    ctx.drawImage(scaled, x, y);
+  } finally {
+    releaseCanvas(scaled);
+  }
+  return out;
+}
+
+/**
+ * Fills the frame with a heavily blurred copy of the image scaled to cover it.
+ * The image is shrunk to a few dozen pixels and enlarged again in smooth steps,
+ * which blurs it in every browser without needing canvas filter support.
+ */
+function drawBlurredCover(ctx: ReturnType<typeof getContext2D>, source: DrawableSource, width: number, height: number): void {
+  const r = coverSourceRect(source.width, source.height, width, height);
+  const fitLong = (long: number) =>
+    width >= height
+      ? { w: long, h: Math.max(1, Math.round((long * height) / width)) }
+      : { w: Math.max(1, Math.round((long * width) / height)), h: long };
+  const steps = [fitLong(256), fitLong(24), fitLong(96)];
+  const canvases: AnyCanvas[] = [];
+  try {
+    let previous: DrawableSource = source;
+    let from = r;
+    for (const { w, h } of steps) {
+      const step = createCanvas(w, h);
+      const sctx = getContext2D(step);
+      sctx.imageSmoothingEnabled = true;
+      sctx.imageSmoothingQuality = "high";
+      sctx.drawImage(previous, from.x, from.y, from.width, from.height, 0, 0, w, h);
+      canvases.push(step);
+      previous = step;
+      from = { x: 0, y: 0, width: w, height: h };
+    }
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
+    ctx.drawImage(previous, 0, 0, from.width, from.height, 0, 0, width, height);
+  } finally {
+    for (const canvas of canvases) releaseCanvas(canvas);
   }
 }
 

@@ -36,7 +36,8 @@ const groups: { id: NavGroup; heading: string; intro: React.ReactNode }[] = [
         Resize an image online by pixels or percentage, compress JPG, PNG and WebP files, crop, upscale, enhance or remove a
         background. Format-specific resizers handle <Link href="/tools/resize-jpg">JPG</Link>,{" "}
         <Link href="/tools/resize-png">PNG</Link>, <Link href="/tools/resize-webp">WebP</Link> and animated{" "}
-        <Link href="/tools/resize-gif">GIF</Link> files.
+        <Link href="/tools/resize-gif">GIF</Link> files, and the{" "}
+        <Link href="/tools/instagram-image-resizer">Instagram resizer</Link> sizes photos for posts, Stories and Reels.
       </>
     ),
   },

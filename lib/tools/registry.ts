@@ -9,6 +9,7 @@ export type ToolId =
   | "resize-png"
   | "resize-webp"
   | "resize-gif"
+  | "instagram-image-resizer"
   | "image-compressor"
   | "resize-image-to-kb"
   | "jpg-to-png"
@@ -158,6 +159,18 @@ export const tools: Record<ToolId, ToolDefinition> = {
     parent: "image-resizer",
     related: ["image-resizer", "resize-png", "merge-images", "image-compressor", "bulk-image-resizer", "image-cropper"],
     updated: "2026-10-08",
+  },
+  "instagram-image-resizer": {
+    id: "instagram-image-resizer",
+    path: "/tools/instagram-image-resizer",
+    name: "Instagram Image Resizer",
+    navLabel: "Instagram",
+    summary: "Resize and crop photos for Instagram posts, Stories and Reel covers, or fit the whole photo with a border.",
+    linkText: "Resize a photo for Instagram",
+    category: "resize",
+    parent: "image-resizer",
+    related: ["image-resizer", "image-cropper", "image-compressor", "jpg-to-png", "webp-to-jpg", "heic-to-jpg"],
+    updated: "2026-10-10",
   },
   "image-compressor": {
     id: "image-compressor",
@@ -520,6 +533,7 @@ export const toolOrder: ToolId[] = [
   "resize-png",
   "resize-webp",
   "resize-gif",
+  "instagram-image-resizer",
   "image-cropper",
   "passport-photo-resizer",
   "signature-resizer",

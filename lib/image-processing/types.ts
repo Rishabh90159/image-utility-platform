@@ -73,6 +73,12 @@ export interface EncodeJob extends JobBase {
   cleanup?: BackgroundCleanup;
   /** JPG only: pixels-per-inch to record in the file header (for printing at a physical size). */
   dpi?: number;
+  /**
+   * Fit mode: instead of filling width × height, the (transformed) image is
+   * scaled whole into `placement` and the rest of the frame is filled with
+   * `background` or a blurred, enlarged copy of the image.
+   */
+  fit?: { placement: PixelRect; fill: "color" | "blur" };
 }
 
 /** Find the best encode at or below a target file size. */

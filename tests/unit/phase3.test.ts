@@ -110,11 +110,11 @@ describe("registry and freshness", () => {
     }
   });
 
-  it("has 36 tools in four navigation groups, each related list pointing to other existing tools", () => {
-    expect(allTools).toHaveLength(36);
+  it("has 37 tools in four navigation groups, each related list pointing to other existing tools", () => {
+    expect(allTools).toHaveLength(37);
     expect(toolsIn("size").map((t) => t.id)).toEqual(["20kb-photo", "50kb-photo", "100kb-photo", "200kb-photo", "mb-to-kb-converter"]);
     expect(toolsIn("application")).toHaveLength(6);
-    expect(toolsIn("image")).toHaveLength(16);
+    expect(toolsIn("image")).toHaveLength(17);
     expect(toolsIn("convert")).toHaveLength(9);
     const ids = new Set(allTools.map((t) => t.id));
     for (const tool of allTools) {

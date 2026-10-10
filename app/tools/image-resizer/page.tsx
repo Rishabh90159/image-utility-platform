@@ -114,7 +114,9 @@ export default function ImageResizerPage() {
           <p>
             The <strong>Popular dimensions</strong> menu scales the image to fit inside a common size without stretching it.
             If your photo has a different shape from the target, one side will be shorter; to fill the exact shape,{" "}
-            <Link href="/tools/image-cropper">crop the image to the same ratio</Link> first.
+            <Link href="/tools/image-cropper">crop the image to the same ratio</Link> first. Preparing a post, Story or Reel
+            cover? The <Link href="/tools/instagram-image-resizer">Instagram image resizer</Link> crops or fits your photo to
+            each Instagram format in one step.
           </p>
           <table>
             <thead>
