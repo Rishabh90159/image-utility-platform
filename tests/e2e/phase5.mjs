@@ -279,6 +279,31 @@ for (const [k, f] of Object.entries(files)) fs.writeFileSync(f, Buffer.from(made
   await page.close();
 }
 
+// ---------- Footer: two columns on phones, regular columns on desktop ----------
+{
+  const mctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  const mobile = await mctx.newPage();
+  await mobile.goto(BASE + "/", { waitUntil: "networkidle" });
+  const footer = mobile.locator("footer");
+  const groups = footer.locator("nav");
+  const boxes = [];
+  for (let i = 0; i < (await groups.count()); i++) boxes.push(await groups.nth(i).boundingBox());
+  const lefts = [...new Set(boxes.map((b) => Math.round(b.x)))];
+  check("footer (mobile): link groups in two columns", lefts.length === 2, `column x: ${lefts.join(", ")}`);
+  check("footer (mobile): every group and link visible, nothing to tap open", (await footer.locator("details").count()) === 0 && (await footer.getByRole("link", { name: "PNG to JPG Converter" }).isVisible()) && (await footer.getByRole("link", { name: "Privacy policy" }).isVisible()));
+  check("footer (mobile): no horizontal scroll", await mobile.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
+  await footer.screenshot({ path: path.join(OUT, "footer-mobile.png") });
+  await mctx.close();
+
+  const desktop = await openPage("/");
+  const dGroups = desktop.locator("footer nav");
+  const dLefts = new Set();
+  for (let i = 0; i < (await dGroups.count()); i++) dLefts.add(Math.round((await dGroups.nth(i).boundingBox()).x));
+  check("footer (desktop): one column per group, as before", dLefts.size === 5, `${dLefts.size} columns`);
+  await desktop.locator("footer").screenshot({ path: path.join(OUT, "footer-desktop.png") });
+  await desktop.close();
+}
+
 // ---------- Homepage: choose an image, pick a tool, it opens there ----------
 for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 }]) {
   const page = await context.newPage();
