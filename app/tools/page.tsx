@@ -54,14 +54,14 @@ export default function ToolsIndexPage() {
           { name: "Tools", path: "/tools" },
         ]}
       />
-      <h1 className="mt-4 text-3xl font-bold tracking-tight text-ink sm:text-4xl">All image tools</h1>
+      <h1 className="mt-4 text-3xl font-extrabold tracking-[-0.02em] text-ink sm:text-4xl">All image tools</h1>
       <p className="mt-3 max-w-2xl text-lg leading-relaxed text-ink-soft">
         Free tools that run in your browser. Pick the one that matches what you need to do; your images are never uploaded.
       </p>
 
       {groups.map((group) => (
         <section key={group.category} aria-labelledby={`group-${group.category}`} className="mt-12">
-          <h2 id={`group-${group.category}`} className="text-xl font-semibold text-ink">
+          <h2 id={`group-${group.category}`} className="text-xl font-bold tracking-tight text-ink">
             {group.heading}
           </h2>
           <p className="mt-1 text-muted">

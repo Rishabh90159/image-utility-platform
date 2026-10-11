@@ -232,7 +232,7 @@ export function SignatureResizerTool() {
         <Checkbox checked={lock} onChange={setLock} description="Height follows the width so the signature isn't stretched. Leave the width empty to keep the selection's size.">
           Lock aspect ratio
         </Checkbox>
-        {sizeError ? <p className="text-sm font-medium text-danger">{sizeError}</p> : null}
+        {sizeError ? <p className="text-sm font-medium text-danger-ink">{sizeError}</p> : null}
       </div>
 
       {background === "transparent" ? (
@@ -261,7 +261,7 @@ export function SignatureResizerTool() {
             aria-invalid={Boolean(kbError)}
             className={`${inputClass} mt-1.5`}
           />
-          {kbError ? <p className="mt-1.5 text-sm font-medium text-danger">{kbError}</p> : null}
+          {kbError ? <p className="mt-1.5 text-sm font-medium text-danger-ink">{kbError}</p> : null}
         </div>
       ) : (
         <p className="text-xs text-muted">PNG files can&apos;t be squeezed to an exact KB limit here; choose JPG if your form sets one.</p>

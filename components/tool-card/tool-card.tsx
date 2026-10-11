@@ -8,12 +8,12 @@ export function ToolCard({ tool, headingLevel = "h3" }: { tool: ToolDefinition; 
   return (
     <Link
       href={tool.path}
-      className="group flex h-full flex-col rounded-lg border border-line bg-canvas p-5 transition-colors hover:border-line-strong hover:bg-surface"
+      className="group flex h-full flex-col rounded-lg border border-line bg-canvas p-5 transition-colors hover:border-accent/50 hover:bg-accent-soft/40"
     >
-      <span className="flex h-10 w-10 items-center justify-center rounded-md bg-accent-soft text-accent">
+      <span className="flex h-10 w-10 items-center justify-center rounded-md bg-accent-soft text-accent transition-colors group-hover:bg-accent group-hover:text-white">
         <ToolIcon category={tool.category} id={tool.id} />
       </span>
-      <Heading className="mt-4 text-base font-semibold text-ink">{tool.name}</Heading>
+      <Heading className="mt-4 text-base font-bold text-ink">{tool.name}</Heading>
       <p className="mt-1.5 text-sm leading-relaxed text-muted">{tool.summary}</p>
       <span className="mt-auto pt-4 text-sm font-medium text-accent group-hover:underline">
         Open tool <span aria-hidden="true">→</span>

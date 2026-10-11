@@ -260,7 +260,7 @@ export function PdfTool({ config }: { config: PdfToolConfig }) {
         <section aria-labelledby="result-heading" className="rounded-lg border border-line bg-canvas shadow-sm">
           <div className="flex flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-5">
             <div>
-              <h2 id="result-heading" tabIndex={-1} className="text-lg font-semibold text-ink outline-none">
+              <h2 id="result-heading" tabIndex={-1} className="text-lg font-bold text-ink outline-none">
                 Your PDF is ready
               </h2>
               <p className="mt-0.5 text-sm text-muted" aria-live="polite">

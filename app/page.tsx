@@ -106,6 +106,45 @@ const faqs: FaqItem[] = [
   },
 ];
 
+const heroLinks = [
+  ["/tools/image-resizer", "Image resizer"],
+  ["/tools/image-compressor", "Image compressor"],
+  ["/tools/50kb-photo", "Resize to 50KB"],
+  ["/tools/jpg-to-png", "JPG to PNG"],
+] as const;
+
+const benefits: { title: string; text: string; icon: React.ReactNode }[] = [
+  {
+    title: "Private by design",
+    text: "Images are never uploaded, so they can't be leaked, kept or used for training.",
+    icon: <path d="M10 2.5l6 2.2v4.6c0 3.9-2.6 6.9-6 8.2-3.4-1.3-6-4.3-6-8.2V4.7z M7.3 10l1.9 1.9 3.6-3.8" />,
+  },
+  {
+    title: "Exact numbers",
+    text: "Every result shows its real file size, measured from the file you download.",
+    icon: <path d="M2.5 6.5h15v7h-15z M5.5 6.5v2.5 M8.5 6.5v3.5 M11.5 6.5v2.5 M14.5 6.5v3.5" />,
+  },
+  {
+    title: "Honest results",
+    text: "If a target can't be reached, the tool says so instead of pretending.",
+    icon: <path d="M10 17.5a7.5 7.5 0 100-15 7.5 7.5 0 000 15z M6.8 10.2l2.2 2.2 4.2-4.4" />,
+  },
+  {
+    title: "Metadata removed",
+    text: "Processed images don't carry camera details or GPS location from the original.",
+    icon: <path d="M10 17.5s5.5-4.7 5.5-9a5.5 5.5 0 00-11 0c0 4.3 5.5 9 5.5 9z M3 3l14 14" />,
+  },
+];
+
+function LockIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+      <rect x="2.5" y="6" width="9" height="6.5" rx="1" fill="none" stroke="currentColor" strokeWidth="1.4" />
+      <path d="M4.5 6V4.5a2.5 2.5 0 015 0V6" fill="none" stroke="currentColor" strokeWidth="1.4" />
+    </svg>
+  );
+}
+
 const steps = [
   ["Choose an image", "Drop it in, pick it from your files or paste it. Your browser opens it; nothing is uploaded."],
   ["Set what you need", "Dimensions, a file size such as 100 KB, a crop, a quality level or an output format."],
@@ -120,7 +159,7 @@ function ToolLinkList({ ids }: { ids: ToolId[] }) {
         return (
           <li key={id} className="border-b border-line">
             <Link href={tool.path} className="group flex gap-3 py-4">
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-accent-soft text-accent">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-accent-soft text-accent transition-colors group-hover:bg-accent group-hover:text-white">
                 <ToolIcon category={tool.category} id={tool.id} />
               </span>
               <span className="min-w-0">
@@ -138,10 +177,16 @@ function ToolLinkList({ ids }: { ids: ToolId[] }) {
 export default function HomePage() {
   return (
     <>
-      <section className="border-b border-line bg-surface">
+      <section className="border-b border-accent/10 bg-accent-soft">
         <div className="mx-auto grid max-w-6xl gap-x-14 gap-y-6 px-4 pb-10 pt-8 sm:gap-y-8 sm:px-6 sm:pt-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:grid-rows-[auto_auto] lg:pb-16">
           <div className="lg:self-end">
-            <h1 className="text-[2.125rem] font-bold leading-[1.12] tracking-tight text-ink sm:text-5xl">Free Online Image Tools</h1>
+            <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-accent/20 bg-canvas px-3 py-1 text-sm font-medium text-accent-ink">
+              <LockIcon />
+              Runs in your browser
+            </p>
+            <h1 className="text-[2.125rem] font-extrabold leading-[1.1] tracking-[-0.025em] text-ink sm:text-5xl">
+              Free Online <span className="whitespace-nowrap text-accent">Image Tools</span>
+            </h1>
             <p className="mt-4 max-w-xl text-lg leading-relaxed text-ink-soft">
               Resize, compress, convert and edit images directly in your browser.
               <span className="hidden sm:inline">
@@ -152,7 +197,7 @@ export default function HomePage() {
             <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm font-medium text-ink">
               {["No upload", "No sign-up", "No watermark"].map((item) => (
                 <li key={item} className="flex items-center gap-1.5">
-                  <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" className="text-success">
+                  <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" className="text-accent">
                     <path d="M3.5 8.2l3 3 6-6.4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                   {item}
@@ -164,15 +209,17 @@ export default function HomePage() {
             <QuickStart />
           </div>
           <div className="lg:self-start">
-            <p className="text-sm text-muted">
-              Popular:{" "}
-              <Link href="/tools/image-resizer" className="text-accent hover:underline">Image resizer</Link>
-              {" · "}
-              <Link href="/tools/image-compressor" className="text-accent hover:underline">Image compressor</Link>
-              {" · "}
-              <Link href="/tools/50kb-photo" className="text-accent hover:underline">Resize to 50KB</Link>
-              {" · "}
-              <Link href="/tools/jpg-to-png" className="text-accent hover:underline">JPG to PNG</Link>
+            <p className="flex flex-wrap items-center gap-2 text-sm text-muted">
+              <span className="mr-1">Popular:</span>
+              {heroLinks.map(([href, label]) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className="rounded-full border border-accent/20 bg-canvas px-3 py-1 font-medium text-accent-ink transition-colors hover:border-accent hover:bg-accent hover:text-white"
+                >
+                  {label}
+                </Link>
+              ))}
             </p>
           </div>
         </div>
@@ -209,7 +256,7 @@ export default function HomePage() {
       ))}
 
       <section aria-labelledby="privacy-heading" className="mx-auto max-w-6xl px-4 pt-16 sm:px-6">
-        <div className="grid gap-10 rounded-lg bg-surface p-6 sm:p-10 md:grid-cols-2 md:gap-16">
+        <div className="grid gap-10 rounded-lg border border-line bg-surface p-6 sm:p-10 md:grid-cols-2 md:gap-16">
           <div>
             <h2 id="privacy-heading" className="text-2xl font-bold tracking-tight text-ink sm:text-3xl">
               Your images stay on your device
@@ -233,15 +280,27 @@ export default function HomePage() {
             </p>
           </div>
           <dl className="grid gap-6 self-start sm:grid-cols-2">
-            {[
-              ["Private by design", "Images are never uploaded, so they can't be leaked, kept or used for training."],
-              ["Exact numbers", "Every result shows its real file size, measured from the file you download."],
-              ["Honest results", "If a target can't be reached, the tool says so instead of pretending."],
-              ["Metadata removed", "Processed images don't carry camera details or GPS location from the original."],
-            ].map(([title, text]) => (
+            {benefits.map(({ title, text, icon }) => (
               <div key={title}>
-                <dt className="font-semibold text-ink">{title}</dt>
-                <dd className="mt-1 text-sm leading-relaxed text-muted">{text}</dd>
+                <dt className="flex items-center gap-2.5 font-semibold text-ink">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-accent-soft text-accent">
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      {icon}
+                    </svg>
+                  </span>
+                  {title}
+                </dt>
+                <dd className="mt-2 text-sm leading-relaxed text-muted">{text}</dd>
               </div>
             ))}
           </dl>
@@ -257,7 +316,7 @@ export default function HomePage() {
             <li key={title} className="flex gap-4">
               <span
                 aria-hidden="true"
-                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent-soft text-sm font-semibold text-accent"
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent font-display text-sm font-bold text-white"
               >
                 {index + 1}
               </span>

@@ -341,7 +341,7 @@ export function BulkImageResizerTool() {
             <Checkbox checked={noEnlarge} onChange={setNoEnlarge} description="Images already smaller than the target keep their size instead of becoming blurry.">
               Don&apos;t enlarge smaller images
             </Checkbox>
-            {settingsError ? <p className="text-sm font-medium text-danger">{settingsError}</p> : null}
+            {settingsError ? <p className="text-sm font-medium text-danger-ink">{settingsError}</p> : null}
           </div>
           <div className="space-y-5">
             <Segmented<OutputChoice>
@@ -384,7 +384,7 @@ export function BulkImageResizerTool() {
       <section aria-labelledby="bulk-files-heading" className="rounded-lg border border-line bg-canvas shadow-sm">
         <div className="space-y-3 border-b border-line px-4 py-4 sm:px-5">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <h2 id="bulk-files-heading" className="text-lg font-semibold text-ink">
+            <h2 id="bulk-files-heading" className="text-lg font-bold text-ink">
               Images
             </h2>
             {done.length > 0 && !running ? (
@@ -451,9 +451,9 @@ const STATUS_LABEL: Record<Status, string> = {
 function BulkRow({ item, onRemove, disabled }: { item: BulkItem; onRemove: (id: string) => void; disabled: boolean }) {
   const tone =
     item.status === "done"
-      ? "text-success"
+      ? "text-success-ink"
       : item.status === "failed" || item.status === "invalid"
-        ? "text-danger"
+        ? "text-danger-ink"
         : "text-muted";
   return (
     <li className="flex items-center gap-3 px-4 py-3 sm:px-5">
@@ -476,7 +476,7 @@ function BulkRow({ item, onRemove, disabled }: { item: BulkItem; onRemove: (id: 
             </>
           ) : null}
         </p>
-        {item.error ? <p className="text-xs text-danger">{item.error}</p> : null}
+        {item.error ? <p className="text-xs text-danger-ink">{item.error}</p> : null}
       </div>
       <span className={`hidden text-xs font-medium sm:inline ${tone}`}>{STATUS_LABEL[item.status]}</span>
       {item.output ? (

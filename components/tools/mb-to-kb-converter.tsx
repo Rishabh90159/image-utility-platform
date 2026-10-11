@@ -69,7 +69,7 @@ export function MbToKbConverter() {
               className={`${inputClass} mt-1.5 text-lg`}
             />
             {!valid ? (
-              <p id={`${amountId}-error`} className="mt-1 text-sm font-medium text-danger">
+              <p id={`${amountId}-error`} className="mt-1 text-sm font-medium text-danger-ink">
                 Enter a number, for example 2.5
               </p>
             ) : null}

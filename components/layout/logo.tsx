@@ -1,14 +1,34 @@
 import { siteConfig } from "@/lib/site";
 
-/** Wordmark with a "fit" mark: an image frame inside crop corners. */
+/**
+ * The Imgifyr mark: a picture framed by crop corners ("make it fit") on a blue tile.
+ * The same drawing is used for the favicon (app/icon.svg), the Apple touch icon and
+ * Open Graph images, so keep them in sync when changing it.
+ */
+export function LogoMark({ size = 28 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 32 32" aria-hidden="true" focusable="false" className="shrink-0">
+      <rect width="32" height="32" rx="8" fill="var(--color-accent)" />
+      <path
+        d="M8 13V8h5M19 8h5v5M24 19v5h-5M13 24H8v-5"
+        fill="none"
+        stroke="#ffffff"
+        strokeWidth="2.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M11.5 20.5l3.6-4.6 2.6 3.1 1.5-1.8 2.3 3.3z" fill="#ffffff" />
+      <circle cx="19.2" cy="12.9" r="1.7" fill="#ffffff" />
+    </svg>
+  );
+}
+
+/** Mark plus wordmark, used in the header and footer. */
 export function Logo() {
   return (
-    <span className="inline-flex items-center gap-2 text-ink">
-      <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true" focusable="false">
-        <path d="M2 8V2h6M18 2h6v6M24 18v6h-6M8 24H2v-6" fill="none" stroke="currentColor" strokeWidth="2.2" />
-        <rect x="7" y="7" width="12" height="12" rx="1.5" fill="var(--color-accent)" />
-      </svg>
-      <span className="text-[1.0625rem] font-semibold tracking-tight">{siteConfig.name}</span>
+    <span className="inline-flex items-center gap-2.5 text-ink">
+      <LogoMark />
+      <span className="font-display text-[1.1875rem] font-extrabold tracking-[-0.02em]">{siteConfig.name}</span>
     </span>
   );
 }

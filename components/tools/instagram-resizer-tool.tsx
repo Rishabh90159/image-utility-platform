@@ -372,7 +372,7 @@ export function InstagramResizerTool() {
       ) : null}
 
       {sizeError ? (
-        <p id="ig-size-error" className="text-sm font-medium text-danger">
+        <p id="ig-size-error" className="text-sm font-medium text-danger-ink">
           {sizeError}
         </p>
       ) : (

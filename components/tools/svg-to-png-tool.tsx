@@ -210,7 +210,7 @@ export function SvgToPngTool() {
       >
         Maintain aspect ratio
       </Checkbox>
-      {sizeError ? <p className="text-sm font-medium text-danger">{sizeError}</p> : null}
+      {sizeError ? <p className="text-sm font-medium text-danger-ink">{sizeError}</p> : null}
 
       {ratioDiffers ? (
         <Segmented<SvgFit>

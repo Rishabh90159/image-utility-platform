@@ -78,7 +78,7 @@ export function ResultPanel({
     <section aria-labelledby="result-heading" className="rounded-lg border border-line bg-canvas shadow-sm">
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-line px-4 py-4 sm:px-5">
         <div>
-          <h2 id="result-heading" ref={headingRef} tabIndex={-1} className="text-lg font-semibold text-ink outline-none">
+          <h2 id="result-heading" ref={headingRef} tabIndex={-1} className="text-lg font-bold text-ink outline-none">
             {heading}
           </h2>
           <p className="mt-0.5 text-sm text-muted" aria-live="polite">
@@ -87,7 +87,7 @@ export function ResultPanel({
               "same size as the original"
             ) : (
               <>
-                <span className={saved > 0 ? "font-medium text-success" : growthExpected ? "font-medium text-ink" : "font-medium text-warning"}>
+                <span className={saved > 0 ? "font-medium text-success-ink" : growthExpected ? "font-medium text-ink" : "font-medium text-warning"}>
                   {formatSavings(original.size, output.blob.size)}
                 </span>{" "}
                 than the original

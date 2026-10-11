@@ -132,7 +132,7 @@ export function ImageUpscalerTool() {
           <p className="mt-1 text-xs text-muted">The height follows automatically, so the image isn&apos;t stretched.</p>
         </div>
       ) : null}
-      <p id="upscale-size" className={`text-sm ${targetError ? "font-medium text-danger" : "text-muted"}`} role={targetError ? "alert" : undefined}>
+      <p id="upscale-size" className={`text-sm ${targetError ? "font-medium text-danger-ink" : "text-muted"}`} role={targetError ? "alert" : undefined}>
         {targetError ?? (
           <>
             Result: <span className="font-medium text-ink">{formatDimensions(target!.width, target!.height)}</span> (from{" "}

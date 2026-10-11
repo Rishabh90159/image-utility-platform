@@ -5,7 +5,7 @@ import { getTool, type ToolId } from "@/lib/tools/registry";
 export function RelatedTools({ ids }: { ids: ToolId[] }) {
   return (
     <section aria-labelledby="related-heading" className="mt-14">
-      <h2 id="related-heading" className="text-[1.375rem] font-[650] tracking-tight text-ink">
+      <h2 id="related-heading" className="text-[1.375rem] font-bold tracking-tight text-ink">
         Related tools
       </h2>
       <ul className={`mt-4 grid gap-3 ${ids.length % 3 === 0 ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
@@ -15,9 +15,9 @@ export function RelatedTools({ ids }: { ids: ToolId[] }) {
             <li key={id}>
               <Link
                 href={tool.path}
-                className="flex h-full flex-col rounded-lg border border-line p-4 transition-colors hover:border-line-strong hover:bg-surface"
+                className="group flex h-full flex-col rounded-lg border border-line p-4 transition-colors hover:border-accent/50 hover:bg-accent-soft/40"
               >
-                <span className="font-medium text-accent">{tool.linkText}</span>
+                <span className="font-semibold text-accent group-hover:underline">{tool.linkText}</span>
                 <span className="mt-1 text-sm leading-relaxed text-muted">{tool.summary}</span>
               </Link>
             </li>

@@ -215,7 +215,7 @@ export function ImageSizeIncreaseTool() {
           <Checkbox checked={sharpen} onChange={setSharpen} description="Counteracts the slight softness that enlarging causes.">
             Sharpen lightly
           </Checkbox>
-          <p id="increase-pixels-status" className={`text-sm ${pixelError ? "font-medium text-danger" : "text-muted"}`}>
+          <p id="increase-pixels-status" className={`text-sm ${pixelError ? "font-medium text-danger-ink" : "text-muted"}`}>
             {pixelError ?? (
               <>
                 New size: <span className="font-medium text-ink">{formatDimensions(w, h)}</span> (was {formatDimensions(source.width, source.height)})
@@ -246,7 +246,7 @@ export function ImageSizeIncreaseTool() {
                 </button>
               ))}
             </div>
-            <p id="increase-kb-status" className={`mt-2 text-sm ${kbError ? "font-medium text-danger" : "text-muted"}`}>
+            <p id="increase-kb-status" className={`mt-2 text-sm ${kbError ? "font-medium text-danger-ink" : "text-muted"}`}>
               {kbError ?? <>Your file is {formatBytes(source.size)} now. 1 KB = 1024 bytes, as most upload forms count it.</>}
             </p>
           </div>

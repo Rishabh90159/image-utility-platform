@@ -62,7 +62,7 @@ function PassportComparison() {
   return (
     <section aria-labelledby="requirements-heading" className="rounded-lg border border-line bg-canvas p-4 shadow-sm sm:p-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
-        <h2 id="requirements-heading" className="text-lg font-semibold text-ink">
+        <h2 id="requirements-heading" className="text-lg font-bold text-ink">
           Verified passport photo requirements
         </h2>
         <a

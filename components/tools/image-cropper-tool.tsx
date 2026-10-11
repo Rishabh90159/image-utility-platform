@@ -210,7 +210,7 @@ export function ImageCropperTool() {
               />
             </div>
           </div>
-          {customError ? <p className="mt-2 text-sm font-medium text-danger">{customError}</p> : null}
+          {customError ? <p className="mt-2 text-sm font-medium text-danger-ink">{customError}</p> : null}
         </div>
       ) : null}
 
@@ -252,7 +252,7 @@ export function ImageCropperTool() {
           </div>
         ) : null}
         {sizeError ? (
-          <p className="text-sm font-medium text-danger">{sizeError}</p>
+          <p className="text-sm font-medium text-danger-ink">{sizeError}</p>
         ) : (
           <p className="text-sm text-muted">
             Output: <span className="font-medium text-ink">{formatDimensions(target.width, target.height)}</span>

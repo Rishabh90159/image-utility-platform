@@ -181,7 +181,7 @@ export function ImageListView({
                 </span>
                 {item.name}
               </p>
-              <p className={`text-xs ${item.status === "invalid" ? "font-medium text-danger" : "text-muted"}`}>
+              <p className={`text-xs ${item.status === "invalid" ? "font-medium text-danger-ink" : "text-muted"}`}>
                 {item.status === "checking"
                   ? "Checking…"
                   : item.status === "invalid"

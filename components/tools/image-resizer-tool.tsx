@@ -411,7 +411,7 @@ export function ImageResizerTool({ variant = "any" }: { variant?: ResizerVariant
       )}
 
       {dimsError ? (
-        <p id="resize-dims-error" className="text-sm font-medium text-danger">
+        <p id="resize-dims-error" className="text-sm font-medium text-danger-ink">
           {dimsError}
         </p>
       ) : target ? (

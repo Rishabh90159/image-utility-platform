@@ -10,7 +10,7 @@ import { faqSchema, type FaqItem } from "@/lib/seo/schema";
 export function Faq({ items, heading = "Frequently asked questions" }: { items: FaqItem[]; heading?: string }) {
   return (
     <section aria-labelledby="faq-heading" className="mt-14">
-      <h2 id="faq-heading" className="text-[1.375rem] font-[650] tracking-tight text-ink">
+      <h2 id="faq-heading" className="text-[1.375rem] font-bold tracking-tight text-ink">
         {heading}
       </h2>
       <div className="mt-4 divide-y divide-line border-y border-line">

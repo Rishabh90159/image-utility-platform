@@ -18,9 +18,9 @@ function Chevron() {
  */
 export function SiteHeader() {
   return (
-    <header className="border-b border-line bg-canvas">
+    <header className="sticky top-0 z-40 border-b border-line bg-canvas">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-6 px-4 sm:px-6">
-        <Link href="/" className="rounded-md" aria-label={`${siteConfig.name} home`}>
+        <Link href="/" className="shrink-0 rounded-md" aria-label={`${siteConfig.name} home`}>
           <Logo />
         </Link>
 
@@ -41,7 +41,7 @@ export function SiteHeader() {
                       }`}
                     >
                       {items.map((tool) => (
-                        <Link key={tool.id} href={tool.path} className="block rounded-md px-3 py-2 text-sm text-ink hover:bg-surface">
+                        <Link key={tool.id} href={tool.path} className="block rounded-md px-3 py-2 text-sm text-ink hover:bg-accent-soft hover:text-accent-ink">
                           {tool.name}
                         </Link>
                       ))}
@@ -51,7 +51,7 @@ export function SiteHeader() {
               );
             })}
             <li>
-              <Link href="/tools" className="rounded-md px-3 py-2 text-sm font-medium text-accent transition-colors hover:bg-surface">
+              <Link href="/tools" className="ml-2 inline-flex min-h-9 items-center rounded-md bg-accent-soft px-3.5 text-sm font-semibold text-accent-ink transition-colors hover:bg-accent hover:text-white">
                 All tools
               </Link>
             </li>
@@ -73,7 +73,7 @@ export function SiteHeader() {
                 <ul>
                   {toolsIn(group.id).map((tool) => (
                     <li key={tool.id}>
-                      <Link href={tool.path} className="block rounded-md px-3 py-2.5 text-[0.9375rem] text-ink hover:bg-surface">
+                      <Link href={tool.path} className="block rounded-md px-3 py-2.5 text-[0.9375rem] text-ink hover:bg-accent-soft hover:text-accent-ink">
                         {tool.name}
                       </Link>
                     </li>

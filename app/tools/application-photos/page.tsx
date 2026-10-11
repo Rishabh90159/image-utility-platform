@@ -168,7 +168,7 @@ export default function ApplicationPhotosPage() {
           { name: APPLICATION_HUB.name, path: APPLICATION_HUB.path },
         ]}
       />
-      <h1 className="mt-4 text-3xl font-bold tracking-tight text-ink sm:text-4xl">Exam and Passport Photo Requirements</h1>
+      <h1 className="mt-4 text-3xl font-extrabold tracking-[-0.02em] text-ink sm:text-4xl">Exam and Passport Photo Requirements</h1>
       <p className="mt-3 max-w-3xl text-lg leading-relaxed text-ink-soft">
         Applying to more than one exam? Each one sets its own photo and signature size. This table puts the current
         requirements side by side, each copied from the official notification and dated. Open an exam&apos;s page to prepare
@@ -188,7 +188,7 @@ export default function ApplicationPhotosPage() {
       </section>
 
       <section aria-labelledby="pages-heading" className="mt-12">
-        <h2 id="pages-heading" className="text-xl font-semibold text-ink">
+        <h2 id="pages-heading" className="text-xl font-bold tracking-tight text-ink">
           Prepare a photo or signature
         </h2>
         <ul className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

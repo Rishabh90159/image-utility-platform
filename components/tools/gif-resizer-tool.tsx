@@ -248,7 +248,7 @@ export function GifResizerTool() {
       )}
 
       {dimsError ? (
-        <p id="gif-dims-error" className="text-sm font-medium text-danger">
+        <p id="gif-dims-error" className="text-sm font-medium text-danger-ink">
           {dimsError}
         </p>
       ) : target ? (

@@ -238,7 +238,7 @@ export function JpegToJpgTool() {
                     </>
                   ) : null}
                 </p>
-                <p className={`text-xs ${item.status === "invalid" ? "font-medium text-danger" : "text-muted"}`}>
+                <p className={`text-xs ${item.status === "invalid" ? "font-medium text-danger-ink" : "text-muted"}`}>
                   {item.status === "working"
                     ? "Converting…"
                     : item.status === "invalid"

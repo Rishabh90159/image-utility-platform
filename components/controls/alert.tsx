@@ -1,9 +1,9 @@
 type Tone = "error" | "warning" | "success" | "info";
 
 const styles: Record<Tone, string> = {
-  error: "border-danger/30 bg-danger-soft text-danger",
+  error: "border-danger/30 bg-danger-soft text-danger-ink",
   warning: "border-warning/30 bg-warning-soft text-warning",
-  success: "border-success/30 bg-success-soft text-success",
+  success: "border-success/30 bg-success-soft text-success-ink",
   info: "border-line bg-surface text-ink-soft",
 };
 

@@ -23,7 +23,7 @@ export function ContentPage({
           { name: title, path },
         ]}
       />
-      <h1 className="mt-4 text-3xl font-bold tracking-tight text-ink sm:text-4xl">{title}</h1>
+      <h1 className="mt-4 text-3xl font-extrabold tracking-[-0.02em] text-ink sm:text-4xl">{title}</h1>
       {updated ? (
         <p className="mt-2 text-sm text-muted">
           Last updated{" "}

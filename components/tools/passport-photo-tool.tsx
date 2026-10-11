@@ -384,7 +384,7 @@ function CustomFields({ value, onChange, error }: { value: CustomState; onChange
         </div>
       </div>
       {error ? (
-        <p className="text-sm font-medium text-danger" role="alert">
+        <p className="text-sm font-medium text-danger-ink" role="alert">
           {error}
         </p>
       ) : (

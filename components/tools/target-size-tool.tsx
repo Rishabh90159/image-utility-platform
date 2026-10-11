@@ -213,7 +213,7 @@ export function TargetSizeTool({
           </div>
         </div>
       ) : null}
-      <p id="target-custom-help" className={`text-sm ${target.error ? "font-medium text-danger" : "text-muted"}`}>
+      <p id="target-custom-help" className={`text-sm ${target.error ? "font-medium text-danger-ink" : "text-muted"}`}>
         {target.error ??
           `Target: ${targetLabel} or less (${formatExactBytes(target.bytes ?? 0)}). Sizes use 1 KB = 1,024 bytes.`}
       </p>
@@ -262,7 +262,7 @@ export function TargetSizeTool({
               aria-describedby={`${optionsId}-width-help`}
               className={`${inputClass} mt-1.5`}
             />
-            <p id={`${optionsId}-width-help`} className={`mt-1.5 text-xs ${widthError ? "font-medium text-danger" : "text-muted"}`}>
+            <p id={`${optionsId}-width-help`} className={`mt-1.5 text-xs ${widthError ? "font-medium text-danger-ink" : "text-muted"}`}>
               {widthError ??
                 (exact
                   ? `Starts from ${formatDimensions(exact.width, exact.height)}.`

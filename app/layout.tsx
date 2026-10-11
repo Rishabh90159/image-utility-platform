@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import Script from "next/script";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
@@ -31,6 +32,15 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
+// Brand typeface for headings and the wordmark only; body text stays on the system font.
+// next/font self-hosts the file at build time, so no request goes to Google at runtime.
+const brandFont = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["600", "700", "800"],
+  display: "swap",
+  variable: "--font-brand",
+});
+
 const plausibleDomain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
 const plausibleSrc = process.env.NEXT_PUBLIC_PLAUSIBLE_SRC || "https://plausible.io/js/script.js";
 // Validated because the ID is interpolated into an inline script.
@@ -38,7 +48,7 @@ const gaId = /^G-[A-Z0-9]+$/.test(process.env.NEXT_PUBLIC_GA_ID ?? "") ? process
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={brandFont.variable}>
       <body className="flex min-h-dvh flex-col">
         <a
           href="#main"

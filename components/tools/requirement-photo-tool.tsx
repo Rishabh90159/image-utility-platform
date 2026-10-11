@@ -425,7 +425,7 @@ function Checklist({
       <ul className="divide-y divide-line rounded-md border border-line" aria-label="Requirement check">
         {checks.map((c) => (
           <li key={c.label} className="flex items-start gap-3 px-4 py-2.5 text-sm">
-            <span aria-hidden="true" className={`mt-0.5 font-semibold ${c.ok ? "text-success" : "text-warning"}`}>
+            <span aria-hidden="true" className={`mt-0.5 font-semibold ${c.ok ? "text-success-ink" : "text-warning"}`}>
               {c.ok ? "✓" : "!"}
             </span>
             <span>
@@ -502,7 +502,7 @@ function CustomFields({ value, onChange, error }: { value: CustomSpec; onChange:
         {field("maxKB", "Max size (KB)", "Optional")}
       </div>
       {error ? (
-        <p className="text-sm font-medium text-danger" role="alert">
+        <p className="text-sm font-medium text-danger-ink" role="alert">
           {error}
         </p>
       ) : null}
