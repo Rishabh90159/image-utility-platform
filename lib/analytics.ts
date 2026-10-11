@@ -6,7 +6,7 @@
  * image contents and personal data are never collected: the type system and
  * the runtime allowlist below both enforce it.
  *
- * No provider is loaded unless NEXT_PUBLIC_PLAUSIBLE_DOMAIN is configured.
+ * No provider is loaded unless NEXT_PUBLIC_PLAUSIBLE_DOMAIN or NEXT_PUBLIC_GA_ID is configured.
  */
 export type AnalyticsEvent =
   | "tool_open"
@@ -75,6 +75,7 @@ type PlausibleFn = (event: string, options?: { props?: Record<string, string | n
 declare global {
   interface Window {
     plausible?: PlausibleFn;
+    gtag?: (command: "event", event: string, params?: Record<string, string | number>) => void;
   }
 }
 
@@ -88,6 +89,7 @@ export function track(event: AnalyticsEvent, props: AnalyticsProps = {}): void {
   }
   try {
     window.plausible?.(event, { props: safe });
+    window.gtag?.("event", event, safe);
   } catch {
     // Analytics must never break a tool.
   }

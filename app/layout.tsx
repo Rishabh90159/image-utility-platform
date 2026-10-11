@@ -33,6 +33,8 @@ export const viewport: Viewport = {
 
 const plausibleDomain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
 const plausibleSrc = process.env.NEXT_PUBLIC_PLAUSIBLE_SRC || "https://plausible.io/js/script.js";
+// Validated because the ID is interpolated into an inline script.
+const gaId = /^G-[A-Z0-9]+$/.test(process.env.NEXT_PUBLIC_GA_ID ?? "") ? process.env.NEXT_PUBLIC_GA_ID : undefined;
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
@@ -57,6 +59,16 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               {"window.plausible=window.plausible||function(){(window.plausible.q=window.plausible.q||[]).push(arguments)}"}
             </Script>
             <Script src={plausibleSrc} data-domain={plausibleDomain} strategy="afterInteractive" />
+          </>
+        ) : null}
+        {gaId ? (
+          <>
+            {/* The tiny queue stub runs before hydration so events fired on mount (tool_open) aren't lost;
+                the gtag.js library itself loads after hydration and never blocks rendering. */}
+            <Script id="google-analytics" strategy="beforeInteractive">
+              {`window.dataLayer=window.dataLayer||[];window.gtag=function(){window.dataLayer.push(arguments)};gtag('js',new Date());gtag('config','${gaId}');`}
+            </Script>
+            <Script src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} strategy="afterInteractive" />
           </>
         ) : null}
       </body>

@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const isProd = process.env.NODE_ENV === "production";
 
 /**
- * Analytics is the only third-party origin the site may talk to, and only when
+ * Analytics is the only third-party traffic the site may send, and only when
  * explicitly configured. Image data never leaves the browser; the CSP below
  * enforces that by restricting where the page is allowed to send requests.
  */
@@ -17,19 +17,30 @@ function analyticsOrigin(): string | null {
   }
 }
 
+/** Google Analytics 4 origins, per Google's CSP guidance. Only allowed when NEXT_PUBLIC_GA_ID is set. */
+function googleAnalyticsSources(): { script: string; connect: string; img: string } | null {
+  if (!process.env.NEXT_PUBLIC_GA_ID) return null;
+  return {
+    script: " https://*.googletagmanager.com",
+    connect: " https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com",
+    img: " https://*.google-analytics.com https://*.googletagmanager.com",
+  };
+}
+
 function contentSecurityPolicy(): string {
   const analytics = analyticsOrigin();
+  const ga = googleAnalyticsSources();
   const extra = analytics ? ` ${analytics}` : "";
   return [
     "default-src 'self'",
     // Next.js injects small inline bootstrap scripts; 'unsafe-inline' is needed without nonces.
     // 'wasm-unsafe-eval' lets the HEIC decoder compile its WebAssembly; it does not allow JavaScript eval().
-    `script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'${extra}`,
+    `script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'${extra}${ga?.script ?? ""}`,
     "style-src 'self' 'unsafe-inline'",
-    "img-src 'self' blob: data:",
+    `img-src 'self' blob: data:${ga?.img ?? ""}`,
     "font-src 'self'",
     // No remote endpoints except optional analytics: images cannot be uploaded anywhere.
-    `connect-src 'self'${extra}`,
+    `connect-src 'self'${extra}${ga?.connect ?? ""}`,
     "worker-src 'self' blob:",
     "object-src 'none'",
     "base-uri 'self'",
