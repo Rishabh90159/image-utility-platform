@@ -1,8 +1,12 @@
 import Link from "next/link";
 import { siteConfig } from "@/lib/site";
-import { NAV_GROUPS, toolsIn } from "@/lib/tools/registry";
+import { allTools, NAV_GROUPS, toolsIn } from "@/lib/tools/registry";
 import { DisclosureMenu } from "./disclosure-menu";
 import { Logo } from "./logo";
+import { ToolSearch } from "./tool-search";
+
+// Built once on the server and passed to the client search box.
+const searchItems = allTools.map((tool) => ({ name: tool.name, path: tool.path, keywords: `${tool.linkText} ${tool.summary}` }));
 
 function Chevron() {
   return (
@@ -24,7 +28,7 @@ export function SiteHeader() {
           <Logo />
         </Link>
 
-        <nav aria-label="Image tools" className="hidden md:block">
+        <nav aria-label="Image tools" className="hidden md:block xl:mr-auto">
           <ul className="flex items-center gap-1">
             {NAV_GROUPS.map((group) => {
               const items = toolsIn(group.id);
@@ -57,6 +61,10 @@ export function SiteHeader() {
             </li>
           </ul>
         </nav>
+
+        <div className="hidden w-60 shrink-0 xl:block">
+          <ToolSearch items={searchItems} />
+        </div>
 
         <DisclosureMenu className="group relative md:hidden">
           <summary className="flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-md border border-line px-3 py-2 text-sm font-medium text-ink [&::-webkit-details-marker]:hidden">

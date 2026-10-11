@@ -106,14 +106,18 @@ export function ImageDropzone({
       }`}
       aria-busy={loading}
     >
-      <span className="flex h-14 w-14 items-center justify-center rounded-full bg-accent-soft text-accent">
+      <span
+        className={`flex h-14 w-14 items-center justify-center rounded-full transition-colors ${dragging ? "bg-accent text-white" : "bg-accent-soft text-accent"}`}
+      >
         <svg width="28" height="28" viewBox="0 0 40 40" aria-hidden="true">
           <rect x="5" y="8" width="30" height="24" rx="2.5" fill="none" stroke="currentColor" strokeWidth="2.4" />
           <circle cx="14" cy="16" r="2.5" fill="currentColor" />
           <path d="M5 27l9-8 7 6 5-4 9 7" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinejoin="round" />
         </svg>
       </span>
-      <p className="mt-4 font-display text-lg font-bold text-ink">{loading ? "Opening image…" : prompt}</p>
+      <p className="mt-4 font-display text-lg font-bold text-ink">
+        {loading ? "Opening image…" : dragging ? (multiple ? "Release to add your images" : "Release to open your image") : prompt}
+      </p>
       <p className="mt-1 text-sm text-muted">or</p>
 
       <input
@@ -147,11 +151,11 @@ export function ImageDropzone({
         <span className="hidden sm:inline"> · or paste with Ctrl+V</span>
       </p>
       <p className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-accent-ink">
-        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" className="shrink-0">
           <rect x="2.5" y="6" width="9" height="6.5" rx="1" fill="none" stroke="currentColor" strokeWidth="1.4" />
           <path d="M4.5 6V4.5a2.5 2.5 0 015 0V6" fill="none" stroke="currentColor" strokeWidth="1.4" />
         </svg>
-        {privacyNote ?? (multiple ? "Processed locally — your images never leave your device." : "Processed locally — your image never leaves your device.")}
+        <span>{privacyNote ?? (multiple ? "Processed locally — your images never leave your device." : "Processed locally — your image never leaves your device.")}</span>
       </p>
     </div>
   );

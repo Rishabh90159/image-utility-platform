@@ -25,6 +25,11 @@ export const siteConfig = {
   url: resolveSiteUrl(),
   locale: "en_US",
   contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || null,
+  /** Social profiles linked from the footer. */
+  social: {
+    instagram: "https://www.instagram.com/rishabh073153/",
+    linkedin: "https://www.linkedin.com/in/rishabh-gautam-48a7b0249/",
+  },
   /** Preview deployments must never be indexed. */
   isIndexable: process.env.VERCEL_ENV !== "preview",
 } as const;

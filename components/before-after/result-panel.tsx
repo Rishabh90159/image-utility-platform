@@ -81,18 +81,28 @@ export function ResultPanel({
           <h2 id="result-heading" ref={headingRef} tabIndex={-1} className="text-lg font-bold text-ink outline-none">
             {heading}
           </h2>
-          <p className="mt-0.5 text-sm text-muted" aria-live="polite">
-            {formatBytes(output.blob.size)} ({formatExactBytes(output.blob.size)}) ·{" "}
+          <p className="mt-2 flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-sm text-muted" aria-live="polite">
+            <span className="tabular-nums">
+              <span className="sr-only">Original </span>
+              {formatBytes(original.size)}
+            </span>
+            <span aria-hidden="true">→</span>
+            <span className="font-display text-xl font-bold tabular-nums text-ink" title={formatExactBytes(output.blob.size)}>
+              <span className="sr-only">Result </span>
+              {formatBytes(output.blob.size)}
+            </span>
             {Math.abs(saved) < 0.05 ? (
-              "same size as the original"
+              <span className="rounded-full bg-surface-strong px-2.5 py-0.5 text-xs font-semibold text-ink-soft">same size as the original</span>
             ) : (
-              <>
-                <span className={saved > 0 ? "font-medium text-success-ink" : growthExpected ? "font-medium text-ink" : "font-medium text-warning"}>
-                  {formatSavings(original.size, output.blob.size)}
-                </span>{" "}
-                than the original
-              </>
+              <span
+                className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                  saved > 0 ? "bg-success-soft text-success-ink" : growthExpected ? "bg-surface-strong text-ink" : "bg-warning-soft text-warning"
+                }`}
+              >
+                {formatSavings(original.size, output.blob.size)} than the original
+              </span>
             )}
+            <span className="w-full text-xs sm:w-auto">({formatExactBytes(output.blob.size)})</span>
           </p>
         </div>
         {url ? (
