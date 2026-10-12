@@ -24,7 +24,9 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-canvas">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-6 px-4 sm:px-6">
-        <Link href="/" className="shrink-0 rounded-md" aria-label={`${siteConfig.name} home`}>
+        {/* No prefetch: the logo is on screen on every page, so prefetching would download and parse the
+            homepage's data during every page load (a long main-thread task on phones). */}
+        <Link href="/" prefetch={false} className="shrink-0 rounded-md" aria-label={`${siteConfig.name} home`}>
           <Logo />
         </Link>
 

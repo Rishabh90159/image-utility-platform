@@ -310,7 +310,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section aria-labelledby="popular-heading" className="mx-auto max-w-6xl px-4 pt-14 sm:px-6">
+      <section aria-labelledby="popular-heading" className="render-later mx-auto max-w-6xl px-4 pt-14 sm:px-6">
         <SectionHeader
           id="popular-heading"
           title="Popular image tools"
@@ -326,7 +326,7 @@ export default function HomePage() {
         </ul>
       </section>
 
-      <section aria-labelledby="photo-heading" className="mx-auto max-w-6xl px-4 pt-14 sm:px-6">
+      <section aria-labelledby="photo-heading" className="render-later mx-auto max-w-6xl px-4 pt-14 sm:px-6">
         <SectionHeader
           id="photo-heading"
           title="Photo and exam tools"
@@ -342,7 +342,7 @@ export default function HomePage() {
         </ul>
       </section>
 
-      <section aria-labelledby="convert-heading" className="mx-auto max-w-6xl px-4 pt-14 sm:px-6">
+      <section aria-labelledby="convert-heading" className="render-later mx-auto max-w-6xl px-4 pt-14 sm:px-6">
         <SectionHeader
           id="convert-heading"
           title="Convert between formats"
@@ -358,7 +358,7 @@ export default function HomePage() {
         </ul>
       </section>
 
-      <section aria-labelledby="how-heading" className="mx-auto max-w-6xl px-4 pt-16 sm:px-6">
+      <section aria-labelledby="how-heading" className="render-later mx-auto max-w-6xl px-4 pt-16 sm:px-6">
         <div className="relative overflow-hidden rounded-xl bg-accent-soft px-6 py-8 sm:px-10 sm:py-10">
           <h2 id="how-heading" className="text-2xl font-bold tracking-tight text-ink sm:text-[1.75rem]">
             How Imgifyr works
@@ -393,7 +393,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section aria-labelledby="why-heading" className="mx-auto max-w-6xl px-4 pt-16 sm:px-6">
+      <section aria-labelledby="why-heading" className="render-later mx-auto max-w-6xl px-4 pt-16 sm:px-6">
         <h2 id="why-heading" className="text-2xl font-bold tracking-tight text-ink sm:text-[1.75rem]">
           Why use Imgifyr?
         </h2>
@@ -443,7 +443,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <div className="mt-16 border-y border-line bg-surface">
+      <div className="render-later mt-16 border-y border-line bg-surface">
         <div className="mx-auto max-w-6xl divide-y divide-line px-4 sm:px-6">
           {groups.map((group) => (
             <section
@@ -465,7 +465,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-3xl px-4 pt-16 sm:px-6">
+      <div className="render-later mx-auto max-w-3xl px-4 pt-16 sm:px-6">
         <Faq items={faqs} variant="boxed" intro="Answers to common questions about Imgifyr." className="" />
       </div>
     </>

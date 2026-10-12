@@ -150,6 +150,17 @@
     background-size: 16px 16px;
     background-position: 0 0, 0 8px, 8px -8px, -8px 0;
   }
+
+  /*
+   * Below-the-fold content: the browser skips its layout and painting until it
+   * scrolls near the screen, which shortens page load on phones. The content
+   * stays in the HTML (search engines, find-in-page). The intrinsic size is a
+   * placeholder height that the browser replaces with the real one once rendered.
+   */
+  .render-later {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 900px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

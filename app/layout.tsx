@@ -73,12 +73,18 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         ) : null}
         {gaId ? (
           <>
-            {/* The tiny queue stub runs before hydration so events fired on mount (tool_open) aren't lost;
-                the gtag.js library itself loads after hydration and never blocks rendering. */}
+            {/* The tiny queue stub runs before hydration so events fired on mount (tool_open) aren't lost.
+                gtag.js (~150 KB, ~150 ms of main-thread work on a phone) is loaded on the visitor's first
+                interaction, or 6 s after the page has loaded, so it never competes with the page while it
+                loads. Queued events, page_view included, are sent as soon as it arrives. */}
             <Script id="google-analytics" strategy="beforeInteractive">
-              {`window.dataLayer=window.dataLayer||[];window.gtag=function(){window.dataLayer.push(arguments)};gtag('js',new Date());gtag('config','${gaId}');`}
+              {`window.dataLayer=window.dataLayer||[];window.gtag=function(){window.dataLayer.push(arguments)};gtag('js',new Date());gtag('config','${gaId}');` +
+                `(function(){var done=false,events=['pointerdown','keydown','touchstart','scroll'];function load(){if(done)return;done=true;` +
+                `events.forEach(function(e){removeEventListener(e,load)});var s=document.createElement('script');s.async=true;` +
+                `s.src='https://www.googletagmanager.com/gtag/js?id=${gaId}';document.head.appendChild(s)}` +
+                `events.forEach(function(e){addEventListener(e,load,{passive:true})});` +
+                `function later(){setTimeout(load,6000)}if(document.readyState==='complete')later();else addEventListener('load',later)})();`}
             </Script>
-            <Script src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} strategy="afterInteractive" />
           </>
         ) : null}
       </body>

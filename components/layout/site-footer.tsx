@@ -142,7 +142,7 @@ function LinkColumn({ column, className = "", split = false }: { column: Column;
  */
 export function SiteFooter() {
   return (
-    <footer className="mt-24 border-t border-line bg-surface">
+    <footer className="render-later mt-24 border-t border-line bg-surface">
       <div className="mx-auto max-w-7xl px-4 pt-10 sm:px-6">
         <div className="relative grid items-center gap-6 overflow-hidden rounded-xl border border-accent/10 bg-accent-soft p-6 sm:p-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-10">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-6">

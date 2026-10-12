@@ -35,7 +35,7 @@ export function ToolPageShell({ tool, h1, intro, schemaDescription, children, co
         </div>
       </div>
 
-      <div className="mx-auto max-w-3xl px-4 sm:px-6">
+      <div className="render-later mx-auto max-w-3xl px-4 sm:px-6">
         <div className="prose-content">{content}</div>
         <Faq items={faqs} />
         <RelatedTools ids={tool.related} />
