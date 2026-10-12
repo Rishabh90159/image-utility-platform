@@ -43,9 +43,8 @@ export function WordToPdfTool() {
       }}
       beforeConvert={
         <p className="text-sm leading-relaxed text-ink-soft">
-          Fonts embedded in the document are used, and common Office fonts (Calibri, Cambria, Arial, Times New Roman, Courier
-          New) are matched in width even if they aren&apos;t installed. Other missing fonts, such as Aptos, are replaced by a
-          similar font, so line breaks may differ slightly from Word.
+          Fonts embedded in the document are used, then the fonts on this device. A font you don&apos;t have installed is
+          replaced by a similar one of the same style, so line breaks may differ slightly from Word.
         </p>
       }
     />

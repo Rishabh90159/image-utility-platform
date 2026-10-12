@@ -158,7 +158,7 @@ await labelled("locked.pdf", ["Locked"], { encrypt: { userPassword: "secret", ow
   fs.writeFileSync(path.join(FIX, "scan.pdf"), await doc.save());
 }
 // Fonts: a Word-style document whose theme font is Carlito (as LibreOffice saves; not installed on most
-// devices, so the bundled copy must be used), and one with a font embedded in the file.
+// devices, so it needs a fallback), and one with a font embedded in the file.
 {
   const zip = await JSZip.loadAsync(fs.readFileSync(path.join(FIX, "hindi.docx")));
   zip.file("word/document.xml", (await zip.file("word/document.xml").async("string")).replace(/<w:t[^>]*>[^<]*<\/w:t>/, '<w:t xml:space="preserve">Theme font body text</w:t>'));
@@ -306,12 +306,24 @@ check("titles are unique", titles.size === 4);
   check("word: remove returns to the upload area", await page.locator('input[type="file"]').count() === 1);
 
   // Fonts that aren't installed must not fall back to the browser's default (Times New Roman).
-  const fontRequests = [];
-  page.on("request", (req) => req.url().includes("/fonts/documents/") && fontRequests.push(req.url().split("/").pop()));
+  await page.evaluate(() => {
+    window.__bodyFont = "";
+    new MutationObserver(() => {
+      const frame = document.querySelector("iframe[title='Document rendering']");
+      if (!frame || frame.__font) return;
+      frame.__font = true;
+      const timer = setInterval(() => {
+        const span = frame.contentDocument?.querySelector("section span");
+        if (!frame.contentDocument) return clearInterval(timer);
+        if (span) window.__bodyFont = getComputedStyle(span).fontFamily;
+      }, 20);
+    }).observe(document.body, { childList: true });
+  });
   await page.locator('input[type="file"]').setInputFiles(fix("theme-carlito.docx"));
   await page.getByRole("button", { name: "Convert to PDF" }).click();
   await page.locator("#result-heading").waitFor({ timeout: 60_000 });
-  check("word: missing Calibri-family font uses the bundled metric-compatible font", fontRequests.includes("carlito-latin-400-normal.woff2"), fontRequests.join(","));
+  const bodyFont = await page.evaluate(() => window.__bodyFont);
+  check("word: a missing theme font falls back to a sans-serif font, not the serif default", /^Carlito, Arial, sans-serif$/.test(bodyFont), bodyFont);
   await page.getByRole("button", { name: "Convert another document" }).click();
   await page.evaluate(() => {
     window.__embedded = [];

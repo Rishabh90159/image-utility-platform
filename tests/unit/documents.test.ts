@@ -8,8 +8,7 @@ import { inspectPdf, mergePdfs } from "@/lib/documents/merge";
 import { convertPdfToWord } from "@/lib/documents/pdf-to-word/convert";
 import { wordFontName } from "@/lib/documents/pdf-to-word/extract";
 import { buildLines, layoutPage, orderColumns, type PdfTextItem } from "@/lib/documents/pdf-to-word/layout";
-import { addFallbacksToCss, bundledFontFaces, METRIC_FAMILY, withFallbacks } from "@/lib/documents/word-to-pdf/fonts";
-import fs from "node:fs";
+import { addFallbacksToCss, withFallbacks } from "@/lib/documents/word-to-pdf/fonts";
 import { assertDocx, assertPdf, documentFileName, DOC_LIMITS, isEncryptedOfficeFile, sniffDocument } from "@/lib/documents/validate";
 
 const enc = (text: string) => new TextEncoder().encode(text);
@@ -256,11 +255,11 @@ describe("fonts", () => {
   });
 
   it("gives missing fonts a fallback of the same kind instead of the browser's serif default", () => {
-    expect(withFallbacks("Calibri")).toBe(`Calibri, "${METRIC_FAMILY.Carlito}", Arial, "${METRIC_FAMILY.Arimo}", sans-serif`);
-    expect(withFallbacks("Aptos")).toBe(`Aptos, Arial, "${METRIC_FAMILY.Arimo}", sans-serif`);
-    expect(withFallbacks('"Times New Roman"')).toBe(`"Times New Roman", "${METRIC_FAMILY.Tinos}", serif`);
-    expect(withFallbacks("Georgia")).toBe(`Georgia, "Times New Roman", "${METRIC_FAMILY.Tinos}", serif`);
-    expect(withFallbacks("Consolas")).toBe(`Consolas, "Courier New", "${METRIC_FAMILY.Cousine}", monospace`);
+    expect(withFallbacks("Calibri")).toBe("Calibri, Arial, sans-serif");
+    expect(withFallbacks("Aptos")).toBe("Aptos, Arial, sans-serif");
+    expect(withFallbacks('"Times New Roman"')).toBe('"Times New Roman", serif');
+    expect(withFallbacks("Georgia")).toBe('Georgia, "Times New Roman", serif');
+    expect(withFallbacks("Consolas")).toBe('Consolas, "Courier New", monospace');
     expect(withFallbacks("Arial, sans-serif")).toBe("Arial, sans-serif");
     expect(withFallbacks("var(--docx-minorHAnsi-font)")).toBe("var(--docx-minorHAnsi-font)");
   });
@@ -271,17 +270,11 @@ p.docx_normal{font-family: var(--docx-minorHAnsi-font); font-size: 11pt}
 @font-face{font-family: "Embedded Font"; src: url(data:font/ttf;base64,AAAA)}
 span{font-family: Cambria !important}`;
     const out = addFallbacksToCss(css);
-    expect(out).toContain(`--docx-minorHAnsi-font: Aptos, Arial, "${METRIC_FAMILY.Arimo}", sans-serif;`);
-    expect(out).toContain(`--docx-majorHAnsi-font: Calibri Light, "${METRIC_FAMILY.Carlito}"`);
+    expect(out).toContain("--docx-minorHAnsi-font: Aptos, Arial, sans-serif;");
+    expect(out).toContain("--docx-majorHAnsi-font: Calibri Light, Arial, sans-serif}");
     expect(out).toContain("font-family: var(--docx-minorHAnsi-font);");
     expect(out).toContain('@font-face{font-family: "Embedded Font"; src: url(data:font/ttf;base64,AAAA)}');
-    expect(out).toContain(`font-family: Cambria, "${METRIC_FAMILY.Caladea}", "Times New Roman", "${METRIC_FAMILY.Tinos}", serif !important`);
-  });
-
-  it("references bundled font files that exist", () => {
-    const urls = [...bundledFontFaces("https://www.imgifyr.com").matchAll(/url\("https:\/\/www\.imgifyr\.com(\/fonts\/documents\/[^"]+)"\)/g)].map((m) => m[1]);
-    expect(urls).toHaveLength(40);
-    for (const url of urls) expect(fs.existsSync(`public${url}`), url).toBe(true);
+    expect(out).toContain('font-family: Cambria, "Times New Roman", serif !important');
   });
 });
 

@@ -48,8 +48,8 @@ export default function PrivacyPage() {
         </li>
         <li>
           The PDF tools (Word to PDF, PDF to Word and Merge PDF) work the same way: your documents are read and converted
-          in your browser and are never uploaded. Their code (PDF and Word libraries) and, for Word to PDF, fonts that
-          stand in for ones missing on your device are downloaded from this website only when needed.
+          in your browser and are never uploaded. Their code (PDF and Word libraries) is downloaded from this website only
+          when you open one of those tools.
         </li>
         <li>
           Batch downloads (ZIP files) are assembled in your browser. Passport photos and signatures, which are especially

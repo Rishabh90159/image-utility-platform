@@ -31,7 +31,7 @@ const faqs: FaqItem[] = [
   {
     question: "Will the PDF look exactly like my Word document?",
     answer:
-      "Page size, margins, orientation, headers and footers, tables, lists, images and page breaks are kept. Fonts embedded in the document are used. Calibri, Cambria, Arial, Times New Roman and Courier New are matched exactly in width even when they aren't installed, so lines break as in Word; other missing fonts are replaced by a similar font of the same style, such as a sans-serif for Aptos, and lines may break slightly differently. Text boxes, charts, SmartArt, equations and tracked changes may not appear exactly as in Word.",
+      "Page size, margins, orientation, headers and footers, tables, lists, images and page breaks are kept. Fonts embedded in the document are used, then the fonts installed on your device. A font you don't have, such as Aptos or Calibri on a phone, is replaced by a similar font of the same style (sans-serif, serif or monospace), so lines may break slightly differently than in Word. Text boxes, charts, SmartArt, equations and tracked changes may not appear exactly as in Word.",
   },
   {
     question: "Can I search and copy text in the PDF?",
@@ -78,10 +78,9 @@ export default function WordToPdfPage() {
               tables; pictures; page breaks; page size, margins and landscape sections; headers and footers.
             </li>
             <li>
-              <strong>Fonts:</strong> fonts embedded in the document are used, then fonts installed on this device. If
-              Calibri, Cambria, Arial, Times New Roman or Courier New is missing, a free font with exactly the same character
-              widths is used, so lines break as in Word. Other missing fonts, such as Aptos, are replaced by a similar font
-              of the same style.
+              <strong>Fonts:</strong> fonts embedded in the document are used, then fonts installed on this device. A
+              missing font is replaced by a similar one of the same style, so a sans-serif document stays sans-serif. Line
+              breaks are closest to Word on a computer that has the document&apos;s fonts.
             </li>
             <li>
               <strong>May differ:</strong> floating text boxes and shapes, charts, SmartArt, equations, comments and tracked

@@ -64,12 +64,12 @@ mode 3, Helvetica, stretched to each word's box) so the PDF is searchable and se
 ## Known limitations (also stated on the pages)
 
 - **Word to PDF:** pages are images plus a text layer, not vector text; the PDF is larger than one saved
-  by Word. Fonts: embedded fonts are used (the CSP allows `font-src data:` for this); missing Calibri,
-  Cambria, Arial, Times New Roman and Courier New use bundled metric-compatible fonts (Carlito, Caladea,
-  Arimo, Tinos, Cousine — SIL OFL, in `public/fonts/documents`, copied by `npm run fonts:documents`,
-  fetched only when needed); other missing fonts get a same-style fallback chain
-  (`lib/documents/word-to-pdf/fonts.ts`), e.g. Aptos → Arial. Aptos has no free metric-compatible
-  equivalent, so Aptos documents can wrap slightly differently.
+  by Word. Fonts: embedded fonts are used (the CSP allows `font-src data:` for this), then installed
+  fonts. A missing font gets a same-style fallback chain (`lib/documents/word-to-pdf/fonts.ts`), e.g.
+  Aptos or Calibri → Arial → sans-serif, so documents no longer turn serif; but character widths differ, so
+  line breaks can differ from Word on devices without the document's fonts (phones, Macs without Office).
+  Bundling metric-compatible fonts (Carlito, Caladea, Arimo, Tinos, Cousine; ~1.6 MB) would fix that and
+  was tried, but left out to keep the repo small.
   Text in non-Latin scripts renders correctly but isn't searchable (the UI says so). Floating text
   boxes, charts, SmartArt, equations, comments and tracked changes may differ. No .doc/.rtf/.odt.
 - **PDF to Word:** no OCR, so scanned PDFs aren't converted. Images and drawings aren't carried over.

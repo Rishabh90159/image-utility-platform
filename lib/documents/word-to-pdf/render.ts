@@ -1,7 +1,7 @@
 import type { PDFDocument as PdfDocumentType, PDFFont, PDFPage } from "@cantoo/pdf-lib";
 import { abortError, DocumentToolError, toDocumentToolError } from "../errors";
 import { assertDocx, DOC_LIMITS } from "../validate";
-import { addFallbacksToCss, bundledFontFaces, METRIC_FAMILY, withFallbacks } from "./fonts";
+import { addFallbacksToCss, withFallbacks } from "./fonts";
 import { paginate } from "./paginate";
 
 /**
@@ -36,7 +36,7 @@ const tick = () => new Promise<void>((resolve) => setTimeout(resolve, 0));
 
 const FRAME_STYLE = `
 html, body { margin: 0; padding: 0; background: #ffffff; }
-body { color: #000000; font-family: "Times New Roman", "${METRIC_FAMILY.Tinos}", serif; }
+body { color: #000000; font-family: "Times New Roman", serif; }
 #pages { display: flex; flex-direction: column; align-items: flex-start; }
 #pages > section { background: #ffffff; margin: 0 0 24px 0; flex: none; }
 `;
@@ -57,7 +57,7 @@ function createFrame(): { frame: HTMLIFrameElement; doc: Document; container: HT
   }
   doc.open();
   doc.write(
-    `<!doctype html><html><head><meta charset="utf-8"><style>${bundledFontFaces(window.location.origin)}${FRAME_STYLE}</style></head><body><div id="docx-styles" hidden></div><div id="pages"></div></body></html>`,
+    `<!doctype html><html><head><meta charset="utf-8"><style>${FRAME_STYLE}</style></head><body><div id="docx-styles" hidden></div><div id="pages"></div></body></html>`,
   );
   doc.close();
   // docx-preview empties its style container before rendering, so it gets its own, separate from ours.
