@@ -30,8 +30,10 @@ export function SiteHeader() {
 
         <nav aria-label="Image tools" className="hidden md:block xl:mr-auto">
           <ul className="flex items-center gap-1">
-            {NAV_GROUPS.map((group) => {
+            {NAV_GROUPS.map((group, index) => {
               const items = toolsIn(group.id);
+              // The last menu opens towards the left so it stays on screen on tablets.
+              const align = index === NAV_GROUPS.length - 1 ? "right-0" : "left-0";
               return (
                 <li key={group.id}>
                   <DisclosureMenu className="group relative">
@@ -40,7 +42,7 @@ export function SiteHeader() {
                       <Chevron />
                     </summary>
                     <div
-                      className={`absolute left-0 z-30 mt-2 rounded-lg border border-line bg-canvas p-2 shadow-lg ${
+                      className={`absolute ${align} z-30 mt-2 rounded-lg border border-line bg-canvas p-2 shadow-lg ${
                         items.length > 6 ? "grid w-[34rem] grid-cols-2 gap-x-2" : "w-72"
                       }`}
                     >

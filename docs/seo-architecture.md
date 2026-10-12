@@ -33,8 +33,10 @@ answer to one clearly defined intent.
 ├── /tools/mb-to-kb-converter     File-size units (in the "Photo size" menu)
 ├── /tools/resize-image-to-kb     Exact file size (general)
 │   └── 20kb-photo, 50kb-photo, 100kb-photo, 200kb-photo
-└── /tools/application-photos     Exam & passport hub (comparison table)
-    └── ssc-photo, upsc-photo, ibps-photo, sbi-photo, neet-photo, passport-photo
+├── /tools/application-photos     Exam & passport hub (comparison table)
+│   └── ssc-photo, upsc-photo, ibps-photo, sbi-photo, neet-photo, passport-photo
+└── /tools/pdf-tools              PDF hub ("PDF" menu)
+    └── word-to-pdf, pdf-to-word, merge-pdf
 ```
 
 URLs stay flat (`/tools/<slug>`) so nothing had to move. The hierarchy is expressed through breadcrumbs
@@ -100,6 +102,7 @@ Volumes and difficulty (KD) are approximate global figures from competitor keywo
 | "kb converter", "mb to kb converter" | `/tools/mb-to-kb-converter` (built in Phase 4): a unit converter, not an image tool. It links to the KB tools for people whose real goal is shrinking a photo. |
 | Image resizer / upscaler / size increase / enhancer | Resizer = any new dimensions (mostly smaller). Upscaler = "image upscaler", "upscale image": 2×/4× enlargement with sharpening. Size increase = "increase image size", "photo size increase", "… in KB": bigger in pixels **or** bigger in KB, with the KB case as its distinct job. Enhancer = "enhance/improve quality": same size, better look. Each page explains the others in one sentence and links to them. |
 | Photo to PDF vs JPG to PDF | Photo to PDF owns the broad "image/photo to PDF" intent and every format. JPG to PDF owns "jpg to pdf": its copy is about byte-for-byte JPEG embedding, EXIF rotation, CMYK and .jfif. Both use the same tool; the duplicate-content check keeps their text apart. |
+| PDF tools (built 2026-10-12) | At `/tools/word-to-pdf`, `/tools/pdf-to-word` and `/tools/merge-pdf`, not the requested `/pdf-tools/*`: every tool lives flat under `/tools/`, and the hub follows the application hub at `/tools/pdf-tools` (breadcrumb parent of the three). Each tool page owns its own "word to pdf" / "pdf to word" / "merge pdf" queries; the hub owns only "pdf tools" and its title deliberately avoids the tools' primary keywords. Photo to PDF and JPG to PDF keep the image-to-PDF intent and stay in the Convert menu; the hub links to them. See docs/pdf-tools.md for how the tools work. |
 | JPEG to JPG vs JPG to PNG / PNG to JPG | JPEG to JPG is about the extension only (same format) and says so; the conversions between formats stay on their own pages. |
 
 ## Internal-link graph

@@ -38,7 +38,8 @@ function contentSecurityPolicy(): string {
     `script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'${extra}${ga?.script ?? ""}`,
     "style-src 'self' 'unsafe-inline'",
     `img-src 'self' blob: data:${ga?.img ?? ""}`,
-    "font-src 'self'",
+    // data: lets Word to PDF use fonts embedded in the user's own .docx (read locally, never fetched).
+    "font-src 'self' data:",
     // No remote endpoints except optional analytics: images cannot be uploaded anywhere.
     `connect-src 'self'${extra}${ga?.connect ?? ""}`,
     "worker-src 'self' blob:",

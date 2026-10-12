@@ -127,6 +127,23 @@ export function ToolIcon({ id, category }: { id: ToolId; category: ToolCategory 
       </svg>
     );
   }
+  if (id === "merge-pdf") {
+    return (
+      <svg {...common}>
+        <path d="M3 3.5h6v8H3zM11 8.5h6v8h-6z" />
+        <path d="M9 7.5h3.5V5M11 12.5H7.5V15" />
+      </svg>
+    );
+  }
+  if (category === "pdf") {
+    return (
+      <svg {...common}>
+        <path d="M5 2.5h7l3.5 3.5v11.5H5z" />
+        <path d="M12 2.5V6h3.5" />
+        <path d="M7.5 10.5h5M7.5 13h5M7.5 15.5h3" />
+      </svg>
+    );
+  }
   if (category === "units") {
     return (
       <svg {...common}>

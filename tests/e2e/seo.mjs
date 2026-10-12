@@ -43,6 +43,9 @@ const toolPages = [
   "/tools/image-size-increase",
   "/tools/image-quality-enhancer",
   "/tools/mb-to-kb-converter",
+  "/tools/word-to-pdf",
+  "/tools/pdf-to-word",
+  "/tools/merge-pdf",
 ];
 // Pages with overlapping intent whose text must stay distinct.
 const overlapPages = [
@@ -65,7 +68,9 @@ const HUB = "/tools/application-photos";
 const applicationPages = ["/tools/ssc-photo", "/tools/upsc-photo", "/tools/ibps-photo", "/tools/sbi-photo", "/tools/neet-photo", "/tools/passport-photo", HUB];
 const OFFICIAL = /href="https:\/\/(www\.ibps\.in|sbi\.bank\.in|ssc\.gov\.in|neet\.nta\.nic\.in|upsconline\.nic\.in|upsc\.gov\.in|www\.passportindia\.gov\.in|www\.gov\.uk|www\.canada\.ca)\//;
 const DISCLAIMER = "Application requirements can change. Always verify the final image against the latest official";
-const pages = ["/", "/tools", HUB, ...toolPages, "/about", "/methodology", "/privacy", "/terms", "/contact"];
+const PDF_HUB = "/tools/pdf-tools";
+const pdfPages = ["/tools/word-to-pdf", "/tools/pdf-to-word", "/tools/merge-pdf"];
+const pages = ["/", "/tools", HUB, PDF_HUB, ...toolPages, "/about", "/methodology", "/privacy", "/terms", "/contact"];
 
 const results = [];
 function check(name, ok, detail = "") {
@@ -123,7 +128,7 @@ for (const route of pages) {
     const crumbs = [...html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/g)]
       .map((m) => JSON.parse(m[1]))
       .find((d) => d["@type"] === "BreadcrumbList")?.itemListElement.map((i) => i.item.replace(SITE, "") || "/");
-    const parent = kbPages.slice(0, 4).includes(route) ? "/tools/resize-image-to-kb" : applicationPages.includes(route) && route !== HUB ? HUB : null;
+    const parent = kbPages.slice(0, 4).includes(route) ? "/tools/resize-image-to-kb" : applicationPages.includes(route) && route !== HUB ? HUB : pdfPages.includes(route) ? PDF_HUB : null;
     if (parent) check(`${route}: breadcrumb goes through its category`, crumbs?.length === 4 && crumbs[2] === parent && crumbs[3] === route, crumbs?.join(" > "));
   }
   {

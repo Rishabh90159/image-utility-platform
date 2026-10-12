@@ -43,6 +43,16 @@ const groups: { id: NavGroup; heading: string; intro: React.ReactNode }[] = [
     ),
   },
   {
+    id: "pdf",
+    heading: "PDF tools",
+    intro: (
+      <>
+        Convert Word documents to PDF and PDFs to editable Word, or merge several PDFs into one, without uploading them. See
+        all <Link href="/tools/pdf-tools">PDF tools</Link>.
+      </>
+    ),
+  },
+  {
     id: "size",
     heading: "Photo size tools",
     intro: (

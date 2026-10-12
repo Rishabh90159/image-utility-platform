@@ -3,12 +3,12 @@ import { Breadcrumbs } from "@/components/breadcrumbs/breadcrumbs";
 import { ToolCard } from "@/components/tool-card/tool-card";
 import { pageMetadata } from "@/lib/seo/metadata";
 import Link from "next/link";
-import { allTools, APPLICATION_HUB, type ToolCategory } from "@/lib/tools/registry";
+import { allTools, APPLICATION_HUB, PDF_HUB, type ToolCategory } from "@/lib/tools/registry";
 
 export const metadata: Metadata = pageMetadata({
   title: "All Image Tools – Resize, Crop, Compress and Convert Images",
   description:
-    "Every free image tool in one place: resize, upscale, crop and enhance images, remove backgrounds, make PDFs, hit 20KB–200KB limits and convert formats.",
+    "Every free image tool in one place: resize, upscale, crop and enhance images, remove backgrounds, convert and merge PDFs, hit 20KB–200KB limits and convert formats.",
   path: "/tools",
 });
 
@@ -32,6 +32,11 @@ const groups: { category: ToolCategory; heading: string; text: string }[] = [
     category: "convert",
     heading: "Convert image formats",
     text: "Convert iPhone HEIC photos and WebP images to JPG, photos to PDF, SVG to PNG and back, and switch between JPG and PNG.",
+  },
+  {
+    category: "pdf",
+    heading: "PDF tools",
+    text: "Convert Word documents to PDF and PDFs to editable Word, and merge several PDFs into one.",
   },
   {
     category: "size",
@@ -66,6 +71,15 @@ export default function ToolsIndexPage() {
           </h2>
           <p className="mt-1 text-muted">
             {group.text}
+            {group.category === "pdf" ? (
+              <>
+                {" "}
+                <Link href={PDF_HUB.path} className="text-accent hover:underline">
+                  See all PDF tools
+                </Link>
+                .
+              </>
+            ) : null}
             {group.category === "application" ? (
               <>
                 {" "}

@@ -17,7 +17,7 @@ export default function PrivacyPage() {
     <ContentPage
       title="Privacy policy"
       path="/privacy"
-      updated="2026-10-07"
+      updated="2026-10-12"
       intro={
         <p>
           The short version: your images are processed in your browser and are never uploaded to us or anyone else. There
@@ -45,6 +45,11 @@ export default function PrivacyPage() {
           SVG tracing engine, or the background remover&apos;s neural-network model (about 4.6 MB) and the ONNX Runtime
           engine that runs it (about 14 MB). These files are downloaded from this website to your browser; nothing is sent
           in the other direction, and your image is never part of the request.
+        </li>
+        <li>
+          The PDF tools (Word to PDF, PDF to Word and Merge PDF) work the same way: your documents are read and converted
+          in your browser and are never uploaded. Their code (PDF and Word libraries) and, for Word to PDF, fonts that
+          stand in for ones missing on your device are downloaded from this website only when needed.
         </li>
         <li>
           Batch downloads (ZIP files) are assembled in your browser. Passport photos and signatures, which are especially

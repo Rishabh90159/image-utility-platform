@@ -40,12 +40,15 @@ export type ToolId =
   | "jpg-to-pdf"
   | "image-size-increase"
   | "image-quality-enhancer"
-  | "mb-to-kb-converter";
+  | "mb-to-kb-converter"
+  | "word-to-pdf"
+  | "pdf-to-word"
+  | "merge-pdf";
 
-export type ToolCategory = "resize" | "compress" | "convert" | "edit" | "size" | "application" | "units";
+export type ToolCategory = "resize" | "compress" | "convert" | "edit" | "size" | "application" | "units" | "pdf";
 
-/** Navigation groups: general image tools, format converters, file-size tools, and exam/passport photo pages. */
-export type NavGroup = "image" | "convert" | "size" | "application";
+/** Navigation groups: general image tools, format converters, file-size tools, exam/passport photo pages, and PDF/Word document tools. */
+export type NavGroup = "image" | "convert" | "size" | "application" | "pdf";
 
 export function navGroupOf(tool: ToolDefinition): NavGroup {
   switch (tool.category) {
@@ -56,6 +59,8 @@ export function navGroupOf(tool: ToolDefinition): NavGroup {
       return "size";
     case "application":
       return "application";
+    case "pdf":
+      return "pdf";
     default:
       return "image";
   }
@@ -63,6 +68,9 @@ export function navGroupOf(tool: ToolDefinition): NavGroup {
 
 /** Hub page for the exam, recruitment and passport photo pages. */
 export const APPLICATION_HUB = { name: "Exam & passport photos", path: "/tools/application-photos" } as const;
+
+/** Hub page for the PDF and Word document tools. */
+export const PDF_HUB = { name: "PDF tools", path: "/tools/pdf-tools" } as const;
 
 /**
  * Breadcrumb trail for a tool page. Size pages sit under the general "resize
@@ -77,6 +85,7 @@ export function breadcrumbTrail(tool: ToolDefinition): { name: string; path: str
   ];
   if (tool.category === "size") trail.push({ name: tools["resize-image-to-kb"].name, path: tools["resize-image-to-kb"].path });
   if (tool.category === "application") trail.push({ ...APPLICATION_HUB });
+  if (tool.category === "pdf") trail.push({ ...PDF_HUB });
   if (tool.parent) trail.push({ name: tools[tool.parent].name, path: tools[tool.parent].path });
   return [...trail, { name: tool.name, path: tool.path }];
 }
@@ -444,7 +453,7 @@ export const tools: Record<ToolId, ToolDefinition> = {
     summary: "Combine JPG, PNG, WebP and HEIC photos into one PDF, with page size, orientation, fit and margins.",
     linkText: "Convert photos to a PDF",
     category: "convert",
-    related: ["jpg-to-pdf", "merge-images", "jpg-to-png", "png-to-jpg"],
+    related: ["jpg-to-pdf", "merge-images", "jpg-to-png", "png-to-jpg", "merge-pdf"],
     updated: "2026-10-07",
   },
   "merge-images": {
@@ -477,7 +486,7 @@ export const tools: Record<ToolId, ToolDefinition> = {
     summary: "Turn JPG photos and scans into a PDF without recompressing them, one page per image.",
     linkText: "Convert JPG to PDF",
     category: "convert",
-    related: ["photo-to-pdf", "jpeg-to-jpg", "merge-images", "image-compressor"],
+    related: ["photo-to-pdf", "jpeg-to-jpg", "merge-images", "image-compressor", "merge-pdf"],
     updated: "2026-10-07",
   },
   "image-size-increase": {
@@ -513,6 +522,39 @@ export const tools: Record<ToolId, ToolDefinition> = {
     related: ["resize-image-to-kb", "50kb-photo", "100kb-photo", "image-compressor"],
     updated: "2026-10-07",
   },
+  "word-to-pdf": {
+    id: "word-to-pdf",
+    path: "/tools/word-to-pdf",
+    name: "Word to PDF Converter",
+    navLabel: "Word to PDF",
+    summary: "Convert a Word .docx document to PDF in your browser, keeping its page size, tables, lists and images.",
+    linkText: "Convert Word DOCX to PDF",
+    category: "pdf",
+    related: ["pdf-to-word", "merge-pdf", "jpg-to-pdf", "photo-to-pdf"],
+    updated: "2026-10-12",
+  },
+  "pdf-to-word": {
+    id: "pdf-to-word",
+    path: "/tools/pdf-to-word",
+    name: "PDF to Word Converter",
+    navLabel: "PDF to Word",
+    summary: "Turn a text-based PDF into an editable Word .docx with paragraphs, headings, lists and simple tables.",
+    linkText: "Convert PDF to editable Word",
+    category: "pdf",
+    related: ["word-to-pdf", "merge-pdf", "photo-to-pdf", "jpg-to-pdf"],
+    updated: "2026-10-12",
+  },
+  "merge-pdf": {
+    id: "merge-pdf",
+    path: "/tools/merge-pdf",
+    name: "Merge PDF",
+    navLabel: "Merge PDF",
+    summary: "Combine several PDF files into one, in the order you choose, without changing their pages.",
+    linkText: "Merge PDF files into one",
+    category: "pdf",
+    related: ["word-to-pdf", "pdf-to-word", "jpg-to-pdf", "photo-to-pdf"],
+    updated: "2026-10-12",
+  },
 };
 
 /** Display order used across the site. */
@@ -543,6 +585,9 @@ export const toolOrder: ToolId[] = [
   "jpeg-to-jpg",
   "photo-to-pdf",
   "jpg-to-pdf",
+  "word-to-pdf",
+  "pdf-to-word",
+  "merge-pdf",
   "20kb-photo",
   "50kb-photo",
   "100kb-photo",
@@ -567,6 +612,7 @@ export const NAV_GROUPS: { id: NavGroup; label: string }[] = [
   { id: "convert", label: "Convert" },
   { id: "size", label: "Photo size" },
   { id: "application", label: "Exam & passport" },
+  { id: "pdf", label: "PDF" },
 ];
 
 export function toolsIn(group: NavGroup): ToolDefinition[] {

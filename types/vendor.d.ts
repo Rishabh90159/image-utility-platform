@@ -75,3 +75,8 @@ declare module "imagetracerjs" {
   const tracer: ImageTracer;
   export default tracer;
 }
+
+declare module "pdfjs-dist/legacy/build/pdf.worker.mjs" {
+  /** pdf.js's worker-side handler; set as globalThis.pdfjsWorker to parse PDFs in the current thread. */
+  export const WorkerMessageHandler: unknown;
+}

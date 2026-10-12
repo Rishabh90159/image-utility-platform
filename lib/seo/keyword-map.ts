@@ -306,6 +306,34 @@ export const KEYWORD_MAP: KeywordTarget[] = [
     intent: "tool",
     supportedBy: ["/tools/resize-image-to-kb"],
   },
+  {
+    path: "/tools/pdf-tools",
+    primary: "pdf tools",
+    secondary: ["free online pdf tools", "online pdf tools", "pdf tools online free"],
+    intent: "hub",
+    supportedBy: ["/tools", "/tools/word-to-pdf", "/tools/pdf-to-word", "/tools/merge-pdf"],
+  },
+  {
+    path: "/tools/word-to-pdf",
+    primary: "word to pdf",
+    secondary: ["word to pdf converter", "docx to pdf", "convert docx to pdf online", "convert word to pdf", "free word to pdf converter"],
+    intent: "tool",
+    supportedBy: ["/tools/pdf-tools", "/tools/pdf-to-word", "/tools/merge-pdf"],
+  },
+  {
+    path: "/tools/pdf-to-word",
+    primary: "pdf to word",
+    secondary: ["pdf to word converter", "pdf to docx", "pdf to docx online", "convert pdf to editable word", "convert pdf to word"],
+    intent: "tool",
+    supportedBy: ["/tools/pdf-tools", "/tools/word-to-pdf", "/tools/merge-pdf"],
+  },
+  {
+    path: "/tools/merge-pdf",
+    primary: "merge pdf",
+    secondary: ["merge pdf files online", "combine pdf files", "combine pdf", "join pdf files", "join multiple pdfs into one", "pdf merger"],
+    intent: "tool",
+    supportedBy: ["/tools/pdf-tools", "/tools/jpg-to-pdf", "/tools/photo-to-pdf", "/tools/word-to-pdf"],
+  },
 ];
 
 /**

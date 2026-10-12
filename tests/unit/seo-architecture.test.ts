@@ -1,14 +1,14 @@
 import { describe, expect, it } from "vitest";
 import { KEYWORD_MAP, UNSERVED_INTENTS } from "@/lib/seo/keyword-map";
-import { allTools, APPLICATION_HUB, breadcrumbTrail, getTool } from "@/lib/tools/registry";
+import { allTools, APPLICATION_HUB, breadcrumbTrail, getTool, PDF_HUB } from "@/lib/tools/registry";
 
 const norm = (k: string) => k.toLowerCase().replace(/\s+/g, " ").trim();
 
 describe("keyword map", () => {
-  it("gives every tool page and the hub exactly one entry", () => {
+  it("gives every tool page and the hubs exactly one entry", () => {
     const paths = KEYWORD_MAP.map((t) => t.path);
     expect(new Set(paths).size).toBe(paths.length);
-    expect([...paths].sort()).toEqual([...allTools.map((t) => t.path), APPLICATION_HUB.path].sort());
+    expect([...paths].sort()).toEqual([...allTools.map((t) => t.path), APPLICATION_HUB.path, PDF_HUB.path].sort());
   });
 
   it("assigns each keyword to one page only (no cannibalization)", () => {
@@ -35,6 +35,9 @@ describe("breadcrumbs", () => {
     expect(breadcrumbTrail(getTool("image-resizer")).map((c) => c.path)).toEqual(["/", "/tools", "/tools/image-resizer"]);
     for (const id of ["resize-jpg", "resize-png", "resize-webp", "resize-gif", "instagram-image-resizer"] as const) {
       expect(breadcrumbTrail(getTool(id)).map((c) => c.path)).toEqual(["/", "/tools", "/tools/image-resizer", `/tools/${id}`]);
+    }
+    for (const id of ["word-to-pdf", "pdf-to-word", "merge-pdf"] as const) {
+      expect(breadcrumbTrail(getTool(id)).map((c) => c.path)).toEqual(["/", "/tools", PDF_HUB.path, `/tools/${id}`]);
     }
   });
 });

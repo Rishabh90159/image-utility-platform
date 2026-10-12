@@ -3,7 +3,7 @@ import { buttonClass } from "@/components/controls/button";
 import { PhotoCard } from "@/components/controls/photo-card";
 import { TINTS, type Tint } from "@/components/controls/tints";
 import { siteConfig } from "@/lib/site";
-import { APPLICATION_HUB, toolsIn, type NavGroup } from "@/lib/tools/registry";
+import { APPLICATION_HUB, PDF_HUB, toolsIn, type NavGroup } from "@/lib/tools/registry";
 import { Logo } from "./logo";
 
 const companyLinks = [
@@ -57,6 +57,13 @@ const columns: {
     icon: <path d="M5 2.5h7l3.5 3.5v11.5H5z M10 11a2 2 0 100-4 2 2 0 000 4z M7.5 14.5c.5-1.5 4.5-1.5 5 0" />,
     extra: [{ href: APPLICATION_HUB.path, label: "Compare requirements" }],
     more: { href: "/tools#group-application", label: "All exam tools" },
+  },
+  {
+    group: "pdf",
+    label: "PDF tools",
+    tint: "sky",
+    icon: <path d="M5 2.5h7l3.5 3.5v11.5H5z M12 2.5V6h3.5 M7.5 10.5h5 M7.5 13.5h5" />,
+    more: { href: PDF_HUB.path, label: "All PDF tools" },
   },
 ];
 
@@ -218,7 +225,10 @@ export function SiteFooter() {
         {/* Image tools is the longest list, so it gets two sub-columns; photo size and About share a column. */}
         <div className="grid grid-cols-2 gap-x-10 gap-y-10 md:grid-cols-[minmax(0,2.3fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)]">
           <LinkColumn column={columns[0]} className="col-span-2 md:col-span-1" split />
-          <LinkColumn column={columns[1]} />
+          <div className="contents md:block md:space-y-10">
+            <LinkColumn column={columns[1]} />
+            <LinkColumn column={columns[4]} />
+          </div>
           <LinkColumn column={columns[3]} />
           <div className="contents md:block md:space-y-10">
             <LinkColumn column={columns[2]} />
