@@ -74,7 +74,7 @@ export default function ToolsIndexPage() {
             {group.category === "pdf" ? (
               <>
                 {" "}
-                <Link href={PDF_HUB.path} className="text-accent hover:underline">
+                <Link href={PDF_HUB.path} className="text-accent underline underline-offset-2">
                   See all PDF tools
                 </Link>
                 .
@@ -83,7 +83,7 @@ export default function ToolsIndexPage() {
             {group.category === "application" ? (
               <>
                 {" "}
-                <Link href={APPLICATION_HUB.path} className="text-accent hover:underline">
+                <Link href={APPLICATION_HUB.path} className="text-accent underline underline-offset-2">
                   Compare every exam&apos;s photo and signature requirements
                 </Link>
                 .

@@ -102,7 +102,8 @@ function ColumnHeading({ tint, icon, children }: { tint: Tint; icon: React.React
   );
 }
 
-const linkClass = "text-sm text-muted transition-colors hover:text-accent hover:underline";
+// Each link is a 24px-tall touch target (WCAG 2.5.8); list spacing is reduced to match so the footer looks the same.
+const linkClass = "inline-flex min-h-6 items-center text-sm text-muted transition-colors hover:text-accent hover:underline";
 
 type Column = (typeof columns)[number];
 
@@ -115,21 +116,21 @@ function LinkColumn({ column, className = "", split = false }: { column: Column;
       </ColumnHeading>
       <ul className={`mt-4 ${split ? "columns-2 gap-x-8" : ""}`}>
         {toolsIn(column.group).map((tool) => (
-          <li key={tool.id} className="mb-3 break-inside-avoid">
+          <li key={tool.id} className="mb-2 break-inside-avoid">
             <Link href={tool.path} className={linkClass}>
               {tool.name}
             </Link>
           </li>
         ))}
         {column.extra?.map((link) => (
-          <li key={link.href} className="mb-3 break-inside-avoid">
+          <li key={link.href} className="mb-2 break-inside-avoid">
             <Link href={link.href} className={linkClass}>
               {link.label}
             </Link>
           </li>
         ))}
       </ul>
-      <Link href={column.more.href} className="mt-1 inline-block whitespace-nowrap text-sm font-semibold text-accent hover:underline">
+      <Link href={column.more.href} className="mt-1 inline-flex min-h-6 items-center gap-1 whitespace-nowrap text-sm font-semibold text-accent hover:underline">
         {column.more.label} <span aria-hidden="true">→</span>
       </Link>
     </nav>
@@ -236,7 +237,7 @@ export function SiteFooter() {
               <ColumnHeading tint="violet" icon={<path d="M10 17.5a7.5 7.5 0 100-15 7.5 7.5 0 000 15z M10 9v4.5 M10 6.5h.01" />}>
                 About {siteConfig.name}
               </ColumnHeading>
-              <ul className="mt-4 space-y-3">
+              <ul className="mt-4 space-y-2">
                 {companyLinks.map((link) => (
                   <li key={link.href}>
                     <Link href={link.href} className={linkClass}>
@@ -263,7 +264,7 @@ export function SiteFooter() {
                     |
                   </span>
                 ) : null}
-                <Link href={link.href} className="hover:text-accent hover:underline">
+                <Link href={link.href} className="inline-flex min-h-6 items-center hover:text-accent hover:underline">
                   {link.label}
                 </Link>
               </li>

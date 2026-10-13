@@ -13,7 +13,7 @@
   /* Neutrals */
   --color-ink: #0f172a;
   --color-ink-soft: #334155;
-  --color-muted: #64748b;
+  --color-muted: #5a687c; /* slate, darkened from #64748b to keep 4.5:1 on every light background (incl. accent-soft) */
   --color-line: #e2e8f0;
   --color-line-strong: #cbd5e1;
   --color-canvas: #ffffff;

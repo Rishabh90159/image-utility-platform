@@ -400,14 +400,16 @@ export default function HomePage() {
         <p className="mt-1 text-muted">Simple, private image tools that tell you exactly what they did.</p>
         <dl className="mt-7 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {benefits.map(({ title, text, icon }, index) => (
-            <div key={title} className="flex gap-3.5">
-              <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${TINTS[benefitTints[index]]}`}>
-                <Icon20>{icon}</Icon20>
-              </span>
-              <div>
-                <dt className="font-semibold text-ink">{title}</dt>
-                <dd className="mt-1 text-sm leading-relaxed text-muted">{text}</dd>
-              </div>
+            // A <dl> group may only contain <dt> and <dd>, so the decorative icon sits inside the <dt>,
+            // positioned in the left column (2.75rem icon + 0.875rem gap).
+            <div key={title} className="relative min-h-11 pl-[3.625rem]">
+              <dt className="font-semibold text-ink">
+                <span className={`absolute left-0 top-0 flex h-11 w-11 items-center justify-center rounded-full ${TINTS[benefitTints[index]]}`}>
+                  <Icon20>{icon}</Icon20>
+                </span>
+                {title}
+              </dt>
+              <dd className="mt-1 text-sm leading-relaxed text-muted">{text}</dd>
             </div>
           ))}
         </dl>
