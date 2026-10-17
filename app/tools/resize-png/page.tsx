@@ -130,8 +130,9 @@ export default function ResizePngPage() {
           <h2>Supported files</h2>
           <p>
             PNG images up to 50 MB and 100 megapixels, including 8-bit palette PNGs and PNGs with an alpha channel. For other
-            formats, the <Link href="/tools/image-resizer">image resizer</Link> handles JPG, WebP and HEIC, and the{" "}
-            <Link href="/tools/resize-gif">GIF resizer</Link> keeps animations moving.
+            formats, use the <Link href="/tools/resize-jpg">JPG resizer</Link> (with quality and print DPI), the{" "}
+            <Link href="/tools/resize-webp">WebP resizer</Link>, the <Link href="/tools/image-resizer">image resizer</Link> for
+            iPhone HEIC photos, or the <Link href="/tools/resize-gif">GIF resizer</Link>, which keeps animations moving.
           </p>
 
           <h2>When to resize a PNG</h2>

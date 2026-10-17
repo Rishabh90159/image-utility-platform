@@ -144,7 +144,8 @@ export default function ResizeJpgPage() {
           <p>
             This page opens .jpg and .jpeg files up to 50 MB and 100 megapixels, and always saves a .jpg. Got a
             PNG, WebP or iPhone HEIC photo instead? The <Link href="/tools/image-resizer">image resizer</Link> takes all of them,
-            the <Link href="/tools/resize-png">PNG resizer</Link> keeps transparency, and{" "}
+            the <Link href="/tools/resize-png">PNG resizer</Link> keeps transparency, the{" "}
+            <Link href="/tools/resize-webp">WebP resizer</Link> can keep a WebP as WebP, and{" "}
             <Link href="/tools/jpg-to-png">JPG to PNG</Link> converts without further compression.
           </p>
 

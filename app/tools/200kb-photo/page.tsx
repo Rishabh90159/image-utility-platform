@@ -41,7 +41,7 @@ const faqs: FaqItem[] = [
   {
     question: "My photo is already smaller than 200KB. What happens?",
     answer:
-      "If it's already a JPG under 200 KB, the tool returns your original file unchanged rather than re-compressing it, and tells you so. A PNG or WebP under 200 KB is converted to JPG because you asked for a JPG output.",
+      "If it's already a JPG under 200 KB, the tool returns your original file unchanged rather than re-compressing it, and tells you so. A PNG or WebP under 200 KB is converted to JPG because you asked for a JPG output. If the form also sets a minimum, such as 100–200 KB, and your photo is below it, compressing can't help: use the Image Size Increase tool to make the file bigger in KB.",
   },
   {
     question: "What format works best at 200KB?",
@@ -162,6 +162,14 @@ export default function TwoHundredKbPhotoPage() {
             For tighter limits use the <Link href="/tools/100kb-photo">100KB photo resizer</Link> or{" "}
             <Link href="/tools/50kb-photo">50KB photo resizer</Link>. For any other value, such as 150 KB or 1 MB, use{" "}
             <Link href="/tools/resize-image-to-kb">resize image to an exact KB size</Link>.
+          </p>
+
+          <h2>When the form sets a minimum size too</h2>
+          <p>
+            Some forms give a range, such as &ldquo;photo size 100–200 KB&rdquo;. A photo that is too small is rejected just
+            like one that is too big, and compressing only makes it smaller. If your file is below the minimum,{" "}
+            <Link href="/tools/image-size-increase">increase the image size in KB</Link> instead: it makes the file larger
+            without changing how the photo looks.
           </p>
 
           <PrivacyNote>

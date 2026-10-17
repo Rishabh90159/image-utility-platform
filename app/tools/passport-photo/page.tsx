@@ -75,7 +75,10 @@ function PassportComparison() {
           </svg>
         </a>
       </div>
-      <p className="mt-1 text-sm text-muted">Each row is copied from the government source shown, on the date shown.</p>
+      <p className="mt-1 text-sm text-muted">
+        Each row is copied from the government source shown, on the date shown. Pixel sizes for printed photos are our
+        conversion at 300 DPI, the usual photo-print resolution.
+      </p>
       <div className="relative mt-3 overflow-x-auto">
         <table className="w-full min-w-[40rem] text-left text-sm">
           <caption className="sr-only">Passport photo requirements by country and application</caption>
@@ -98,6 +101,11 @@ function PassportComparison() {
                   </th>
                   <td className="py-2.5 pr-3 tabular-nums">
                     {photo.physical ?? (photo.pixelBasis === "minimum" ? `at least ${photo.widthPx} × ${photo.heightPx} px` : `${photo.widthPx} × ${photo.heightPx} px`)}
+                    {photo.physical && photo.pixelBasis === "derived" && photo.dpi ? (
+                      <span className="block text-xs text-muted">
+                        = {photo.widthPx} × {photo.heightPx} px at {photo.dpi} DPI
+                      </span>
+                    ) : null}
                   </td>
                   <td className="py-2.5 pr-3 tabular-nums">{formatKbRange(photo) ?? "Not stated"}</td>
                   <td className="py-2.5">
@@ -202,6 +210,11 @@ export default function PassportPhotoPage() {
             <Link href="/tools/image-cropper">image cropper</Link>; to hit a file-size limit, use{" "}
             <Link href="/tools/resize-image-to-kb">resize image to KB</Link> or the{" "}
             <Link href="/tools/image-compressor">image compressor</Link>.
+          </p>
+          <p>
+            Applying for an exam or a job rather than a passport? Those forms usually want a photo and a signature in set
+            sizes: see the <Link href="/tools/application-photos">exam photo and signature requirements</Link> for IBPS, SBI,
+            SSC, NEET and UPSC, and use the <Link href="/tools/signature-resizer">signature resizer</Link> for the signature.
           </p>
 
           <h2>How we keep this page accurate</h2>

@@ -92,7 +92,7 @@ export const KEYWORD_MAP: KeywordTarget[] = [
   {
     path: "/tools/resize-image-to-kb",
     primary: "resize image in kb",
-    secondary: ["image size reducer", "photo size reducer", "jpg size reducer", "kb reducer", "reduce image size in kb", "resize image to specific kb"],
+    secondary: ["image size reducer", "photo size reducer", "jpg size reducer", "kb reducer", "reduce image size in kb", "resize image to specific kb", "image kb resize"],
     intent: "file-size",
     supportedBy: ["/tools/20kb-photo", "/tools/50kb-photo", "/tools/100kb-photo", "/tools/200kb-photo", "/tools/image-compressor"],
   },
@@ -120,7 +120,7 @@ export const KEYWORD_MAP: KeywordTarget[] = [
   {
     path: "/tools/200kb-photo",
     primary: "resize image to 200kb",
-    secondary: ["compress image to 200kb", "image compressor to 200kb", "200kb photo"],
+    secondary: ["compress image to 200kb", "image compressor to 200kb", "200kb photo", "photo size 200 kb", "image resizer 200kb"],
     intent: "file-size",
     supportedBy: ["/tools/100kb-photo", "/tools/neet-photo", "/tools/image-compressor"],
   },
@@ -288,9 +288,9 @@ export const KEYWORD_MAP: KeywordTarget[] = [
   {
     path: "/tools/merge-images",
     primary: "merge images",
-    secondary: ["combine images", "merge photos", "combine photos into one image", "combine photos online", "photo joiner"],
+    secondary: ["combine images", "merge photos", "combine photos into one image", "combine photos online", "photo joiner", "image joiner", "image combiner", "join images online"],
     intent: "tool",
-    supportedBy: ["/tools/photo-to-pdf"],
+    supportedBy: ["/tools/photo-to-pdf", "/tools/image-cropper"],
   },
   {
     path: "/tools/jpeg-to-jpg",

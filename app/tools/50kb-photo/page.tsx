@@ -169,7 +169,8 @@ export default function FiftyKbPhotoPage() {
             KB at 200 × 230 pixels (preferred). The <Link href="/tools/ibps-photo">IBPS photo resizer</Link> and{" "}
             <Link href="/tools/sbi-photo">SBI photo resizer</Link> apply those exact values and cite the notification. Need
             something smaller, such as a signature? Use the <Link href="/tools/20kb-photo">20KB photo resizer</Link>. Allowed
-            more room? The <Link href="/tools/100kb-photo">100KB photo resizer</Link> keeps more detail.
+            more room? The <Link href="/tools/100kb-photo">100KB photo resizer</Link> keeps more detail, and the{" "}
+            <Link href="/tools/200kb-photo">200KB photo resizer</Link> suits forms that accept up to 200 KB.
           </p>
 
           <PrivacyNote>

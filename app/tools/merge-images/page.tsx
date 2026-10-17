@@ -56,7 +56,7 @@ export default function MergeImagesPage() {
       h1="Merge Images: Combine Photos into One"
       intro={
         <p>
-          Put two or more pictures together in one image: stacked, side by side or in a grid. Choose how differently sized
+          Join two or more pictures into one image: stacked, side by side or in a grid. Choose how differently sized
           images line up, add spacing and a background, and download a JPG or PNG. Everything happens in your browser.
         </p>
       }
@@ -80,7 +80,23 @@ export default function MergeImagesPage() {
             the small ones. <strong>Keep sizes</strong> is useful for screenshots that should stay at 100%.
           </p>
 
-          <h2>Ideas</h2>
+          <h2>Supported files and limits</h2>
+          <ul>
+            <li>
+              <strong>Input:</strong> JPG, PNG, WebP and iPhone HEIC photos, mixed freely, from 2 up to 30 images of up to 50 MB
+              each.
+            </li>
+            <li>
+              <strong>Output:</strong> one JPG, with a quality setting for a smaller file, or one PNG, which can keep a
+              transparent background.
+            </li>
+            <li>
+              <strong>Size:</strong> browsers can create images of about 50 megapixels (16,384 pixels on a side). A larger
+              combination is scaled down to fit, and the tool says by how much.
+            </li>
+          </ul>
+
+          <h2>What people combine photos for</h2>
           <ul>
             <li>Before-and-after pairs, side by side.</li>
             <li>A long vertical strip of phone screenshots to share a conversation or a set of steps.</li>
@@ -88,7 +104,7 @@ export default function MergeImagesPage() {
             <li>Front and back of a card or document in one image, for forms that take a single upload.</li>
           </ul>
 
-          <h2>Tips</h2>
+          <h2>Tips for a clean result</h2>
           <ul>
             <li>
               Crop each photo first with the <Link href="/tools/image-cropper">image cropper</Link> so they share a shape; the
@@ -100,6 +116,7 @@ export default function MergeImagesPage() {
             </li>
             <li>
               Want each picture on its own page instead? Make a PDF with <Link href="/tools/photo-to-pdf">Photo to PDF</Link>.
+              Combining PDF files rather than pictures? Use <Link href="/tools/merge-pdf">Merge PDF</Link>.
             </li>
           </ul>
 
