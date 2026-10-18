@@ -26,6 +26,12 @@ export const metadata: Metadata = {
   formatDetection: { telephone: false, email: false, address: false },
 };
 
+/** EU member states, the rest of the EEA (Iceland, Liechtenstein, Norway) and the UK: ISO 3166-1 codes. */
+const CONSENT_REQUIRED_REGIONS = [
+  "AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL",
+  "PL", "PT", "RO", "SK", "SI", "ES", "SE", "IS", "LI", "NO", "GB",
+];
+
 export const viewport: Viewport = {
   themeColor: "#ffffff",
   width: "device-width",
@@ -78,7 +84,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 interaction, or 6 s after the page has loaded, so it never competes with the page while it
                 loads. Queued events, page_view included, are sent as soon as it arrives. */}
             <Script id="google-analytics" strategy="beforeInteractive">
-              {`window.dataLayer=window.dataLayer||[];window.gtag=function(){window.dataLayer.push(arguments)};gtag('js',new Date());gtag('config','${gaId}');` +
+              {`window.dataLayer=window.dataLayer||[];window.gtag=function(){window.dataLayer.push(arguments)};` +
+                // Consent Mode: in the EU/EEA and UK, where analytics cookies need prior consent, Google Analytics
+                // starts with storage denied, so it sets no cookies and sends only cookieless, anonymous pings.
+                // Google applies `region` from the visitor's location; everywhere else is unchanged.
+                `gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',region:${JSON.stringify(CONSENT_REQUIRED_REGIONS)}});` +
+                `gtag('set','ads_data_redaction',true);` +
+                `gtag('js',new Date());gtag('config','${gaId}');` +
                 `(function(){var done=false,events=['pointerdown','keydown','touchstart','scroll'];function load(){if(done)return;done=true;` +
                 `events.forEach(function(e){removeEventListener(e,load)});var s=document.createElement('script');s.async=true;` +
                 `s.src='https://www.googletagmanager.com/gtag/js?id=${gaId}';document.head.appendChild(s)}` +

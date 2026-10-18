@@ -20,7 +20,7 @@ export default function PrivacyPage() {
     <ContentPage
       title="Privacy policy"
       path="/privacy"
-      updated="2026-10-19"
+      updated="2026-10-20"
       intro={
         <p>
           The short version: your images are processed in your browser and are never uploaded to us or anyone else. There
@@ -86,7 +86,8 @@ export default function PrivacyPage() {
             <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer">
               Google Analytics opt-out browser add-on
             </a>{" "}
-            or by blocking cookies for this site; every tool keeps working.
+            or by blocking cookies for this site; every tool keeps working. Visitors in the EU, EEA and UK are never given
+            Google Analytics cookies (see below).
           </p>
         </>
       ) : null}
@@ -115,7 +116,7 @@ export default function PrivacyPage() {
       <h2>Cookies and local storage</h2>
       <p>
         {googleAnalyticsEnabled
-          ? `${siteConfig.name} itself doesn't set cookies, and there are no advertising cookies. Google Analytics sets its own first-party cookies (named _ga and _ga_ followed by an ID) to tell visits apart and count returning visitors. The site doesn't need cookies to work: blocking them doesn't affect any tool.`
+          ? `${siteConfig.name} itself doesn't set cookies, and there are no advertising cookies. Outside the EU, EEA and UK, Google Analytics sets its own first-party cookies (named _ga and _ga_ followed by an ID) to tell visits apart and count returning visitors. In the EU, EEA and UK it sets no cookies: Google Analytics runs with storage turned off there and sends only anonymous visit counts that can't recognise you on a later visit. The site doesn't need cookies to work: blocking them doesn't affect any tool.`
           : `${siteConfig.name} doesn't set cookies for tracking or advertising. The site doesn't require cookies to work.`}
       </p>
 
