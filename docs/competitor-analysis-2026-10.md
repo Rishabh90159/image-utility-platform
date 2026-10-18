@@ -1,0 +1,210 @@
+# Competitor gap analysis: Imgifyr vs ImageResizer.com and SimpleImageResizer.com
+
+Prepared 18 Oct 2026. Sources: the live sites (fetched 18 Oct), public domain registration records (Verisign
+RDAP), the Imgifyr Search Console export for 10–16 Oct 2026, and a handful of web searches. No backlink tool was
+available, so link counts are not measured here; see "What this analysis can't see".
+
+## 1. The short answer
+
+Most of the gap is **not on the page**. On content depth, technical SEO and structured data, Imgifyr is already
+ahead of both competitors. What they have, and Imgifyr can't have yet, is **age, links and brand**:
+
+| | ImageResizer.com | SimpleImageResizer.com | Imgifyr.com |
+|---|---|---|---|
+| Domain registered | 9 Oct 2002 | 12 Nov 2012 | **7 Oct 2026** |
+| Age | ~24 years | ~14 years | **11 days** |
+| First Wayback Machine capture | Oct 2002 | Dec 2012 | Oct 2026 |
+| Exact-match domain for "image resizer" | Yes | Partly | No |
+
+A site that's 11 days old competes against sites with one to two decades of links, brand searches and user
+history. Google is still working out what Imgifyr is about, and positions of 50–90 are normal at this stage.
+**On-page work can't close an authority gap. Only time, real links and real users can.**
+
+## 2. Side-by-side: comparable pages
+
+Measured from the live HTML on 18 Oct. "Words" counts the main content only.
+
+| | imageresizer.com/resize-jpg | simpleimageresizer.com/resize/jpg | imgifyr.com/tools/resize-jpg |
+|---|---|---|---|
+| Title | Resize JPG and JPEG Images - ImageResizer.com | Resize JPG Image Online For Free – Simple Image Resizer | Resize JPG Online – Change JPG Image Dimensions Free \| Imgifyr |
+| H1 | Resize JPG and JPEG images Online | Resize JPG Image Online Free | Resize JPG Images Online |
+| Main content | ~900 words, mostly generic "Fast / Free / Secure" blocks | ~190 words | ~1,190 words, specific (quality, DPI, EXIF rotation, limits) |
+| FAQ | 16 generic questions, repeated across pages | None | 6 specific questions |
+| Canonical | Yes | **None** | Yes |
+| Structured data | **None** | WebApplication, Product | BreadcrumbList, FAQPage, WebApplication, WebSite, Organization |
+| Where processing happens | FAQ "How long are my files stored on your servers?", so images are uploaded | Not stated clearly | In the browser, never uploaded |
+
+Same picture on the homepages (imageresizer: ~370 words, no schema; simpleimageresizer: ~210 words, no canonical)
+and the KB pages (simpleimageresizer /resize-image-to-kb: ~240 words, no canonical).
+
+Page weight is comparable: the Imgifyr homepage is 44 KB gzipped against 42 KB for imageresizer.com.
+
+**Conclusion:** copying their on-page approach would make Imgifyr worse, not better.
+
+## 3. Where they are ahead
+
+### 3.1 Authority and links (the main gap)
+Twenty-four years of links, mentions in "best free image resizer" lists, bookmarks and returning users. This is
+the main reason they rank, and it can't be measured or copied in code.
+
+### 3.2 Brand and exact-match domains
+"imageresizer" is both the domain and the query. People search for the brand, and Google treats those searches as a
+strong signal. Imgifyr has no brand searches yet (no branded query appears in Search Console).
+
+### 3.3 Scale of pages
+| | ImageResizer.com | SimpleImageResizer.com | Imgifyr |
+|---|---|---|---|
+| Pages in sitemap | ~30,800 | no sitemap (404) | 49 |
+| How | ~987 English pages (860 "X-to-Y" format converters) × 15 languages, plus ~15,000 meme-template pages | ~40 file-size pages (10 KB … 10 MB), format pages (/resize/jpg, /png, /gif, /webp, /heic, /bmp), social-media and print pages | Hand-written tool pages |
+
+Don't copy this. Thousands of near-identical generated pages work for a domain with 24 years of trust. On a new
+domain they look like scaled, low-value content and can hold back the whole site.
+
+What *is* worth taking from it: **targeted coverage where there is real demand**. SimpleImageResizer has
+pages for sizes Imgifyr doesn't cover (10 KB, 30 KB, 300 KB, 500 KB, 1 MB, 2 MB…). Add one only when a keyword
+tool or Search Console shows demand. So far Search Console shows queries for 50, 100 and 200 KB only, plus
+MB→KB conversions ("5mb to kb", "30 mb how many kb", "0.1mb to kb"), which /tools/mb-to-kb-converter already covers.
+
+### 3.4 Languages
+ImageResizer.com serves 15 languages. 38% of Imgifyr's impressions (195 of 507) come from India. A Hindi version is
+a sensible **long-term** option, but it doubles the content to maintain and does nothing for authority. Not a
+priority for the first months.
+
+### 3.5 Trust extras
+SimpleImageResizer has a mobile app, business and pricing pages, an "image advice" section and a feedback form.
+These are brand signals that build up over years; they're not ranking shortcuts.
+
+## 4. Where Imgifyr is already ahead
+
+| Area | Imgifyr | ImageResizer.com | SimpleImageResizer.com |
+|---|---|---|---|
+| Exact-KB tools | Resize to KB + 20/50/100/200 KB pages | **None** (no KB pages at all) | Yes, ~40 size pages |
+| Merge / combine images | Yes | **No** | **No** |
+| Animated GIF resize | Yes, keeps frames | No dedicated page | Yes |
+| Passport photo by country (sourced) | Yes | No | No |
+| Exam presets (IBPS, SBI, SSC, NEET, UPSC) | Yes, with sources | No | SSC CHSL only |
+| No-upload processing | Yes, verifiable | No (server storage) | Unclear |
+| Canonicals, schema, breadcrumbs | Complete | Partial (no schema) | Partial (no canonical) |
+
+Your biggest impression sources (Merge Images, GIF, passport and exam photos, KB sizes) are mostly niches where
+**these two competitors are absent or weak**. The sites you're up against there are different ones (section 5).
+
+## 5. Who Imgifyr actually competes with, query by query
+
+From web searches on 18 Oct. The search engine used is US-based, not Google India, so treat this as indicative.
+
+| Query (Search Console, 10–16 Oct) | Imgifyr page, position | Sites at the top |
+|---|---|---|
+| jpg resize (14 impr.) | resize-jpg, **17.4** | Adobe Express, Wix, Instasize, raw.pics.io, microlink |
+| resize png (22) | resize-png, 72.6 | imageonline.co, i2img, Fotor, Instasize, Wix, Watermarkly |
+| merge images online, image joiner, image combiner (~60 across variants) | merge-images, 84.8 | imageonline.io, merge.imageonline.co, Kapwing, CapCut/Dreamina |
+| gif resizer, resize animated gif (17) | resize-gif, 76.9 | Instasize, Cloudinary, EZGIF, resizegif.imageonline.co |
+| resize image to 50kb (4) | 50kb-photo, 66.3 | Zamzar, Cloudinary, Fotor, **imresizer.com** (separate pages for JPG, JPEG, PNG to 50 KB) |
+
+Pattern: big brands (Adobe, Wix, Canva-style editors, Cloudinary) and long-established single-purpose sites
+(imageonline.co, ezgif, imresizer.com). Neither ImageResizer.com nor SimpleImageResizer.com appeared in these
+results, so for your actual queries they aren't the main obstacle.
+
+## 6. What the Search Console data (10–16 Oct) says
+
+- **Impressions are growing:** 507 impressions this week, against 336 for 8–14 Oct. The two windows overlap by five days.
+  Daily impressions went from 38 (10 Oct) to 93 (16 Oct). **3 clicks**: Passport Photo (position 38),
+  homepage, JPG to PNG.
+- **Indexing is healthy:** 42 of the 49 sitemap URLs already appear in search. This is not an indexing problem.
+- **Mobile does much better:** position 31.5 on mobile against 66.0 on desktop. The site's mobile experience
+  is being rewarded; desktop results are more crowded with big brands.
+- **Queries already close to page 1:**
+
+| Query | Impr. | Pos. |
+|---|---|---|
+| change image size kb | 1 | 4 |
+| passport photo size | 1 | 7 |
+| photo resizer jpg / photo resizer in jpg | 1 + 1 | 7 |
+| resize image size in kb | 1 | 9 |
+| australian passport photo size in pixels | 1 | 10 |
+| resize the picture in kb | 2 | 14 |
+| jpg resize | 14 | 17.4 |
+| image kb resize | 2 | 18.5 |
+
+  These are the KB-size and passport topics: the niches where Imgifyr's content is strongest and the
+  competitors are weakest.
+
+## 7. What to do (prioritised)
+
+### Priority 1: build authority (the real gap, weeks 1–12)
+1. **Get listed where people look for tools:** AlternativeTo (as an alternative to ImageResizer, iLoveIMG,
+   TinyPNG), Product Hunt, SaaSHub, Toolify-style "free tools" directories. A few good listings beat many
+   low-quality ones.
+2. **Exam-preparation communities** (India is your largest market): answer real "how do I resize my photo
+   to 50 KB for SSC/IBPS" questions on Quora, exam-specific subreddits and study groups, linking only where
+   it genuinely answers the question.
+3. **Pitch the unique angle:** "Free image tools that never upload your photo" is a story bloggers and
+   privacy-focused lists will pick up. ImageResizer.com stores files on its servers; Imgifyr doesn't.
+4. **Coaching and exam blogs:** offer the exam requirements page (/tools/application-photos) as a sourced,
+   up-to-date reference. It's the kind of page that earns links naturally.
+5. **Avoid** buying links, link exchanges, PBNs and mass directory submissions. On a new domain these are more
+   likely to hurt than help.
+
+### Priority 2: build the brand
+- Use the name "Imgifyr" consistently (social profiles, GitHub, directory listings) so branded searches start.
+- Don't add watermarks or "Made with Imgifyr" marks to outputs for exposure; for form uploads they'd make
+  the tool worse. Word of mouth from a tool that just works is the better route.
+
+### Priority 3: targeted content (only with evidence)
+- **Strengthen the niches you're already winning:** KB sizes, passport, exam photos. These have the best
+  positions in the data and the weakest competition.
+- **New size pages** (e.g. 10 KB, 30 KB, 300 KB, 500 KB, 1 MB) only after a keyword tool or Search Console shows
+  demand, and only if each page has genuinely specific content (which forms use that size, what quality to expect).
+  SimpleImageResizer's thin 200-word versions are not the model.
+- **Don't** build format-conversion matrices, meme pages or multi-language copies yet.
+
+### Priority 4: watch, don't react
+- Positions on a 2-week-old site move by 20–40 places day to day (seen in the 24-hour export). Judge changes
+  on 28-day windows.
+- Re-run this comparison in 8–12 weeks with a backlink tool to see how the authority gap is moving.
+
+## 8. What this analysis can't see
+
+- **Backlinks and domain authority:** needs a tool such as Semrush, Ahrefs or Moz. The Semrush connector in
+  this workspace needs to be authorised in claude.ai connector settings before it can be used.
+- **Competitors' traffic:** no reliable public source; estimates from third-party tools are rough.
+- **Google India rankings:** the searches above came from a US-based engine. Check key queries manually in
+  Google with an Indian location, or with a rank tracker.
+- **Core Web Vitals field data:** PageSpeed Insights' anonymous quota was used up, and an 11-day-old site has no
+  field data yet anyway. Lab measurements are in section 9.
+
+## 10. Changes made after this analysis (18 Oct)
+
+| Gap | Evidence | Change | Files |
+|---|---|---|---|
+| Homepage "Popular image tools" left out three of the four pages with the most impressions (Merge Images 97, Resize JPG 86, Resize PNG 55) and listed JPG to PNG twice. Resize GIF (54) stays in the homepage's full tool list | Search Console 10–16 Oct; homepage source | Popular tools now: Image Resizer, Resize JPG, Resize PNG, Image Compressor, Resize to KB, Merge Images, Image Cropper, Bulk Resizer. PNG to JPG and WebP to JPG are still linked from the homepage's converter lists, menu and footer | app/page.tsx |
+| Merge Images description didn't use the top query wordings ("image combiner" 8, "image joiner" 8) | Search Console | Description starts "Free image combiner: merge photos into one image…" | app/tools/merge-images/page.tsx |
+| No fast route to Bing, which indexes new sites sooner and also feeds DuckDuckGo, Yahoo and ChatGPT search | — | IndexNow key file and `npm run indexnow` (submits the live sitemap, or given paths, after a deploy) | public/4bed409154729f0d77532494f01753c5.txt, scripts/indexnow.mjs, package.json |
+
+Tests after these changes: type check pass, 133/133 unit, build pass, SEO 794/794, core tools 64/64, merge
+and mobile 77/77. Key file served as text/plain with HTTP 200.
+
+Considered and not changed: exam pages (they already cover PO, signature and postcard queries, with sources;
+SBI Clerk and SSC GD would need their official notifications checked first), UPSC (deliberately shows no
+unverified sizes), titles (positions 50–90 mean titles aren't the limiting factor).
+
+The rest of the gap is domain age and authority, which on-page changes can't supply. The ranking gap comes from domain
+age and authority, which on-page changes can't supply, and there is no guarantee of when or whether rankings
+will move.
+
+## 9. Speed (lab measurement)
+
+Measured 18 Oct in Microsoft Edge with phone emulation (390 × 844), a slow-4G network profile and 4× CPU
+slowdown; median of 3 loads. Lab numbers from one location, not Google's field data, but comparable between sites.
+
+| Page | First paint / LCP | Layout shift (CLS) | Requests | Third-party hosts | Notes |
+|---|---|---|---|---|---|
+| imgifyr.com/ | 1.34 s | 0 | 12 | 0 | |
+| imgifyr.com/tools/resize-jpg | 1.47 s | 0 | 21 | 0 | |
+| imageresizer.com/ | 2.5 s | 0.005 | ~1,500 | ~185 | 2 of 3 loads didn't finish in 90 s (ad and tracking requests) |
+| imageresizer.com/resize-jpg | — | — | — | — | None of 3 loads finished in 90 s |
+| simpleimageresizer.com/resize/jpg | 2.6 s | **0.129** (needs improvement) | ~300 | ~90 | 1 of 3 loads didn't finish in 90 s |
+
+Imgifyr is clearly the fastest and most stable of the three, with no layout shift and no third-party requests
+during load. Speed is a strength to keep, not a gap. Protect it if ads are added later: the competitors' ad
+stacks are what make them slow.

@@ -9,7 +9,7 @@ import { getTool } from "@/lib/tools/registry";
 const tool = getTool("merge-images");
 
 const description =
-  "Merge images into one: stack photos vertically, place them side by side or in a grid, with optional spacing and background. Download PNG or JPG. Free, no upload.";
+  "Free image combiner: merge photos into one image, stacked, side by side or in a grid, with optional spacing and background. Download PNG or JPG. No upload.";
 
 export const metadata: Metadata = pageMetadata({
   title: "Merge Images – Combine Photos into One Image Online",

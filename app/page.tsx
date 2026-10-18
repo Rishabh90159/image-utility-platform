@@ -147,11 +147,11 @@ const steps = [
 
 const popular: { id: ToolId; tint: Tint; blurb: string }[] = [
   { id: "image-resizer", tint: "blue", blurb: "Resize to any width and height." },
+  { id: "resize-jpg", tint: "orange", blurb: "Change a JPG's size, quality and DPI." },
+  { id: "resize-png", tint: "violet", blurb: "Resize PNGs and keep transparency." },
   { id: "image-compressor", tint: "green", blurb: "Shrink file size, keep the dimensions." },
-  { id: "jpg-to-png", tint: "orange", blurb: "Convert JPG photos to PNG." },
-  { id: "png-to-jpg", tint: "violet", blurb: "Turn PNGs into smaller JPGs." },
   { id: "resize-image-to-kb", tint: "rose", blurb: "Hit an exact size such as 50 KB." },
-  { id: "webp-to-jpg", tint: "teal", blurb: "Convert WebP images to JPG." },
+  { id: "merge-images", tint: "teal", blurb: "Join photos side by side or in a grid." },
   { id: "image-cropper", tint: "amber", blurb: "Crop freely or to a set ratio." },
   { id: "bulk-image-resizer", tint: "sky", blurb: "Resize many images at once." },
 ];
@@ -314,7 +314,7 @@ export default function HomePage() {
         <SectionHeader
           id="popular-heading"
           title="Popular image tools"
-          intro="The most used tools to resize, compress, convert and crop images."
+          intro="The most used tools to resize, compress, crop and combine images."
           more={{ href: "/tools", label: "View all tools" }}
         />
         <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

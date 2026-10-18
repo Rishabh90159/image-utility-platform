@@ -1,6 +1,6 @@
 # SEO audit
 
-Generated 2026-10-17 by `tests/e2e/seo-audit.mjs` from the production build. Word counts cover the visible `<main>` text, including the tool's interface labels. First-load JS is uncompressed and includes the shared framework chunks.
+Generated 2026-10-18 by `tests/e2e/seo-audit.mjs` from the production build. Word counts cover the visible `<main>` text, including the tool's interface labels. First-load JS is uncompressed and includes the shared framework chunks.
 
 | URL | Primary keyword | Intent | Title | H1 | Canonical | Indexable | Sitemap | Words | H2s | Internal links | Schema | First-load JS | Overlap with |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -95,7 +95,7 @@ Generated 2026-10-17 by `tests/e2e/seo-audit.mjs` from the production build. Wor
 | /tools/background-remover | Free background remover that runs in your browser. Remove the background from an image automatically, then download a transparent PNG or a white background. | 156 |
 | /tools/photo-to-pdf | Convert photos to PDF in your browser: combine JPG, PNG, WebP and iPhone HEIC images into one file, reorder pages, choose A4 or Letter, and download. | 149 |
 | /tools/jpg-to-pdf | Convert JPG to PDF without recompressing your photos: each JPG is placed in the PDF exactly as it is, one per page. A4 or Letter, any order. Free, in your browser. | 163 |
-| /tools/merge-images | Merge images into one: stack photos vertically, place them side by side or in a grid, with optional spacing and background. Download PNG or JPG. Free, no upload. | 161 |
+| /tools/merge-images | Free image combiner: merge photos into one image, stacked, side by side or in a grid, with optional spacing and background. Download PNG or JPG. No upload. | 155 |
 | /tools/jpeg-to-jpg | Change .jpeg, .jfif and .jpe files to .jpg, unchanged or re-saved, one at a time or in a batch. JPEG and JPG are the same format; this fixes the extension. | 155 |
 | /tools/mb-to-kb-converter | Convert MB to KB, KB to MB and more. Shows decimal (1 MB = 1000 KB) and binary (1 MiB = 1024 KiB) results side by side, and the exact size of any file. | 151 |
 | /tools/pdf-tools | Free PDF tools that run in your browser: convert Word to PDF and PDF to Word, merge PDF files, and turn photos into PDFs. No upload, no sign-up. | 144 |
