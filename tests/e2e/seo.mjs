@@ -48,6 +48,7 @@ const toolPages = [
   "/tools/merge-pdf",
   "/tools/compress-pdf",
   "/tools/pdf-to-jpg",
+  "/tools/image-to-jpg",
 ];
 // Pages with overlapping intent whose text must stay distinct.
 const overlapPages = [
@@ -64,6 +65,10 @@ const overlapPages = [
   "/tools/resize-webp",
   "/tools/resize-gif",
   "/tools/instagram-image-resizer",
+  "/tools/image-to-jpg",
+  "/tools/png-to-jpg",
+  "/tools/webp-to-jpg",
+  "/tools/heic-to-jpg",
 ];
 const kbPages = ["/tools/20kb-photo", "/tools/50kb-photo", "/tools/100kb-photo", "/tools/200kb-photo", "/tools/resize-image-to-kb"];
 const HUB = "/tools/application-photos";
@@ -186,7 +191,7 @@ check("all H1s unique", h1Texts.size === pages.length);
   }
   check(
     "no near-duplicate content between size, application and overlapping-intent pages (6-word overlap < 15%)",
-    entries.length === 25 && worst.score < 0.15,
+    entries.length === 29 && worst.score < 0.15,
     (worst.score * 100).toFixed(1) + "% max (" + worst.pair + ")",
   );
 }

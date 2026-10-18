@@ -60,9 +60,20 @@ export function readDimensions(bytes: Uint8Array, format: DetectedFormat): Dimen
       return readJpeg(bytes);
     case "image/webp":
       return readWebp(bytes);
+    case "image/bmp":
+      return readBmp(bytes);
     default:
       return null;
   }
+}
+
+/** BITMAPINFOHEADER width and height (height is negative for top-down bitmaps). */
+function readBmp(b: Uint8Array): Dimensions | null {
+  if (b.length < 26) return null;
+  const view = new DataView(b.buffer, b.byteOffset, b.byteLength);
+  const width = Math.abs(view.getInt32(18, true));
+  const height = Math.abs(view.getInt32(22, true));
+  return width > 0 && height > 0 ? { width, height } : null;
 }
 
 function readPng(b: Uint8Array): Dimensions | null {

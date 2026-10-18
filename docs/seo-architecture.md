@@ -169,8 +169,8 @@ quality enhancer and MB to KB converter. What remains, ordered by (volume × win
 
 | Priority | Feature | Keywords (approx. volume, KD) | Why | Reuses |
 |---|---|---|---|---|
-| P0 | **Passport photo print sheet** (several 35×45 mm photos on a 4×6 in / A4 page) | passport size photo (351K, KD 10), passport size photo maker (189K, KD 58) | Largest low-difficulty term; competitors' "makers" all offer a printable sheet. Strengthens an existing page instead of adding one. | Passport presets, DPI writer, PDF writer |
-| P0 | **Convert any image to JPG** (PNG/WebP/HEIC/GIF/BMP/AVIF → JPG on one page) | image to jpg converter (48K, KD 14), photo to jpg (46K, KD 14) | Low difficulty; the converter exists, GIF/BMP/AVIF decoding needs checking per browser. | Format converter |
+| Done 2026-10-19 | **Passport photo print sheet** (8 × 35×45 mm on 4×6 in, 30 on A4; JPG + PDF), on /tools/passport-photo and /tools/passport-photo-resizer | passport size photo (351K, KD 10), passport size photo maker (189K, KD 58) | Largest low-difficulty term; competitors' "makers" all offer a printable sheet. Strengthens an existing page instead of adding one. | Passport presets, DPI writer, PDF writer |
+| Done 2026-10-19 | **Convert any image to JPG** (/tools/image-to-jpg, PNG/WebP/HEIC/GIF/BMP/AVIF, optional 20–500 KB limit) | image to jpg converter (48K, KD 14), photo to jpg (46K, KD 14) | Low difficulty; the converter exists, GIF/BMP/AVIF decoding needs checking per browser. | Format converter |
 | P1 | **JPG → WebP** | jpg to webp | Encoder exists; needs its own guidance (support, transparency). | Format converter |
 | P1 | **JPG / PNG compressor pages** | compress jpeg, png compressor | Only once they offer format-specific controls the general compressor doesn't. | Compressor, PNG quantizer |
 | P2 | **AI upscaling / AI enhancement** | image upscaler, enhance image quality | Would need a super-resolution model running on the device (WebGPU), tested on phones; current tools are honest about being non-AI. | Upscaler UI, ONNX Runtime |

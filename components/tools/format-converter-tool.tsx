@@ -9,7 +9,7 @@ import { track, type AnalyticsEvent } from "@/lib/analytics";
 import { toImageToolError } from "@/lib/image-processing/errors";
 import { FORMATS, type ImageMime, type OutputMime } from "@/lib/image-processing/formats";
 import type { ToolId } from "@/lib/tools/registry";
-import { outputFileName, sizeBucket } from "@/lib/utils/format";
+import { formatBytes, KB, outputFileName, sizeBucket } from "@/lib/utils/format";
 import { useJobRunner, useSourceImage, useToolOpen, type SourceImage } from "./hooks";
 import { ActionButton, ToolWorkspace } from "./tool-workspace";
 
@@ -25,6 +25,8 @@ export interface ConverterConfig {
   reverse?: { href: string; label: string };
   /** Analytics event sent after a successful conversion. */
   completedEvent?: AnalyticsEvent;
+  /** JPG/WebP only: offer a maximum file size (in KB), reached with the shared target-size search. */
+  maxSizesKB?: number[];
 }
 
 type BackgroundChoice = "white" | "black" | "custom";
@@ -32,7 +34,7 @@ const BACKGROUNDS: Record<Exclude<BackgroundChoice, "custom">, string> = { white
 const DEFAULT_QUALITY = 0.9;
 
 export function FormatConverterTool({ config }: { config: ConverterConfig }) {
-  const { tool, from, to, reverse, completedEvent = "conversion_completed" } = config;
+  const { tool, from, to, reverse, completedEvent = "conversion_completed", maxSizesKB } = config;
   const target = FORMATS[to];
   useToolOpen(tool);
 
@@ -50,16 +52,34 @@ export function FormatConverterTool({ config }: { config: ConverterConfig }) {
   const [quality, setQuality] = useState(DEFAULT_QUALITY);
   const [background, setBackground] = useState<BackgroundChoice>("white");
   const [customColor, setCustomColor] = useState("#f2f2f2");
-  const [result, setResult] = useState<{ key: string; image: ResultImage } | null>(null);
+  const [limit, setLimit] = useState("none");
+  const [result, setResult] = useState<{ key: string; image: ResultImage; overLimit: boolean } | null>(null);
+  const limitBytes = maxSizesKB && limit !== "none" && (to === "image/jpeg" || to === "image/webp") ? Number(limit) * KB : null;
 
   const fillColor = background === "custom" ? customColor : BACKGROUNDS[background];
   const needsBackground = (image: SourceImage) => image.hasTransparency && !target.supportsTransparency;
   const keyFor = (image: SourceImage) =>
-    JSON.stringify([image.id, target.lossy ? quality : null, needsBackground(image) ? fillColor : null]);
+    JSON.stringify([image.id, target.lossy && !limitBytes ? quality : null, limitBytes, needsBackground(image) ? fillColor : null]);
 
   const convert = async (image: SourceImage) => {
     setError(null);
     try {
+      if (limitBytes && (to === "image/jpeg" || to === "image/webp")) {
+        const made = await runner.run({
+          kind: "target",
+          sourceId: image.id,
+          file: image.file,
+          sourceMime: image.mime,
+          targetBytes: limitBytes,
+          mime: to,
+          allowResize: true,
+          background: fillColor,
+        });
+        if (!made) return;
+        setResult({ key: keyFor(image), image: { blob: made.blob, width: made.width, height: made.height, mime: to }, overLimit: made.outcome !== "met" });
+        track(completedEvent, { tool, input_format: FORMATS[image.mime].label, output_format: target.label, size_bucket: sizeBucket(image.size), target_kb: Number(limit) });
+        return;
+      }
       const encoded = await runner.run({
         kind: "encode",
         sourceId: image.id,
@@ -72,7 +92,7 @@ export function FormatConverterTool({ config }: { config: ConverterConfig }) {
         background: target.supportsTransparency ? null : fillColor,
       });
       if (!encoded) return;
-      setResult({ key: keyFor(image), image: { blob: encoded.blob, width: encoded.width, height: encoded.height, mime: to } });
+      setResult({ key: keyFor(image), image: { blob: encoded.blob, width: encoded.width, height: encoded.height, mime: to }, overLimit: false });
       track(completedEvent, {
         tool,
         input_format: FORMATS[image.mime].label,
@@ -100,9 +120,11 @@ export function FormatConverterTool({ config }: { config: ConverterConfig }) {
     setResult(null);
     setQuality(DEFAULT_QUALITY);
     setBackground("white");
+    setLimit("none");
   };
 
-  const currentResult = source && result?.key === keyFor(source) ? result.image : null;
+  const current = source && result?.key === keyFor(source) ? result : null;
+  const currentResult = current?.image ?? null;
   const fromLabel = from.map((m) => FORMATS[m].label).join("/");
 
   const controls = source ? (
@@ -141,7 +163,27 @@ export function FormatConverterTool({ config }: { config: ConverterConfig }) {
         <p className="text-sm text-muted">No transparent pixels found, so no background colour is needed.</p>
       ) : null}
 
-      {target.lossy ? (
+      {source.mime === "image/gif" ? (
+        <p className="text-sm text-muted">
+          Only the first frame of an animated GIF is converted. To keep the animation, use the{" "}
+          <Link href="/tools/resize-gif" className="font-medium text-accent underline">
+            GIF resizer
+          </Link>
+          .
+        </p>
+      ) : null}
+
+      {maxSizesKB ? (
+        <Segmented<string>
+          legend="Maximum file size"
+          value={limit}
+          onChange={setLimit}
+          hint={limitBytes ? `The ${target.label} will be ${formatBytes(limitBytes)} or less; quality and, if needed, pixel size are chosen for you.` : "Leave at No limit for the best quality."}
+          options={[{ value: "none", label: "No limit" }, ...maxSizesKB.map((kb) => ({ value: String(kb), label: `${kb} KB` }))]}
+        />
+      ) : null}
+
+      {limitBytes ? null : target.lossy ? (
         <QualitySlider
           label={`${target.label} quality`}
           value={quality}
@@ -191,7 +233,11 @@ export function FormatConverterTool({ config }: { config: ConverterConfig }) {
             fileName={outputFileName(source.name, "converted", target.extension)}
             downloadLabel={`Download ${target.label}`}
             status={
-              currentResult.blob.size > source.size && !target.lossy ? (
+              current?.overLimit && limitBytes ? (
+                <Alert tone="warning" title={`Couldn't get under ${formatBytes(limitBytes)}`}>
+                  This is the smallest readable {target.label} the tool could make. Choose a larger limit, or crop the image first.
+                </Alert>
+              ) : currentResult.blob.size > source.size && !target.lossy ? (
                 <Alert tone="info" title={`The ${target.label} is larger than the original`}>
                   That&apos;s expected: {target.label} stores every pixel without lossy compression. If you need a smaller file,
                   keep the original or{" "}

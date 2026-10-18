@@ -39,7 +39,7 @@ const faqs: FaqItem[] = [
   {
     question: "Can I print a passport photo at home?",
     answer:
-      "Check your country's rules. The Indian instruction booklet says photographs in computer print will not be accepted and should be printed on good-quality photo paper. In general, a photo lab print at 100% scale is the safest option.",
+      "Check your country's rules. The Indian instruction booklet says photographs in computer print will not be accepted and should be printed on good-quality photo paper. In general, a photo lab print at 100% scale is the safest option: after making a printed-photo size, download the print sheet (8 photos of 35 × 45 mm on 4 × 6 in paper) and have it printed at a photo shop.",
   },
   {
     question: "What's the difference between this page and the passport photo resizer?",
@@ -176,6 +176,15 @@ export default function PassportPhotoPage() {
             <strong>Digital photos</strong> for online applications are defined in pixels and file size: for example, the UK
             asks for at least 600 × 750 pixels and 50 KB–10 MB, and Canada for a 3:2 portrait JPEG of at least 1,200 × 1,800
             pixels and 200 KB–5 MB. The tool produces exactly the minimum pixel size and checks the file size.
+          </p>
+
+          <h2>Printing several photos on one sheet</h2>
+          <p>
+            Applications that take printed photos often need more than one copy. After you make a printed-photo size, the tool
+            offers a print sheet: <strong>8 photos of 35 × 45 mm on 4 × 6 in photo paper</strong> (the standard photo-shop
+            print) or 30 on A4, with light guides to cut along. Canada&apos;s 50 × 70 mm photos fit 2 to a 4 × 6 in sheet, or
+            12 on A4. Download the JPG for a photo shop or the PDF to print at home at actual size (100%, not &ldquo;fit to
+            page&rdquo;), and check the printed size with a ruler before cutting.
           </p>
 
           <h2>Country notes</h2>

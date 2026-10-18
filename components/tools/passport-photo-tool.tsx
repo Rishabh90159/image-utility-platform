@@ -14,6 +14,7 @@ import type { ImageTransform } from "@/lib/image-processing/types";
 import { getPreset, PHOTO_PRESETS, PRINT_DPI, type PhotoPreset } from "@/lib/presets/photo-presets";
 import { formatBytes, formatDimensions, outputFileName, sizeBucket } from "@/lib/utils/format";
 import { useJobRunner, useSourceImage, useToolOpen, type SourceImage } from "./hooks";
+import { PrintSheet } from "./print-sheet";
 import { runSpec } from "./spec-runner";
 import { ActionButton, ToolWorkspace } from "./tool-workspace";
 
@@ -255,6 +256,7 @@ export function PassportPhotoTool() {
       controls={controls}
       result={
         current ? (
+          <>
           <ResultPanel
             tool={TOOL}
             heading="Your photo is ready"
@@ -294,6 +296,17 @@ export function PassportPhotoTool() {
               </>
             }
           />
+          {current.spec.dpi ? (
+            <PrintSheet
+              tool={TOOL}
+              photo={current.image.blob}
+              widthPx={current.spec.widthPx}
+              heightPx={current.spec.heightPx}
+              dpi={current.spec.dpi}
+              baseName={outputFileName(source.name, "passport", "jpg").replace(/\.jpg$/, "")}
+            />
+          ) : null}
+          </>
         ) : null
       }
     />

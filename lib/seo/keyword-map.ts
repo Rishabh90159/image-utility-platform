@@ -132,6 +132,14 @@ export const KEYWORD_MAP: KeywordTarget[] = [
     supportedBy: ["/tools/png-to-jpg", "/tools/heic-to-jpg"],
   },
   {
+    path: "/tools/image-to-jpg",
+    primary: "image to jpg",
+    // Google India autocomplete, 19 Oct 2026, adds KB limits: "image to jpg converter 100 kb", "photo to jpg converter 50kb".
+    secondary: ["image to jpg converter", "photo to jpg", "photo to jpg converter", "convert image to jpg", "avif to jpg", "bmp to jpg"],
+    intent: "tool",
+    supportedBy: ["/tools/png-to-jpg", "/tools/webp-to-jpg", "/tools/heic-to-jpg"],
+  },
+  {
     path: "/tools/png-to-jpg",
     primary: "png to jpg",
     secondary: ["png to jpg converter", "convert png to jpg", "png to jpeg"],
@@ -356,4 +364,4 @@ export const KEYWORD_MAP: KeywordTarget[] = [
  * tool that does the job. Building a page for these without the feature would
  * be a thin page. Prioritised in docs/seo-architecture.md.
  */
-export const UNSERVED_INTENTS = ["image to jpg converter", "photo to jpg", "photo editor online"] as const;
+export const UNSERVED_INTENTS = ["photo editor online"] as const;

@@ -2,11 +2,12 @@
  * Image formats the tools can read and write. Every tool reads its
  * capabilities from this table.
  *
- * HEIC, SVG and GIF are input-only for the canvas pipeline: browsers can't
- * encode them, so they never appear as an output format (see OutputMime).
+ * HEIC, SVG, GIF, BMP and AVIF are input-only for the canvas pipeline: browsers
+ * can't encode them, so they never appear as an output format (see OutputMime).
+ * BMP and AVIF are decoded by the browser itself and accepted only by tools that list them.
  * Animated GIFs are written by the GIF resizer's own encoder (lib/gif).
  */
-export type ImageMime = "image/jpeg" | "image/png" | "image/webp" | "image/heic" | "image/svg+xml" | "image/gif";
+export type ImageMime = "image/jpeg" | "image/png" | "image/webp" | "image/heic" | "image/svg+xml" | "image/gif" | "image/bmp" | "image/avif";
 
 /** Formats the browser's canvas can encode. */
 export type OutputMime = "image/jpeg" | "image/png" | "image/webp";
@@ -42,6 +43,8 @@ export const FORMATS: Record<ImageMime, FormatInfo> = {
   },
   "image/svg+xml": { mime: "image/svg+xml", label: "SVG", extension: "svg", lossy: false, supportsTransparency: true, encodable: false },
   "image/gif": { mime: "image/gif", label: "GIF", extension: "gif", lossy: false, supportsTransparency: true, encodable: false },
+  "image/bmp": { mime: "image/bmp", label: "BMP", extension: "bmp", altMimes: ["image/x-ms-bmp"], lossy: false, supportsTransparency: true, encodable: false },
+  "image/avif": { mime: "image/avif", label: "AVIF", extension: "avif", lossy: true, supportsTransparency: true, encodable: false },
 };
 
 /** Formats every Phase 1 tool accepts. */
@@ -52,7 +55,8 @@ export const RASTER_INPUT_FORMATS: ImageMime[] = ["image/jpeg", "image/png", "im
 
 /** The format to save in when the user keeps "same as original". HEIC and SVG become JPG; GIF becomes PNG (keeps transparency). */
 export function outputMimeFor(mime: ImageMime): OutputMime {
-  if (mime === "image/gif") return "image/png";
+  if (mime === "image/gif" || mime === "image/bmp") return "image/png";
+  if (mime === "image/avif") return "image/jpeg";
   return mime === "image/heic" || mime === "image/svg+xml" ? "image/jpeg" : mime;
 }
 

@@ -45,7 +45,8 @@ export type ToolId =
   | "pdf-to-word"
   | "merge-pdf"
   | "compress-pdf"
-  | "pdf-to-jpg";
+  | "pdf-to-jpg"
+  | "image-to-jpg";
 
 export type ToolCategory = "resize" | "compress" | "convert" | "edit" | "size" | "application" | "units" | "pdf";
 
@@ -224,8 +225,8 @@ export const tools: Record<ToolId, ToolDefinition> = {
     summary: "Turn PNG images into smaller JPG files, with a background of your choice for transparency.",
     linkText: "Convert PNG to JPG",
     category: "convert",
-    related: ["jpg-to-png", "webp-to-jpg", "image-compressor", "resize-image-to-kb"],
-    updated: "2026-10-07",
+    related: ["jpg-to-png", "webp-to-jpg", "image-to-jpg", "image-compressor", "resize-image-to-kb"],
+    updated: "2026-10-19",
   },
   "webp-to-jpg": {
     id: "webp-to-jpg",
@@ -235,8 +236,8 @@ export const tools: Record<ToolId, ToolDefinition> = {
     summary: "Convert WebP images saved from websites into JPG files that every app and upload form accepts.",
     linkText: "Convert WebP to JPG",
     category: "convert",
-    related: ["png-to-jpg", "image-compressor", "resize-image-to-kb", "image-resizer"],
-    updated: "2026-10-07",
+    related: ["png-to-jpg", "image-to-jpg", "image-compressor", "resize-image-to-kb", "image-resizer"],
+    updated: "2026-10-19",
   },
   "heic-to-jpg": {
     id: "heic-to-jpg",
@@ -246,8 +247,8 @@ export const tools: Record<ToolId, ToolDefinition> = {
     summary: "Convert iPhone HEIC and HEIF photos to JPG that opens everywhere, right in your browser.",
     linkText: "Convert HEIC photos to JPG",
     category: "convert",
-    related: ["image-resizer", "image-compressor", "jpg-to-png"],
-    updated: "2026-10-06",
+    related: ["image-to-jpg", "image-resizer", "image-compressor", "jpg-to-png"],
+    updated: "2026-10-19",
   },
   "svg-to-png": {
     id: "svg-to-png",
@@ -579,6 +580,17 @@ export const tools: Record<ToolId, ToolDefinition> = {
     related: ["jpg-to-pdf", "compress-pdf", "pdf-to-word", "resize-image-to-kb", "image-compressor"],
     updated: "2026-10-18",
   },
+  "image-to-jpg": {
+    id: "image-to-jpg",
+    path: "/tools/image-to-jpg",
+    name: "Image to JPG Converter",
+    navLabel: "Image to JPG",
+    summary: "Convert PNG, WebP, HEIC, GIF, BMP or AVIF images to JPG, with an optional size limit such as 50 KB or 100 KB.",
+    linkText: "Convert any image to JPG",
+    category: "convert",
+    related: ["png-to-jpg", "webp-to-jpg", "heic-to-jpg", "resize-image-to-kb", "image-compressor"],
+    updated: "2026-10-19",
+  },
 };
 
 /** Display order used across the site. */
@@ -591,6 +603,7 @@ export const toolOrder: ToolId[] = [
   "image-quality-enhancer",
   "background-remover",
   "merge-images",
+  "image-to-jpg",
   "jpg-to-png",
   "png-to-jpg",
   "webp-to-jpg",

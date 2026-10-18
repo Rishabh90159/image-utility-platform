@@ -233,3 +233,19 @@ Tests: tests/e2e/pdf-image-tools.mjs (29 checks): a 12 MB, 3-page scan compresse
 493.5 KB (500 KB) in about 1.5 s with page sizes and orientation kept; 10 KB target explained with a 64.3 KB smallest
 result; PDF to JPG pixel sizes and DPI correct, ZIP naming, every page ≤ 100 KB with the limit; password and
 non-PDF errors; mobile layout; no uploads. All other suites still pass (SEO 828/828, PDF tools 94/94).
+
+## 12. Second pass (19 Oct): the roadmap's two P0 features
+
+Source of priority: docs/seo-architecture.md ("Future opportunities", ordered by volume × winnability), re-checked
+against Google India autocomplete on 19 Oct 2026.
+
+| Feature | Demand evidence | What was built |
+|---|---|---|
+| **Passport photo print sheet** | Roadmap: "passport size photo" ~351K, KD 10. Autocomplete: "8 passport size photo in 4x6 paper", "passport size photo 4x6 online free", "passport photo sheet maker" | Under the result on /tools/passport-photo (printed-photo requirements only) and /tools/passport-photo-resizer (any size in mm): 8 × 35×45 mm on 4×6 in, 30 on A4, Canada 50×70 mm 2 / 12; 300 DPI JPG for photo shops and an actual-size PDF for home printing, with cutting guides. Not shown for digital or exam upload photos |
+| **Image to JPG** | Roadmap: "image to jpg converter" ~48K, "photo to jpg" ~46K, both KD 14. Autocomplete adds KB limits: "image to jpg converter 100 kb", "photo to jpg converter 20kb / 50kb" | /tools/image-to-jpg: PNG, WebP, HEIC, GIF (first frame), BMP and AVIF → JPG, with an optional 20/50/100/200/500 KB limit using the shared target-size search. BMP and AVIF are now known formats, accepted only by this page; other tools refuse them with a clear message |
+
+Not built, with reason: JPG → WebP (P1; Safari can't encode WebP, so it needs its own fallback), JPG/PNG compressor
+pages (P1, only once they have format-specific controls), PAN card page (no official spec; see §11).
+
+Tests: tests/e2e/print-and-convert.mjs (19 checks) and tests/unit/print-sheet.test.ts; all suites pass (SEO 844/844,
+including the near-duplicate check now covering Image/PNG/WebP/HEIC to JPG).

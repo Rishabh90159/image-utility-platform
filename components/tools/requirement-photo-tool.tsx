@@ -2,6 +2,7 @@
 
 import { useId, useState } from "react";
 import { ResultPanel, type ResultImage } from "@/components/before-after/result-panel";
+import { PrintSheet } from "./print-sheet";
 import { ImageCropper } from "@/components/cropper/image-cropper";
 import { OrientationControls } from "@/components/cropper/orientation-controls";
 import { useCropState } from "@/components/cropper/use-crop";
@@ -335,6 +336,7 @@ function RequirementPhotoToolInner({ tool, sets, groupLabel, setLabel, appName }
       controls={controls}
       result={
         current ? (
+          <>
           <ResultPanel
             tool={tool}
             heading={kind === "signature" ? "Your signature file" : "Your photo file"}
@@ -357,6 +359,18 @@ function RequirementPhotoToolInner({ tool, sets, groupLabel, setLabel, appName }
               />
             }
           />
+          {/* Printed passport photos (sizes in mm, converted at a known DPI) can be printed several to a sheet. */}
+          {kind === "photo" && imageSpec?.pixelBasis === "derived" && imageSpec.dpi && imageSpec.widthPx && imageSpec.heightPx ? (
+            <PrintSheet
+              tool={tool}
+              photo={current.image.blob}
+              widthPx={imageSpec.widthPx}
+              heightPx={imageSpec.heightPx}
+              dpi={imageSpec.dpi}
+              baseName={outputFileName(source.name, `${appName.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-photo`, "jpg").replace(/.jpg$/, "")}
+            />
+          ) : null}
+          </>
         ) : null
       }
     />

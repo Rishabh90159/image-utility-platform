@@ -49,6 +49,11 @@ const faqs: FaqItem[] = [
       "A preset is only added after its numbers are checked against the issuing government's own website, with the source and the date shown. For other countries and applications, copy the size from the official instructions into Custom size.",
   },
   {
+    question: "Can I print several passport photos on one sheet?",
+    answer:
+      "Yes. After creating a photo with a size in millimetres, choose 4 × 6 in photo paper or A4 below the result. A 35 × 45 mm photo fits 8 times on 4 × 6 in and 30 times on A4. Download the JPG for a photo shop, or the PDF to print at home at 100% scale.",
+  },
+  {
     question: "Is my photo uploaded?",
     answer: "No. Cropping, resizing and compression all run in your browser. Your photo is never sent to a server.",
   },
@@ -152,6 +157,14 @@ export default function PassportPhotoResizerPage() {
           <p>
             Not sure of your country&apos;s rules? <Link href="/tools/passport-photo">Compare passport photo requirements by
             country</Link>, each with its official source.
+          </p>
+
+          <h2>Print sheets: 8 passport photos on 4 × 6 in paper</h2>
+          <p>
+            When the size is in millimetres, the finished photo can be laid out several times on one sheet: 8 copies of a 35 ×
+            45 mm photo fit on 4 × 6 in photo paper, and 30 on A4, with 2 mm gaps and light cutting guides. The JPG sheet is
+            for photo shops and photo printers; the PDF is for printing at home at actual size. Custom sizes work too, and the
+            tool says how many fit.
           </p>
 
           <h2>Printed vs digital photos</h2>
