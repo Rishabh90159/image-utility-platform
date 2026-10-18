@@ -1,5 +1,7 @@
 import { abortError, DocumentToolError, toDocumentToolError, type SerializedDocumentError } from "./errors";
+import type { CompressPdfResult } from "./compress-pdf";
 import type { PdfSummary } from "./merge";
+import type { PdfToJpgResult } from "./pdf-to-jpg";
 import type { PdfToWordResult } from "./pdf-to-word/convert";
 
 /**
@@ -11,16 +13,20 @@ import type { PdfToWordResult } from "./pdf-to-word/convert";
 export type DocumentRequest =
   | { type: "inspect-pdf"; data: ArrayBuffer }
   | { type: "merge-pdf"; files: { name: string; data: ArrayBuffer }[] }
-  | { type: "pdf-to-word"; data: ArrayBuffer; title: string };
+  | { type: "pdf-to-word"; data: ArrayBuffer; title: string }
+  | { type: "compress-pdf"; data: ArrayBuffer; targetBytes: number }
+  | { type: "pdf-to-jpg"; data: ArrayBuffer; dpi: number; maxBytes?: number; title: string };
 
 export type DocumentResult =
   | { type: "inspect-pdf"; summary: PdfSummary }
   | { type: "merge-pdf"; bytes: Uint8Array; pages: number }
-  | ({ type: "pdf-to-word" } & PdfToWordResult);
+  | ({ type: "pdf-to-word" } & PdfToWordResult)
+  | ({ type: "compress-pdf" } & CompressPdfResult)
+  | ({ type: "pdf-to-jpg" } & PdfToJpgResult);
 
 export type DocumentResponse = DocumentResult | { type: "progress"; value: number } | { type: "error"; error: SerializedDocumentError };
 
-const RESPONSE_TYPES = new Set(["inspect-pdf", "merge-pdf", "pdf-to-word", "progress", "error"]);
+const RESPONSE_TYPES = new Set(["inspect-pdf", "merge-pdf", "pdf-to-word", "compress-pdf", "pdf-to-jpg", "progress", "error"]);
 
 interface RunOptions {
   signal?: AbortSignal;

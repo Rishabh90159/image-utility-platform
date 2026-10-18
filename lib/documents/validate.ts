@@ -19,6 +19,12 @@ export const DOC_LIMITS = {
   mergeMaxFileBytes: 100 * MB,
   mergeMaxTotalBytes: 200 * MB,
   mergeMaxPages: 2000,
+  /** Compress PDF: every page is re-encoded on each size attempt, so fewer pages than the other tools. */
+  compressMaxBytes: 100 * MB,
+  compressMaxPages: 50,
+  /** PDF to JPG. */
+  pdfToJpgMaxBytes: 100 * MB,
+  pdfToJpgMaxPages: 100,
 } as const;
 
 export type DocumentKind = "pdf" | "zip" | "ole" | "rtf" | "unknown";

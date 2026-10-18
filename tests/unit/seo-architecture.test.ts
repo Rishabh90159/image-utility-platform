@@ -36,7 +36,7 @@ describe("breadcrumbs", () => {
     for (const id of ["resize-jpg", "resize-png", "resize-webp", "resize-gif", "instagram-image-resizer"] as const) {
       expect(breadcrumbTrail(getTool(id)).map((c) => c.path)).toEqual(["/", "/tools", "/tools/image-resizer", `/tools/${id}`]);
     }
-    for (const id of ["word-to-pdf", "pdf-to-word", "merge-pdf"] as const) {
+    for (const id of ["word-to-pdf", "pdf-to-word", "merge-pdf", "compress-pdf", "pdf-to-jpg"] as const) {
       expect(breadcrumbTrail(getTool(id)).map((c) => c.path)).toEqual(["/", "/tools", PDF_HUB.path, `/tools/${id}`]);
     }
   });

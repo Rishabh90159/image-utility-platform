@@ -43,7 +43,9 @@ export type ToolId =
   | "mb-to-kb-converter"
   | "word-to-pdf"
   | "pdf-to-word"
-  | "merge-pdf";
+  | "merge-pdf"
+  | "compress-pdf"
+  | "pdf-to-jpg";
 
 export type ToolCategory = "resize" | "compress" | "convert" | "edit" | "size" | "application" | "units" | "pdf";
 
@@ -453,8 +455,8 @@ export const tools: Record<ToolId, ToolDefinition> = {
     summary: "Combine JPG, PNG, WebP and HEIC photos into one PDF, with page size, orientation, fit and margins.",
     linkText: "Convert photos to a PDF",
     category: "convert",
-    related: ["jpg-to-pdf", "merge-images", "jpg-to-png", "png-to-jpg", "merge-pdf"],
-    updated: "2026-10-07",
+    related: ["jpg-to-pdf", "merge-images", "compress-pdf", "png-to-jpg", "merge-pdf"],
+    updated: "2026-10-18",
   },
   "merge-images": {
     id: "merge-images",
@@ -486,8 +488,8 @@ export const tools: Record<ToolId, ToolDefinition> = {
     summary: "Turn JPG photos and scans into a PDF without recompressing them, one page per image.",
     linkText: "Convert JPG to PDF",
     category: "convert",
-    related: ["photo-to-pdf", "jpeg-to-jpg", "merge-images", "image-compressor", "merge-pdf"],
-    updated: "2026-10-07",
+    related: ["photo-to-pdf", "pdf-to-jpg", "compress-pdf", "merge-images", "merge-pdf"],
+    updated: "2026-10-18",
   },
   "image-size-increase": {
     id: "image-size-increase",
@@ -541,8 +543,8 @@ export const tools: Record<ToolId, ToolDefinition> = {
     summary: "Turn a text-based PDF into an editable Word .docx with paragraphs, headings, lists and simple tables.",
     linkText: "Convert PDF to editable Word",
     category: "pdf",
-    related: ["word-to-pdf", "merge-pdf", "photo-to-pdf", "jpg-to-pdf"],
-    updated: "2026-10-12",
+    related: ["word-to-pdf", "merge-pdf", "pdf-to-jpg", "compress-pdf"],
+    updated: "2026-10-18",
   },
   "merge-pdf": {
     id: "merge-pdf",
@@ -552,8 +554,30 @@ export const tools: Record<ToolId, ToolDefinition> = {
     summary: "Combine several PDF files into one, in the order you choose, without changing their pages.",
     linkText: "Merge PDF files into one",
     category: "pdf",
-    related: ["word-to-pdf", "pdf-to-word", "jpg-to-pdf", "photo-to-pdf"],
-    updated: "2026-10-12",
+    related: ["compress-pdf", "word-to-pdf", "pdf-to-word", "jpg-to-pdf", "photo-to-pdf"],
+    updated: "2026-10-18",
+  },
+  "compress-pdf": {
+    id: "compress-pdf",
+    path: "/tools/compress-pdf",
+    name: "Compress PDF",
+    navLabel: "Compress PDF",
+    summary: "Reduce a PDF to a target size such as 100 KB, 200 KB or 500 KB for upload forms, keeping it as readable as possible.",
+    linkText: "Compress a PDF to 100KB, 200KB or any size",
+    category: "pdf",
+    related: ["merge-pdf", "pdf-to-jpg", "jpg-to-pdf", "resize-image-to-kb", "photo-to-pdf"],
+    updated: "2026-10-18",
+  },
+  "pdf-to-jpg": {
+    id: "pdf-to-jpg",
+    path: "/tools/pdf-to-jpg",
+    name: "PDF to JPG Converter",
+    navLabel: "PDF to JPG",
+    summary: "Turn every page of a PDF into a JPG image at 72, 150 or 300 DPI, with an optional size limit per image.",
+    linkText: "Convert PDF pages to JPG images",
+    category: "pdf",
+    related: ["jpg-to-pdf", "compress-pdf", "pdf-to-word", "resize-image-to-kb", "image-compressor"],
+    updated: "2026-10-18",
   },
 };
 
@@ -588,6 +612,8 @@ export const toolOrder: ToolId[] = [
   "word-to-pdf",
   "pdf-to-word",
   "merge-pdf",
+  "compress-pdf",
+  "pdf-to-jpg",
   "20kb-photo",
   "50kb-photo",
   "100kb-photo",

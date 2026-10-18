@@ -46,6 +46,8 @@ const toolPages = [
   "/tools/word-to-pdf",
   "/tools/pdf-to-word",
   "/tools/merge-pdf",
+  "/tools/compress-pdf",
+  "/tools/pdf-to-jpg",
 ];
 // Pages with overlapping intent whose text must stay distinct.
 const overlapPages = [
@@ -69,7 +71,7 @@ const applicationPages = ["/tools/ssc-photo", "/tools/upsc-photo", "/tools/ibps-
 const OFFICIAL = /href="https:\/\/(www\.ibps\.in|sbi\.bank\.in|ssc\.gov\.in|neet\.nta\.nic\.in|upsconline\.nic\.in|upsc\.gov\.in|www\.passportindia\.gov\.in|www\.gov\.uk|www\.canada\.ca)\//;
 const DISCLAIMER = "Application requirements can change. Always verify the final image against the latest official";
 const PDF_HUB = "/tools/pdf-tools";
-const pdfPages = ["/tools/word-to-pdf", "/tools/pdf-to-word", "/tools/merge-pdf"];
+const pdfPages = ["/tools/word-to-pdf", "/tools/pdf-to-word", "/tools/merge-pdf", "/tools/compress-pdf", "/tools/pdf-to-jpg"];
 const pages = ["/", "/tools", HUB, PDF_HUB, ...toolPages, "/about", "/methodology", "/privacy", "/terms", "/contact"];
 
 const results = [];

@@ -208,3 +208,28 @@ slowdown; median of 3 loads. Lab numbers from one location, not Google's field d
 Imgifyr is clearly the fastest and most stable of the three, with no layout shift and no third-party requests
 during load. Speed is a strength to keep, not a gap. Protect it if ads are added later: the competitors' ad
 stacks are what make them slow.
+
+## 11. New pages (18 Oct)
+
+Demand evidence: Google India autocomplete (gl=in), 18 Oct 2026. Autocomplete shows what people commonly type, not
+search volume; confirm with Bing Webmaster Tools' Keyword Research or Search Console once the pages have data.
+
+| Candidate | Evidence | Decision |
+|---|---|---|
+| **Compress PDF to a KB size** | "compress pdf to 200kb / 100kb / 500kb / 300kb / 1mb / 50kb", "pdf size reducer in kb / to 200kb" | **Built: /tools/compress-pdf.** Same audience as the KB photo pages; exact-KB output is what Imgifyr already does |
+| **PDF to JPG** | "pdf to jpg converter", "pdf to jpg converter 100 kb / 200 kb", "pdf to jpg high quality" | **Built: /tools/pdf-to-jpg**, with 72/150/300 DPI and an optional 50–500 KB limit per image |
+| Join photo and signature | "join photo and signature online", "photo and signature merge", "… for gds" | Section added to Merge Images (same tool, same intent; a separate page would compete with it) |
+| PAN card photo and signature | "pan card photo size in kb / cm / pixels", "pan card photo and signature size converter" | **Not built.** Only third-party sites state the specs, and they disagree (197×276 vs 213×276 vs 213×213 px; 20/30/50 KB). Needs the official Protean/UTIITSL document first, per the site's sourcing rule |
+| Resize image to 10/30/40/150/300/500 KB, 1 MB | Autocomplete for "resize image to …" | Not yet. Resize Image to KB already accepts any size; add dedicated pages only after Search Console shows impressions for them |
+| cm to pixel converter | "cm to pixel 300 dpi", "photo resizer in cm" | Not yet: small calculator page, weak on its own |
+
+How the new tools work (all in the browser, in a worker; nothing uploaded):
+- **Compress PDF**: original returned unchanged if it already fits → lossless re-save (text stays selectable) →
+  otherwise pages become JPEGs starting at 150 DPI, using the same target-size search as the image KB tools
+  (highest quality first, then lower resolution, down to 60 DPI). Unreachable targets are reported honestly.
+- **PDF to JPG**: pdf.js renders each page; one page → .jpg, several → .zip of numbered JPGs; DPI recorded in each file.
+
+Tests: tests/e2e/pdf-image-tools.mjs (29 checks): a 12 MB, 3-page scan compressed to 197.8 KB (200 KB target) and
+493.5 KB (500 KB) in about 1.5 s with page sizes and orientation kept; 10 KB target explained with a 64.3 KB smallest
+result; PDF to JPG pixel sizes and DPI correct, ZIP naming, every page ≤ 100 KB with the limit; password and
+non-PDF errors; mobile layout; no uploads. All other suites still pass (SEO 828/828, PDF tools 94/94).

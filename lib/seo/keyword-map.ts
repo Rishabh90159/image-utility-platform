@@ -311,7 +311,7 @@ export const KEYWORD_MAP: KeywordTarget[] = [
     primary: "pdf tools",
     secondary: ["free online pdf tools", "online pdf tools", "pdf tools online free"],
     intent: "hub",
-    supportedBy: ["/tools", "/tools/word-to-pdf", "/tools/pdf-to-word", "/tools/merge-pdf"],
+    supportedBy: ["/tools", "/tools/word-to-pdf", "/tools/pdf-to-word", "/tools/merge-pdf", "/tools/compress-pdf", "/tools/pdf-to-jpg"],
   },
   {
     path: "/tools/word-to-pdf",
@@ -333,6 +333,21 @@ export const KEYWORD_MAP: KeywordTarget[] = [
     secondary: ["merge pdf files online", "combine pdf files", "combine pdf", "join pdf files", "join multiple pdfs into one", "pdf merger"],
     intent: "tool",
     supportedBy: ["/tools/pdf-tools", "/tools/jpg-to-pdf", "/tools/photo-to-pdf", "/tools/word-to-pdf"],
+  },
+  {
+    path: "/tools/compress-pdf",
+    primary: "compress pdf",
+    // Google India autocomplete, 18 Oct 2026: KB targets dominate ("compress pdf to 200kb", "pdf size reducer in kb").
+    secondary: ["compress pdf to 200kb", "compress pdf to 100kb", "compress pdf to 500kb", "compress pdf to 1mb", "pdf size reducer", "reduce pdf size"],
+    intent: "file-size",
+    supportedBy: ["/tools/pdf-tools", "/tools/merge-pdf", "/tools/pdf-to-jpg", "/tools/jpg-to-pdf"],
+  },
+  {
+    path: "/tools/pdf-to-jpg",
+    primary: "pdf to jpg",
+    secondary: ["pdf to jpg converter", "convert pdf to jpg", "pdf to image", "pdf to jpg converter 100 kb", "pdf to jpg high quality"],
+    intent: "tool",
+    supportedBy: ["/tools/pdf-tools", "/tools/jpg-to-pdf", "/tools/compress-pdf", "/tools/pdf-to-word"],
   },
 ];
 

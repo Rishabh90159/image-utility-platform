@@ -37,6 +37,8 @@ export interface SingleFileConverterProps {
   convert: (file: File, options: { signal: AbortSignal; onProgress: (fraction: number) => void }) => Promise<ConversionOutput>;
   /** Shown with the selected file, before converting. */
   beforeConvert?: React.ReactNode;
+  /** Identifies the current settings; when it changes, a finished result is cleared so the file can be converted again. */
+  settingsKey?: string;
 }
 
 type Phase = "empty" | "checking" | "ready" | "converting" | "done";
@@ -64,6 +66,14 @@ export function SingleFileConverter(props: SingleFileConverterProps) {
   useEffect(() => {
     if (phase === "done") resultHeading.current?.focus();
   }, [phase]);
+
+  const lastSettings = useRef(props.settingsKey);
+  useEffect(() => {
+    if (lastSettings.current === props.settingsKey) return;
+    lastSettings.current = props.settingsKey;
+    setResult(null);
+    setPhase((current) => (current === "done" ? "ready" : current));
+  }, [props.settingsKey]);
 
   const select = async (files: File[]) => {
     const chosen = files[0];
@@ -198,6 +208,8 @@ export function SingleFileConverter(props: SingleFileConverterProps) {
               </div>
             </div>
           ) : null}
+
+          {phase === "done" && props.settingsKey !== undefined ? <div className="px-4 py-4 sm:px-5">{props.beforeConvert}</div> : null}
 
           {phase === "done" && result && url ? (
             <div className="border-t border-line px-4 py-4 sm:px-5">

@@ -8,9 +8,9 @@ import { getTool, PDF_HUB, toolsIn, type ToolId } from "@/lib/tools/registry";
 import { formatBytes } from "@/lib/utils/format";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Free Online PDF Tools – Convert and Combine Documents",
+  title: "Free Online PDF Tools – Compress, Convert and Merge PDFs",
   description:
-    "Free PDF tools that run in your browser: convert Word to PDF and PDF to Word, merge PDF files, and turn photos into PDFs. No upload, no sign-up.",
+    "Free PDF tools that run in your browser: compress a PDF to a KB size, convert PDF to JPG or Word, Word to PDF, merge PDFs and make PDFs from photos. No upload.",
   path: PDF_HUB.path,
 });
 
@@ -29,13 +29,14 @@ export default function PdfToolsPage() {
       />
       <h1 className="mt-4 text-3xl font-extrabold tracking-[-0.02em] text-ink sm:text-4xl">Free online PDF tools</h1>
       <p className="mt-3 max-w-3xl text-lg leading-relaxed text-ink-soft">
-        Convert Word documents to PDF and PDFs to editable Word, combine several PDFs into one, or make a PDF from photos. Like
-        every Imgifyr tool, they run in your browser: your documents aren&apos;t uploaded.
+        Compress a PDF to the size a form allows, turn PDF pages into JPG images, convert between Word and PDF, combine
+        several PDFs into one, or make a PDF from photos. Like every Imgifyr tool, they run in your browser: your documents
+        aren&apos;t uploaded.
       </p>
 
       <section aria-labelledby="document-tools-heading" className="mt-10">
         <h2 id="document-tools-heading" className="text-xl font-bold tracking-tight text-ink">
-          Convert and combine documents
+          Compress, convert and combine documents
         </h2>
         <ul className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {toolsIn("pdf").map((tool) => (
@@ -69,6 +70,14 @@ export default function PdfToolsPage() {
           <li>
             <strong>Editing text you only have as a PDF:</strong> <Link href="/tools/pdf-to-word">convert the PDF to
             Word</Link>. This works for PDFs with selectable text, not scans.
+          </li>
+          <li>
+            <strong>A form says the PDF is too large:</strong> <Link href="/tools/compress-pdf">compress the PDF</Link> to the
+            limit it states, such as 200 KB or 500 KB.
+          </li>
+          <li>
+            <strong>A form wants an image, but you have a PDF:</strong> <Link href="/tools/pdf-to-jpg">convert the PDF to
+            JPG</Link>, with a size limit per image if the form sets one.
           </li>
           <li>
             <strong>A form asks for one PDF but you have several:</strong> <Link href="/tools/merge-pdf">merge the PDFs</Link>{" "}
@@ -109,6 +118,22 @@ export default function PdfToolsPage() {
                 <td className="px-3 py-2">{formatBytes(DOC_LIMITS.pdfToWordMaxBytes)}, {DOC_LIMITS.pdfToWordMaxPages} pages</td>
                 <td className="px-3 py-2">Images, scanned pages (no OCR), form fields</td>
               </tr>
+              <tr className="border-b border-line align-top">
+                <th scope="row" className="px-3 py-2 font-medium text-ink">
+                  <Link href="/tools/compress-pdf" className="text-accent hover:underline">Compress PDF</Link>
+                </th>
+                <td className="px-3 py-2">PDF files that open without a password</td>
+                <td className="px-3 py-2">{formatBytes(DOC_LIMITS.compressMaxBytes)}, {DOC_LIMITS.compressMaxPages} pages</td>
+                <td className="px-3 py-2">When pages must become images to fit: selectable text, links and form fields</td>
+              </tr>
+              <tr className="border-b border-line align-top">
+                <th scope="row" className="px-3 py-2 font-medium text-ink">
+                  <Link href="/tools/pdf-to-jpg" className="text-accent hover:underline">PDF to JPG</Link>
+                </th>
+                <td className="px-3 py-2">PDF files that open without a password</td>
+                <td className="px-3 py-2">{formatBytes(DOC_LIMITS.pdfToJpgMaxBytes)}, {DOC_LIMITS.pdfToJpgMaxPages} pages</td>
+                <td className="px-3 py-2">Text becomes part of the image; transparency becomes white</td>
+              </tr>
               <tr className="align-top">
                 <th scope="row" className="px-3 py-2 font-medium text-ink">
                   <Link href="/tools/merge-pdf" className="text-accent hover:underline">Merge PDF</Link>
@@ -139,8 +164,8 @@ export default function PdfToolsPage() {
             using <Link href="/tools/merge-pdf">Merge PDF</Link>.
           </li>
           <li>
-            <strong>Upload limits on forms</strong> often apply to the final PDF. Converting is quick, so check the size shown
-            next to the download button before you submit.
+            <strong>Upload limits on forms</strong> often apply to the final PDF. Check the size shown next to the download
+            button, and <Link href="/tools/compress-pdf">compress the PDF</Link> if it&apos;s over the limit.
           </li>
         </ul>
 

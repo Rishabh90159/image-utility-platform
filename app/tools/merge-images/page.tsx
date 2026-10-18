@@ -96,6 +96,16 @@ export default function MergeImagesPage() {
             </li>
           </ul>
 
+          <h2>Join a photo and signature into one image</h2>
+          <p>
+            Some application forms ask for the photo and signature in a single file. Add the photo first and the signature
+            second, choose <strong>Vertical</strong>, set <strong>Match widths</strong> to <strong>Keep sizes</strong> so the
+            signature isn&apos;t stretched to the photo&apos;s width, and keep a <strong>White</strong> background. Save as JPG.
+            If the form also sets a file size, bring the result to{" "}
+            <Link href="/tools/resize-image-to-kb">resize image to KB</Link>; to prepare the signature itself, use the{" "}
+            <Link href="/tools/signature-resizer">signature resizer</Link>. Always follow the layout your form describes.
+          </p>
+
           <h2>What people combine photos for</h2>
           <ul>
             <li>Before-and-after pairs, side by side.</li>

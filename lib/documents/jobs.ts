@@ -21,6 +21,16 @@ export async function runDocumentJob(request: DocumentRequest, onProgress: (frac
       const result = await convertPdfToWord(pdfjs, new Uint8Array(request.data), { title: request.title, onProgress });
       return { type: "pdf-to-word", ...result };
     }
+    case "compress-pdf": {
+      const [pdfjs, { compressPdf }] = await Promise.all([loadPdfJs(), import("./compress-pdf")]);
+      const result = await compressPdf(pdfjs, new Uint8Array(request.data), { targetBytes: request.targetBytes, onProgress });
+      return { type: "compress-pdf", ...result };
+    }
+    case "pdf-to-jpg": {
+      const [pdfjs, { convertPdfToJpg }] = await Promise.all([loadPdfJs(), import("./pdf-to-jpg")]);
+      const result = await convertPdfToJpg(pdfjs, new Uint8Array(request.data), { dpi: request.dpi, maxBytes: request.maxBytes, title: request.title, onProgress });
+      return { type: "pdf-to-jpg", ...result };
+    }
   }
 }
 
