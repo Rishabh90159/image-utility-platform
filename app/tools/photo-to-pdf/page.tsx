@@ -10,7 +10,7 @@ import { getTool } from "@/lib/tools/registry";
 const tool = getTool("photo-to-pdf");
 
 const description =
-  "Convert photos to PDF in your browser: combine JPG, PNG, WebP and iPhone HEIC images into one file, reorder pages, choose A4 or Letter, and download.";
+  "Convert photos to PDF in your browser: combine JPG, PNG, WebP and HEIC images into one file and keep it under 200 KB or any limit. Free, no upload.";
 
 export const metadata: Metadata = pageMetadata({
   title: "Photo to PDF Converter – Convert Images to PDF Online",
@@ -44,7 +44,12 @@ const faqs: FaqItem[] = [
   {
     question: "Why is my PDF so large?",
     answer:
-      "A PDF of photos is about as big as the photos inside it, and phone photos are often 3–5 MB each. Choose Smaller file to reduce each image to 2000 pixels, or compress the photos first.",
+      "A PDF of photos is about as big as the photos inside it, and phone photos are often 3–5 MB each. Set a Maximum PDF size, such as 200 KB or 1 MB, and the tool makes the whole PDF fit; or choose Smaller file to reduce each image to 2000 pixels.",
+  },
+  {
+    question: "Can I make a photo PDF under 100 KB or 200 KB?",
+    answer:
+      "Yes. Choose the limit under Maximum PDF size. The images are re-encoded together, at the best quality that keeps the PDF within the limit, and reduced in pixels only when needed. With a limit, up to 40 photos fit in one PDF.",
   },
   {
     question: "What do Fit and Fill mean?",
@@ -106,6 +111,14 @@ export default function PhotoToPdfPage() {
             supported; convert them first. If every file you have is a JPG, the{" "}
             <Link href="/tools/jpg-to-pdf">JPG to PDF converter</Link> explains how JPGs are embedded without any quality loss
             and what to do about rotated or CMYK JPGs.
+          </p>
+
+          <h2>Photo to PDF under a size limit</h2>
+          <p>
+            Forms that want certificates or documents as a single PDF usually cap its size. Pick the cap, from 100 KB to 1 MB,
+            under <strong>Maximum PDF size</strong>; the tool balances quality across all pages so the finished PDF fits. Take
+            photos of documents in good light and crop them to the page first: less background leaves more detail for the
+            writing within the same size.
           </p>
 
           <h2>Common uses</h2>

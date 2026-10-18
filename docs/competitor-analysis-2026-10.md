@@ -349,3 +349,21 @@ state no size. The scanned photo ID is a JPG of 15–60 KB, with a minimum of 30
 licence, 200 × 300 px for a voter card and 450 × 350 px for a passport; it isn't needed if you give your Aadhaar
 number. The "480 × 672 px" that competitors quote appears in neither 2026 advertisement, so it isn't presented as
 a rule.
+
+## 16. Non-exam, low-competition features (18 Oct)
+
+Method: Google India autocomplete for combinations of tool and size limit, then the top results for each.
+
+| Intent (autocomplete) | Top results | Competition | Built |
+|---|---|---|---|
+| "jpg to pdf under 200kb / 300kb / 500kb / 100kb / 1 mb", "photo to pdf under 50kb", "image to pdf converter under 500kb" | Blog posts (Smallpdf, SignHouse) saying "convert, then compress"; no one-step tool | **Very low** | **Maximum PDF size** on JPG to PDF and Photo to PDF (100 KB to 1 MB, up to 40 images): one search over quality and pixel size for the whole PDF |
+| "merge pdf under 200kb / 500kb / 1mb", "merge jpg to pdf under 200kb" | WPS blog, compress-only pages | **Very low** | **Keep the merged PDF under** on Merge PDF (200 KB to 2 MB): merges, then compresses only if needed |
+| "resize image 20kb to 50kb", "10kb to 20kb", "between 20kb and 50kb" | One range page (imageonline.io); the rest only cap the maximum | Low | **Minimum size** on the KB tool (also on the 20/50/100/200 KB pages, and via `?min=`): pads a JPG up to the minimum without changing pixels |
+| "change dpi of image to 300", "dpi converter" | Clideo, Convert.Town, imageonline, Cutout.pro | Medium | Not built |
+| "transparent signature maker", "remove background from signature" | Several established tools | Medium | Not built (the signature resizer already offers it) |
+
+Tests: tests/e2e/size-limits.mjs (17 checks):
+- 7.8 MB of JPGs became a 196.4 KB PDF, with all 4 pages.
+- Mixed PNG/WebP/JPG fit a 100 KB limit at 99.0 KB.
+- 12.4 MB of PDFs merged to 495.9 KB under a 500 KB limit, with the image-pages caveat shown.
+- A 20–50 KB range was reached by padding, with the pixels unchanged.

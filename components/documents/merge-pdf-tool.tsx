@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { Alert } from "@/components/controls/alert";
 import { buttonClass } from "@/components/controls/button";
+import { Segmented } from "@/components/controls/fields";
 import { DownloadButton } from "@/components/download-button/download-button";
 import { useObjectUrl, useToolOpen } from "@/components/tools/hooks";
 import { ActionButton } from "@/components/tools/tool-workspace";
@@ -10,7 +11,7 @@ import { track } from "@/lib/analytics";
 import { runDocumentRequest } from "@/lib/documents/client";
 import { DocumentToolError, isAbortError, toDocumentToolError } from "@/lib/documents/errors";
 import { assertPdfHeader, DOC_LIMITS } from "@/lib/documents/validate";
-import { countBucket, formatBytes } from "@/lib/utils/format";
+import { countBucket, formatBytes, KB } from "@/lib/utils/format";
 import { DocumentDropzone, FileBadge } from "./document-dropzone";
 
 interface PdfItem {
@@ -40,7 +41,9 @@ export function MergePdfTool() {
   const [busy, setBusy] = useState(false);
   const [progress, setProgress] = useState<number | null>(null);
   const [error, setError] = useState<DocumentToolError | null>(null);
-  const [result, setResult] = useState<{ key: string; blob: Blob; pages: number; files: number } | null>(null);
+  const [result, setResult] = useState<{ key: string; blob: Blob; pages: number; files: number; method?: "original" | "resaved" | "images"; overLimit?: boolean; limitBytes: number | null } | null>(null);
+  const [limit, setLimit] = useState<"none" | "200" | "300" | "500" | "1024" | "2048">("none");
+  const limitBytes = limit === "none" ? null : Number(limit) * KB;
   const [announcement, setAnnouncement] = useState("");
   const [dragId, setDragId] = useState<string | null>(null);
   const itemsRef = useRef(items);
@@ -55,7 +58,7 @@ export function MergePdfTool() {
   const ready = items.filter((item) => item.status === "ready");
   const checking = items.some((item) => item.status === "checking");
   const invalid = items.filter((item) => item.status === "invalid").length;
-  const key = ready.map((item) => item.id).join(",");
+  const key = [ready.map((item) => item.id).join(","), limitBytes].join("|");
   const current = result?.key === key ? result : null;
   const url = useObjectUrl(current?.blob ?? null);
 
@@ -140,9 +143,34 @@ export function MergePdfTool() {
     track("processing_started", { tool, count_bucket: countBucket(files.length) });
     try {
       const data = await Promise.all(files.map(async (item) => ({ name: item.file.name, data: await item.file.arrayBuffer() })));
-      const response = await runDocumentRequest({ type: "merge-pdf", files: data }, { signal: run.signal, onProgress: setProgress });
+      const response = await runDocumentRequest(
+        { type: "merge-pdf", files: data },
+        { signal: run.signal, onProgress: (value) => setProgress(limitBytes ? value * 0.3 : value) },
+      );
       if (response.type !== "merge-pdf") throw new DocumentToolError("CONVERSION_FAILED", "The PDFs couldn't be merged. Please try again.");
-      setResult({ key: files.map((item) => item.id).join(","), blob: new Blob([response.bytes as BlobPart], { type: "application/pdf" }), pages: response.pages, files: files.length });
+      let bytes = response.bytes;
+      let method: "original" | "resaved" | "images" | undefined;
+      let overLimit = false;
+      // Upload limits apply to the merged file, so it is compressed after merging when it's too big.
+      if (limitBytes && bytes.length > limitBytes) {
+        const compressed = await runDocumentRequest(
+          { type: "compress-pdf", data: bytes.slice().buffer as ArrayBuffer, targetBytes: limitBytes },
+          { signal: run.signal, onProgress: (value) => setProgress(0.3 + value * 0.7), timeoutMs: 10 * 60_000 },
+        );
+        if (compressed.type !== "compress-pdf") throw new DocumentToolError("CONVERSION_FAILED", "The merged PDF couldn't be compressed. Please try again.");
+        bytes = compressed.bytes;
+        method = compressed.method;
+        overLimit = compressed.outcome !== "met";
+      }
+      setResult({
+        key: [files.map((item) => item.id).join(","), limitBytes].join("|"),
+        blob: new Blob([bytes as BlobPart], { type: "application/pdf" }),
+        pages: response.pages,
+        files: files.length,
+        method,
+        overLimit,
+        limitBytes,
+      });
       setAnnouncement(`Merged ${files.length} PDFs into one PDF with ${response.pages} pages. Ready to download.`);
       track("pdf_created", { tool, count_bucket: countBucket(files.length), mode: "merge" });
     } catch (caught) {
@@ -294,6 +322,24 @@ export function MergePdfTool() {
             {error.message}
           </Alert>
         ) : null}
+        <Segmented<typeof limit>
+          legend="Keep the merged PDF under"
+          value={limit}
+          onChange={setLimit}
+          hint={
+            limitBytes
+              ? `If the merged PDF is larger than ${formatBytes(limitBytes)}, it's compressed to fit, as in Compress PDF.`
+              : "For upload forms that limit the size of the single PDF."
+          }
+          options={[
+            { value: "none", label: "No limit" },
+            { value: "200", label: "200 KB" },
+            { value: "300", label: "300 KB" },
+            { value: "500", label: "500 KB" },
+            { value: "1024", label: "1 MB" },
+            { value: "2048", label: "2 MB" },
+          ]}
+        />
         <div className="flex flex-wrap items-start gap-3">
           <ActionButton onClick={merge} busy={busy} busyLabel="Merging PDFs…" progress={progress} disabled={checking || ready.length < 2}>
             {current ? "Merge again" : `Merge ${ready.length} PDFs`}
@@ -317,10 +363,26 @@ export function MergePdfTool() {
               </h2>
               <p className="mt-0.5 text-sm text-muted">
                 {current.files} files · {current.pages} {current.pages === 1 ? "page" : "pages"} · {formatBytes(current.blob.size)}
+                {current.limitBytes && !current.overLimit ? ` · within ${formatBytes(current.limitBytes)}` : ""}
               </p>
             </div>
             <DownloadButton href={url} fileName={`merged-${current.pages}-pages.pdf`} label="Download PDF" tool={tool} outputFormat="PDF" />
           </div>
+          {current.method === "images" || current.overLimit ? (
+            <div className="space-y-2 px-4 pb-4 sm:px-5">
+              {current.method === "images" ? (
+                <Alert tone="warning">
+                  To fit the limit, the pages were saved as images: they look the same, but their text can no longer be selected
+                  or searched.
+                </Alert>
+              ) : null}
+              {current.overLimit && current.limitBytes ? (
+                <Alert tone="warning" title={`Couldn't get under ${formatBytes(current.limitBytes)}`}>
+                  This is the smallest version the tool could make. Remove pages you don&apos;t need or choose a larger limit.
+                </Alert>
+              ) : null}
+            </div>
+          ) : null}
           <div className="border-t border-line px-4 py-3 sm:px-5">
             <button type="button" onClick={reset} className="text-sm font-medium text-accent underline">
               Start a new merge

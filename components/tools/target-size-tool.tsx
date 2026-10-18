@@ -26,6 +26,21 @@ interface TargetState {
   result: TargetResult;
   image: ResultImage;
   targetBytes: number;
+  /** Lower limit of a size range, when the form sets one. */
+  minBytes: number | null;
+  /** Bytes of padding added to reach the minimum (0 when none was needed). */
+  paddedBytes: number;
+}
+
+/** Optional minimum in KB, for forms with a range such as 20–50 KB. */
+function parseMinimum(value: string, targetBytes: number | null): { bytes: number | null; error: string | null } {
+  const trimmed = value.trim();
+  if (!trimmed) return { bytes: null, error: null };
+  const kb = Number(trimmed);
+  if (!Number.isFinite(kb) || kb <= 0) return { bytes: null, error: "Enter the minimum as a number of KB, such as 20, or leave it empty." };
+  const bytes = Math.ceil(kb * KB);
+  if (targetBytes && bytes >= targetBytes) return { bytes: null, error: "The minimum must be smaller than the target." };
+  return { bytes, error: null };
 }
 
 export interface TargetSizeToolProps {
@@ -75,6 +90,7 @@ export function TargetSizeTool({
   const [preset, setPreset] = useState<string>(initialPreset);
   const [custom, setCustom] = useState(initialPreset === "custom" ? String(defaultTargetKB) : "");
   const [unit, setUnit] = useState<Unit>("KB");
+  const [minimum, setMinimum] = useState("");
   const [format, setFormat] = useState<OutputMime>("image/jpeg");
   const [allowResize, setAllowResize] = useState(true);
   const [maxWidth, setMaxWidth] = useState("");
@@ -85,7 +101,10 @@ export function TargetSizeTool({
   // Links such as /tools/resize-image-to-kb?target=50 preselect a size.
   useEffect(() => {
     if (!readTargetFromUrl) return;
-    const requested = Number(new URLSearchParams(window.location.search).get("target"));
+    const params = new URLSearchParams(window.location.search);
+    const requestedMin = Number(params.get("min"));
+    if (Number.isFinite(requestedMin) && requestedMin > 0) setMinimum(String(requestedMin));
+    const requested = Number(params.get("target"));
     if (!Number.isFinite(requested) || requested <= 0) return;
     if (presetsKB.includes(requested)) {
       setPreset(String(requested));
@@ -97,6 +116,9 @@ export function TargetSizeTool({
   }, [readTargetFromUrl, presetsKB]);
 
   const target = parseTarget(preset, custom, unit);
+  const min = parseMinimum(minimum, target.bytes);
+  // Padding up to a minimum works on JPG files only.
+  const minBytes = format === "image/jpeg" ? min.bytes : null;
 
   // Optional maximum width: the image is scaled down to it first, then the size search runs.
   const maxWidthValue = maxWidth.trim() ? Number(maxWidth.trim()) : null;
@@ -110,11 +132,11 @@ export function TargetSizeTool({
     : null;
   const customQuality = qualityCap < QUALITY.max - 0.001;
 
-  const settingsKey = source ? JSON.stringify([source.id, target.bytes, format, allowResize, exact, customQuality ? qualityCap : null]) : "";
+  const settingsKey = source ? JSON.stringify([source.id, target.bytes, minBytes, format, allowResize, exact, customQuality ? qualityCap : null]) : "";
   const current = state && state.key === settingsKey ? state : null;
 
   const run = async (image: SourceImage) => {
-    if (!target.bytes || widthError) return;
+    if (!target.bytes || widthError || min.error) return;
     setError(null);
     try {
       const result = await runner.run({
@@ -131,12 +153,24 @@ export function TargetSizeTool({
         maxQuality: customQuality ? qualityCap : undefined,
       });
       if (!result) return;
-      const outMime = result.usedOriginal ? image.mime : format;
+      let outMime = result.usedOriginal ? image.mime : format;
+      let blob = result.blob;
+      let paddedBytes = 0;
+      // Under the form's minimum: add bytes that image viewers ignore, so the picture stays exactly the same.
+      if (minBytes && blob.size < minBytes) {
+        const padded = await runner.run({ kind: "inflate", sourceId: `${image.id}:min:${blob.size}`, file: blob, sourceMime: outMime, targetBytes: minBytes, method: "pad" });
+        if (!padded) return;
+        paddedBytes = padded.paddedBytes;
+        blob = padded.blob;
+        outMime = "image/jpeg";
+      }
       setState({
         key: settingsKey,
         result,
         targetBytes: target.bytes,
-        image: { blob: result.blob, width: result.width, height: result.height, mime: outMime },
+        minBytes,
+        paddedBytes,
+        image: { blob, width: result.width, height: result.height, mime: outMime },
       });
       track(events?.completed ?? "resize_completed", {
         tool,
@@ -218,6 +252,30 @@ export function TargetSizeTool({
           `Target: ${targetLabel} or less (${formatExactBytes(target.bytes ?? 0)}). Sizes use 1 KB = 1,024 bytes.`}
       </p>
 
+      <div className="max-w-[14rem]">
+        <FieldLabel htmlFor="target-minimum">Minimum size (KB, optional)</FieldLabel>
+        <input
+          id="target-minimum"
+          inputMode="decimal"
+          autoComplete="off"
+          placeholder="e.g. 20"
+          value={minimum}
+          onChange={(event) => setMinimum(event.target.value)}
+          aria-invalid={Boolean(min.error)}
+          aria-describedby="target-minimum-help"
+          disabled={format !== "image/jpeg"}
+          className={`${inputClass} mt-1.5`}
+        />
+      </div>
+      <p id="target-minimum-help" className={`-mt-2 text-sm ${min.error ? "font-medium text-danger-ink" : "text-muted"}`}>
+        {format !== "image/jpeg"
+          ? "A minimum size works with JPG output only."
+          : (min.error ??
+            (minBytes && target.bytes
+              ? `The file will be between ${formatBytes(minBytes)} and ${formatBytes(target.bytes)}.`
+              : "For forms with a range, such as 20–50 KB. Leave empty if there's no minimum."))}
+      </p>
+
       <Segmented<OutputMime>
         legend="Output format"
         value={format}
@@ -295,7 +353,7 @@ export function TargetSizeTool({
         busy={runner.busy}
         busyLabel="Finding the best quality…"
         progress={runner.progress}
-        disabled={Boolean(target.error || widthError)}
+        disabled={Boolean(target.error || widthError || min.error)}
       >
         {target.bytes ? `Resize to ${targetLabel}` : "Resize image"}
       </ActionButton>
@@ -328,14 +386,22 @@ function TargetResultView({
   state: TargetState;
   downloadEvent?: AnalyticsEvent;
 }) {
-  const { result, image, targetBytes } = state;
+  const { result, image, targetBytes, minBytes, paddedBytes } = state;
   const size = image.blob.size;
-  const met = size <= targetBytes;
+  const met = size <= targetBytes && (!minBytes || size >= minBytes);
+  const range = minBytes ? `${formatBytes(minBytes)}–${formatBytes(targetBytes)}` : null;
   const resized = image.width !== source.width || image.height !== source.height;
   const saved = percentSaved(source.size, size);
 
   let message: React.ReactNode;
-  if (result.usedOriginal) {
+  if (paddedBytes > 0 && met) {
+    message = (
+      <Alert tone="success" title={`${formatBytes(size)}, within your ${range} range`}>
+        The compressed file was below {formatBytes(minBytes ?? 0)}, so {formatBytes(paddedBytes)} of padding was added: data that
+        image viewers and upload forms ignore. The picture is exactly the same.
+      </Alert>
+    );
+  } else if (result.usedOriginal) {
     message = (
       <Alert tone="success" title="Already under your target">
         Your image is {formatBytes(size)}, which is within {formatBytes(targetBytes)}, so no changes were needed. The download is
@@ -370,7 +436,7 @@ function TargetResultView({
 
   const stats = [
     { label: "Original size", value: formatBytes(source.size) },
-    { label: "Target", value: `≤ ${formatBytes(targetBytes)}` },
+    { label: "Target", value: range ?? `≤ ${formatBytes(targetBytes)}` },
     { label: "Result", value: formatBytes(size), emphasis: true },
     { label: "Saved", value: saved > 0.05 ? `${saved.toFixed(1)}%` : "—" },
   ];

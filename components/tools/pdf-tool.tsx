@@ -9,9 +9,10 @@ import { track } from "@/lib/analytics";
 import { createProcessingPool, isAbortError } from "@/lib/image-processing/client";
 import { ImageToolError, toImageToolError } from "@/lib/image-processing/errors";
 import type { ImageMime } from "@/lib/image-processing/formats";
+import { searchTargetSize } from "@/lib/image-processing/target-size";
 import { buildPdf, displaySize, MARGINS, PAGE_SIZES, placeImage, type Fit, type Orientation, type PageOptions, type PageSize, type PdfImage } from "@/lib/pdf/pdf-writer";
 import type { ToolId } from "@/lib/tools/registry";
-import { countBucket, formatBytes } from "@/lib/utils/format";
+import { countBucket, formatBytes, KB } from "@/lib/utils/format";
 import { useObjectUrl, useToolOpen } from "./hooks";
 import { ImageListView, useImageList, type ListImage } from "./image-list";
 import { ActionButton } from "./tool-workspace";
@@ -31,6 +32,17 @@ export interface PdfToolConfig {
 
 type Margin = keyof typeof MARGINS;
 type Quality = "best" | "smaller";
+type Limit = "none" | "100" | "200" | "300" | "500" | "1024";
+
+const LIMITS_KB: Exclude<Limit, "none">[] = ["100", "200", "300", "500", "1024"];
+/** Fitting a size limit re-encodes every image on each attempt, so it allows fewer images. */
+const LIMIT_MAX_IMAGES = 40;
+/** Smallest long side an image may be reduced to while fitting a limit; below this, text in photos of documents becomes hard to read. */
+const LIMIT_MIN_SIDE = 500;
+
+function limitLabel(limit: Exclude<Limit, "none">): string {
+  return limit === "1024" ? "1 MB" : `${limit} KB`;
+}
 
 const QUALITY: Record<Quality, { quality: number; maxSide?: number }> = {
   best: { quality: 0.92 },
@@ -84,16 +96,18 @@ export function PdfTool({ config }: { config: PdfToolConfig }) {
   const [fit, setFit] = useState<Fit>("fit");
   const [margin, setMargin] = useState<Margin>("small");
   const [quality, setQuality] = useState<Quality>("best");
+  const [limit, setLimit] = useState<Limit>("none");
+  const limitBytes = limit === "none" ? null : Number(limit) * KB;
   const [busy, setBusy] = useState(false);
   const [progress, setProgress] = useState<number | null>(null);
   const [error, setError] = useState<ImageToolError | null>(null);
-  const [result, setResult] = useState<{ key: string; blob: Blob; pages: number; passthrough: number } | null>(null);
+  const [result, setResult] = useState<{ key: string; blob: Blob; pages: number; passthrough: number; limitBytes: number | null; overLimit: boolean } | null>(null);
   const cancelRef = useRef<(() => void) | null>(null);
 
   useEffect(() => () => cancelRef.current?.(), []);
 
   const options: PageOptions = { size, orientation, fit, margin: MARGINS[margin] };
-  const key = JSON.stringify([list.ready.map((item) => item.id), options, quality]);
+  const key = JSON.stringify([list.ready.map((item) => item.id), options, limitBytes ? null : quality, limitBytes]);
   const current = result?.key === key ? result : null;
   const url = useObjectUrl(current?.blob ?? null);
 
@@ -112,6 +126,32 @@ export function PdfTool({ config }: { config: PdfToolConfig }) {
     setProgress(0);
     track("processing_started", { tool, count_bucket: countBucket(images.length) });
     try {
+      if (limitBytes) {
+        if (images.length > LIMIT_MAX_IMAGES) {
+          throw new ImageToolError("PDF_FAILED", `A size limit works with up to ${LIMIT_MAX_IMAGES} images. Make the PDF without a limit, then reduce it with Compress PDF.`);
+        }
+        const longest = Math.max(...images.map((item) => Math.max(item.width ?? 0, item.height ?? 0)), 1);
+        const search = await searchTargetSize(
+          async (scale, q) => {
+            const pages: { image: PdfImage; placement: ReturnType<typeof placeImage> }[] = [];
+            for (const item of images) {
+              const long = Math.max(item.width ?? 1, item.height ?? 1);
+              const prepared = await pool.run({ kind: "pdf-image", sourceId: item.id, file: item.file, noCache: true, quality: q, maxSide: Math.max(16, Math.round(long * scale)), forceEncode: true });
+              const shown = displaySize(prepared.width, prepared.height, prepared.orientation);
+              pages.push({
+                image: { jpeg: prepared.jpeg, width: prepared.width, height: prepared.height, colorSpace: prepared.colorSpace, orientation: prepared.orientation },
+                placement: placeImage(shown.width, shown.height, options),
+              });
+            }
+            return { blob: buildPdf(pages), width: 0, height: 0 };
+          },
+          { targetBytes: limitBytes, allowResize: true, minScale: Math.min(1, LIMIT_MIN_SIDE / longest), onProgress: setProgress },
+        );
+        if (cancelled) return;
+        setResult({ key, blob: search.attempt.blob, pages: images.length, passthrough: 0, limitBytes, overLimit: search.outcome !== "met" });
+        track("pdf_created", { tool, count_bucket: countBucket(images.length), mode: `${size}-${fit}-limit`, target_kb: Number(limit) });
+        return;
+      }
       const pages: { image: PdfImage; placement: ReturnType<typeof placeImage> }[] = [];
       let passthrough = 0;
       for (const [index, item] of images.entries()) {
@@ -131,7 +171,7 @@ export function PdfTool({ config }: { config: PdfToolConfig }) {
         throw new ImageToolError("PDF_FAILED", "The PDF couldn't be created. Try fewer or smaller images.");
       }
       if (cancelled) return;
-      setResult({ key, blob, pages: pages.length, passthrough });
+      setResult({ key, blob, pages: pages.length, passthrough, limitBytes: null, overLimit: false });
       track("pdf_created", { tool, count_bucket: countBucket(pages.length), mode: `${size}-${fit}` });
     } catch (caught) {
       if (cancelled || isAbortError(caught)) return;
@@ -209,6 +249,18 @@ export function PdfTool({ config }: { config: PdfToolConfig }) {
               { value: "large", label: "Large (2 cm)" },
             ]}
           />
+          <Segmented<Limit>
+            legend="Maximum PDF size"
+            value={limit}
+            onChange={setLimit}
+            hint={
+              limitBytes
+                ? `The PDF will be ${formatBytes(limitBytes)} or less: image quality, then size, are lowered only as far as needed.`
+                : "For upload forms with a limit, such as 200 KB."
+            }
+            options={[{ value: "none", label: "No limit" }, ...LIMITS_KB.map((value) => ({ value, label: limitLabel(value) }))]}
+          />
+          {limitBytes ? null : (
           <Segmented<Quality>
             legend="File size"
             value={quality}
@@ -223,6 +275,7 @@ export function PdfTool({ config }: { config: PdfToolConfig }) {
               { value: "smaller", label: "Smaller file" },
             ]}
           />
+          )}
         </div>
 
         {list.ready.length > 0 ? (
@@ -266,7 +319,14 @@ export function PdfTool({ config }: { config: PdfToolConfig }) {
               <p className="mt-0.5 text-sm text-muted" aria-live="polite">
                 {current.pages} {current.pages === 1 ? "page" : "pages"} · {PAGE_SIZES[size].label} · {formatBytes(current.blob.size)}
                 {current.passthrough > 0 ? ` · ${current.passthrough} JPG ${current.passthrough === 1 ? "image" : "images"} embedded without recompression` : ""}
+                {current.limitBytes && !current.overLimit ? ` · within ${formatBytes(current.limitBytes)}` : ""}
               </p>
+              {current.limitBytes && current.overLimit ? (
+                <Alert tone="warning" title={`Couldn't get under ${formatBytes(current.limitBytes)}`}>
+                  This is the smallest readable PDF for {current.pages} {current.pages === 1 ? "image" : "images"}. Use fewer images,
+                  crop them closer to the page, or choose a larger limit.
+                </Alert>
+              ) : null}
             </div>
             <DownloadButton href={url} fileName={`${tool === "jpg-to-pdf" ? "jpg" : "photos"}-${current.pages}-pages.pdf`} label="Download PDF" tool={tool} outputFormat="PDF" />
           </div>

@@ -9,10 +9,10 @@ import { getTool } from "@/lib/tools/registry";
 const tool = getTool("jpg-to-pdf");
 
 const description =
-  "Convert JPG to PDF without recompressing your photos: each JPG is placed in the PDF exactly as it is, one per page. A4 or Letter, any order. Free, in your browser.";
+  "Convert JPG to PDF without recompressing, or keep the PDF under 100 KB, 200 KB or 500 KB for upload forms. One JPG per page, A4 or Letter. Free, no upload.";
 
 export const metadata: Metadata = pageMetadata({
-  title: "JPG to PDF – Convert JPG Images to PDF Without Quality Loss",
+  title: "JPG to PDF Converter – No Quality Loss, or Under 200KB",
   description,
   path: tool.path,
 });
@@ -38,7 +38,7 @@ const faqs: FaqItem[] = [
   {
     question: "Why does the PDF have about the same size as my JPGs?",
     answer:
-      "Because the JPGs are inside it unchanged, plus a few hundred bytes per page for the PDF structure. To make the PDF smaller, choose Smaller file, which reduces each photo to 2000 pixels on the long side and compresses it again.",
+      "Because the JPGs are inside it unchanged, plus a few hundred bytes per page for the PDF structure. To make it smaller, choose a Maximum PDF size such as 200 KB, or Smaller file, which reduces each photo to 2000 pixels on the long side.",
   },
   {
     question: "Are .jpeg and .jfif files accepted?",
@@ -48,7 +48,12 @@ const faqs: FaqItem[] = [
   {
     question: "Are any JPGs re-encoded?",
     answer:
-      "Only in two cases: when you choose Smaller file, and for rare CMYK JPGs (usually from print workflows), which are converted to normal RGB so every PDF viewer shows the colours correctly.",
+      "Only when you choose Smaller file or a Maximum PDF size, and for rare CMYK JPGs (usually from print workflows), which are converted to normal RGB so every PDF viewer shows the colours correctly.",
+  },
+  {
+    question: "How do I convert JPG to PDF under 200 KB?",
+    answer:
+      "Add your JPGs and set Maximum PDF size to 200 KB. The tool searches for the highest image quality that keeps the whole PDF within 200 KB, and makes the pictures smaller in pixels only if quality alone isn't enough. It works for one JPG or several, up to 40 with a limit.",
   },
   {
     question: "How many JPGs can I put in one PDF?",
@@ -81,7 +86,10 @@ export default function JpgToPdfPage() {
             <li>Choose or drop your JPG files.</li>
             <li>Arrange them with the up and down arrows; page 1 is at the top.</li>
             <li>Choose A4 or US Letter, orientation, Fit or Fill and a margin, and check the layout preview.</li>
-            <li>Keep <strong>Best quality</strong> to embed the JPGs unchanged, then select <strong>Create PDF</strong>.</li>
+            <li>
+              Keep <strong>Best quality</strong> to embed the JPGs unchanged, or pick a <strong>Maximum PDF size</strong> if a form
+              sets one, then select <strong>Create PDF</strong>.
+            </li>
           </ol>
 
           <h2>Why there&apos;s no quality loss</h2>
@@ -109,6 +117,15 @@ export default function JpgToPdfPage() {
               wrong colours.
             </li>
           </ul>
+
+          <h2>JPG to PDF under 100 KB, 200 KB or 500 KB</h2>
+          <p>
+            Application portals often ask for one PDF below a size limit. Choose the limit under <strong>Maximum PDF size</strong>{" "}
+            before creating the PDF: every page is re-encoded together until the file fits, so you don&apos;t have to convert
+            and then compress separately. If the limit can&apos;t be reached without making the images unreadable, the tool
+            gives you the smallest version and says so. Already have a PDF that is too big?{" "}
+            <Link href="/tools/compress-pdf">Compress the PDF</Link> instead.
+          </p>
 
           <h2>Typical uses</h2>
           <ul>

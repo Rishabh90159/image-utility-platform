@@ -39,6 +39,11 @@ const faqs: FaqItem[] = [
       "It depends on the image. A passport-style photo or a signature can look clear at 20 KB, while a detailed landscape photo will need to become quite small to fit. Check the preview before downloading; if it looks too soft, use a larger target if your form allows it, or crop away unneeded background first.",
   },
   {
+    question: "How do I resize an image to between 20 KB and 50 KB?",
+    answer:
+      "Choose 50 KB as the target and enter 20 in Minimum size. The tool makes the best JPG at or under 50 KB; if that comes out below 20 KB, it adds padding that image viewers ignore, so the file lands inside the range while the picture stays exactly the same. The same works for any range, such as 10–20 KB or 100–200 KB.",
+  },
+  {
     question: "Is 1 KB 1,000 or 1,024 bytes?",
     answer:
       "This tool uses 1 KB = 1,024 bytes, the same as Windows and most upload forms. A few systems count 1 KB as 1,000 bytes. If a form rejects your file, choose a slightly lower target, such as 48 KB for a 50 KB limit. The exact byte count is always shown with the result.",
@@ -113,6 +118,14 @@ export default function ResizeImageToKbPage() {
             amount. That&apos;s why the goal is &ldquo;at or below&rdquo; your target, which is what upload forms check, rather than
             a precise byte count. If the target is extremely small and dimension changes are turned off, the tool reports
             the closest size it could achieve and explains why, instead of claiming success.
+          </p>
+
+          <h2>Between two sizes: 10–20 KB, 20–50 KB, 100–200 KB</h2>
+          <p>
+            Many forms give a range rather than a single limit, and reject files that are too small as well as too big. Set the
+            upper limit as the target and the lower one under <strong>Minimum size</strong>. Shrinking happens first; if the
+            result is under the minimum, the JPG is padded up to it without touching a single pixel. To make an image larger in
+            KB on its own, use the <Link href="/tools/image-size-increase">image size increaser</Link>.
           </p>
 
           <h2>Dedicated pages for common sizes</h2>

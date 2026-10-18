@@ -92,7 +92,7 @@ export const KEYWORD_MAP: KeywordTarget[] = [
   {
     path: "/tools/resize-image-to-kb",
     primary: "resize image in kb",
-    secondary: ["image size reducer", "photo size reducer", "jpg size reducer", "kb reducer", "reduce image size in kb", "resize image to specific kb", "image kb resize"],
+    secondary: ["image size reducer", "photo size reducer", "jpg size reducer", "kb reducer", "reduce image size in kb", "resize image to specific kb", "image kb resize", "resize image 20kb to 50kb", "resize image between 20kb and 50kb", "resize image 10kb to 20kb"],
     intent: "file-size",
     supportedBy: ["/tools/20kb-photo", "/tools/50kb-photo", "/tools/100kb-photo", "/tools/200kb-photo", "/tools/image-compressor"],
   },
@@ -304,14 +304,14 @@ export const KEYWORD_MAP: KeywordTarget[] = [
   {
     path: "/tools/photo-to-pdf",
     primary: "photo to pdf",
-    secondary: ["image to pdf", "convert image to pdf", "images to pdf", "combine photos into pdf", "photo to pdf converter"],
+    secondary: ["image to pdf", "convert image to pdf", "images to pdf", "combine photos into pdf", "photo to pdf converter", "photo to pdf under 200kb", "image to pdf converter under 500kb"],
     intent: "tool",
     supportedBy: ["/tools/jpg-to-pdf", "/tools/merge-images"],
   },
   {
     path: "/tools/jpg-to-pdf",
     primary: "jpg to pdf",
-    secondary: ["jpg to pdf converter", "jpeg to pdf", "convert jpg to pdf"],
+    secondary: ["jpg to pdf converter", "jpeg to pdf", "convert jpg to pdf", "jpg to pdf under 200kb", "jpg to pdf 100 kb", "jpg to pdf under 500kb"],
     intent: "tool",
     supportedBy: ["/tools/photo-to-pdf", "/tools/jpeg-to-jpg", "/tools/jpg-to-png"],
   },
@@ -360,7 +360,7 @@ export const KEYWORD_MAP: KeywordTarget[] = [
   {
     path: "/tools/merge-pdf",
     primary: "merge pdf",
-    secondary: ["merge pdf files online", "combine pdf files", "combine pdf", "join pdf files", "join multiple pdfs into one", "pdf merger"],
+    secondary: ["merge pdf files online", "combine pdf files", "combine pdf", "join pdf files", "join multiple pdfs into one", "pdf merger", "merge pdf under 200kb", "merge pdf under 1mb"],
     intent: "tool",
     supportedBy: ["/tools/pdf-tools", "/tools/jpg-to-pdf", "/tools/photo-to-pdf", "/tools/word-to-pdf"],
   },

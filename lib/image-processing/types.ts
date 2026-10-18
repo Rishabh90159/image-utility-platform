@@ -129,6 +129,8 @@ export interface PdfImageJob extends JobBase {
   quality: number;
   /** Longest side in pixels; larger images are reduced (the "smaller file" option). */
   maxSide?: number;
+  /** Always re-encode at `quality`, even a JPEG that could be embedded unchanged (used when fitting a PDF size limit). */
+  forceEncode?: boolean;
 }
 
 /** Combine several images into one. `file` is the first image; `files` holds all of them in order. */

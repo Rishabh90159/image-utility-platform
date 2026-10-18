@@ -9,7 +9,7 @@ import { getTool } from "@/lib/tools/registry";
 const tool = getTool("merge-pdf");
 
 const description =
-  "Merge PDF files online for free: combine up to 30 PDFs into one, in the order you choose. Pages are copied unchanged, in your browser with no upload.";
+  "Merge up to 30 PDFs into one in your order, and keep the result under 200 KB, 500 KB or 1 MB if a form sets a limit. Free, in your browser, no upload.";
 
 export const metadata: Metadata = pageMetadata({
   title: "Merge PDF Files Online Free – Combine PDFs into One",
@@ -32,6 +32,11 @@ const faqs: FaqItem[] = [
     question: "How many PDFs can I combine?",
     answer:
       "Up to 30 PDFs at once, up to 100 MB each and 200 MB together. To join more, merge them in groups and then merge the results.",
+  },
+  {
+    question: "Can I merge PDFs and keep the file under 200 KB?",
+    answer:
+      "Yes. Choose a limit under Keep the merged PDF under. The PDFs are merged first; if the result is bigger than the limit, it's compressed to fit, in the same way as the Compress PDF tool. If pages have to become images to fit, the result tells you, since their text is then no longer selectable.",
   },
   {
     question: "Can I merge password-protected PDFs?",
@@ -79,6 +84,14 @@ export default function MergePdfPage() {
             its original file into the new one, so a mix of A4 and Letter, portrait and landscape pages stays exactly as it
             was. Damaged files and PDFs that need a password are detected and skipped with an explanation, so they can&apos;t
             break the merged document.
+          </p>
+
+          <h2>Merging PDFs under a size limit</h2>
+          <p>
+            A form&apos;s limit applies to the single PDF you upload, so the size that matters is the merged one. With a limit
+            chosen, the tool merges first and then compresses only if needed: if the merged file already fits, it is left
+            exactly as merged. Up to 50 pages can be compressed this way; for longer documents, remove pages you don&apos;t
+            need first.
           </p>
 
           <h2>Typical uses</h2>

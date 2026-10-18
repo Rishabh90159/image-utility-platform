@@ -98,7 +98,7 @@ export async function pdfImage(job: PdfImageJob, bitmap: ImageBitmap): Promise<P
   const reduce = job.maxSide ? Math.min(1, job.maxSide / Math.max(bitmap.width, bitmap.height)) : 1;
   // A JPEG goes into the PDF byte-for-byte when it needs no resizing and uses RGB or greyscale.
   // Its EXIF rotation is applied by the page's transform, so the bytes stay untouched.
-  if (reduce === 1) {
+  if (reduce === 1 && !job.forceEncode) {
     const head = new Uint8Array(await job.file.slice(0, 512 * 1024).arrayBuffer());
     const info = isJpeg(head) ? readJpegInfo(head) : null;
     const shown = info ? (info.orientation >= 5 ? { width: info.height, height: info.width } : { width: info.width, height: info.height }) : null;
