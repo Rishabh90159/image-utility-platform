@@ -48,7 +48,8 @@ export type ToolId =
   | "pdf-to-jpg"
   | "image-to-jpg"
   | "rrb-photo"
-  | "upsssc-photo";
+  | "upsssc-photo"
+  | "dsssb-photo";
 
 export type ToolCategory = "resize" | "compress" | "convert" | "edit" | "size" | "application" | "units" | "pdf";
 
@@ -604,6 +605,17 @@ export const tools: Record<ToolId, ToolDefinition> = {
     related: ["signature-resizer", "100kb-photo", "50kb-photo", "rrb-photo", "image-cropper", "resize-image-to-kb"],
     updated: "2026-10-18",
   },
+  "dsssb-photo": {
+    id: "dsssb-photo",
+    path: "/tools/dsssb-photo",
+    name: "DSSSB Photo & Signature",
+    navLabel: "DSSSB photo",
+    summary: "What DSSSB's 2026 advertisements ask for: the photo rules, the signature, and a 15–60 KB scanned photo ID.",
+    linkText: "Prepare your DSSSB photo, signature and ID scan",
+    category: "application",
+    related: ["signature-resizer", "resize-image-to-kb", "image-cropper", "upsssc-photo", "rrb-photo", "50kb-photo"],
+    updated: "2026-10-18",
+  },
   "image-to-jpg": {
     id: "image-to-jpg",
     path: "/tools/image-to-jpg",
@@ -663,6 +675,7 @@ export const toolOrder: ToolId[] = [
   "neet-photo",
   "rrb-photo",
   "upsssc-photo",
+  "dsssb-photo",
   "passport-photo",
 ];
 

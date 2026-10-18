@@ -253,6 +253,13 @@ export const KEYWORD_MAP: KeywordTarget[] = [
     supportedBy: ["/tools/application-photos", "/tools/signature-resizer", "/tools/rrb-photo"],
   },
   {
+    path: "/tools/dsssb-photo",
+    primary: "dsssb photo",
+    secondary: ["dsssb photo size", "dsssb photo and signature size", "dsssb photo resize", "dsssb signature size", "dsssb id proof size"],
+    intent: "application",
+    supportedBy: ["/tools/application-photos", "/tools/signature-resizer", "/tools/upsssc-photo"],
+  },
+  {
     path: "/tools/sbi-photo",
     primary: "sbi photo",
     secondary: ["sbi photo size", "sbi signature size", "sbi po photo size", "sbi thumb impression size", "left thumb impression size for sbi po", "sbi hand written declaration"],

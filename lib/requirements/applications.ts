@@ -356,6 +356,61 @@ const UPSSSC_SETS: RequirementSet[] = [
   },
 ];
 
+// ---------------------------------------------------------------- DSSSB
+// DSSSB's 2026 advertisements describe the photo but give no file size or pixel size for the photo or
+// signature (those are shown in the OARS portal). They do specify the scanned photo ID proof, kept in notes.
+
+const DSSSB_PHOTO: ImageSpec = {
+  kind: "photo",
+  rules: [
+    "Recent and clear colour photograph",
+    "Plain white or off-white background",
+    "Full face, front view, eyes open",
+    "Bring the same photo printed on photo-quality paper whenever the Board asks for it",
+  ],
+};
+
+const DSSSB_SIGNATURE: ImageSpec = {
+  kind: "signature",
+  rules: ["Blurred or illegible signatures lead to rejection of the online application"],
+};
+
+const DSSSB_NOTES = [
+  "The advertisement doesn't state a file size or pixel size for the photo or signature; follow the limits the OARS upload screen shows.",
+  "Registration also needs a scanned photo ID (PAN, voter ID, driving licence or passport) as JPG/JPEG, between 15 KB and 60 KB, at least 300 × 200 px for PAN or driving licence, 200 × 300 px for a voter card and 450 × 350 px for a passport. Not needed if you give your Aadhaar number.",
+];
+
+const DSSSB_SETS: RequirementSet[] = [
+  {
+    id: "dsssb-advt-04-2026",
+    name: "Advertisement 04/2026: Combined Examination 2026 (Senior PA, Junior Judicial Assistant, Process Server, Peon and others)",
+    photo: DSSSB_PHOTO,
+    signature: DSSSB_SIGNATURE,
+    notes: DSSSB_NOTES,
+    source: {
+      title: "Vacancy Notice / Advertisement No. 04/2026",
+      url: "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/circulars-orders/final_adv_1.pdf",
+      publisher: "Delhi Subordinate Services Selection Board (DSSSB), Government of NCT of Delhi",
+      section: "How to apply (points 3 and 13) and general instructions (viii)",
+      lastVerified: "2026-10-18",
+    },
+  },
+  {
+    id: "dsssb-advt-05-2026",
+    name: "Advertisement 05/2026: Sweeper and Chowkidar",
+    photo: DSSSB_PHOTO,
+    signature: DSSSB_SIGNATURE,
+    notes: DSSSB_NOTES,
+    source: {
+      title: "Vacancy Notice / Advertisement No. 05/2026",
+      url: "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/circulars-orders/final_advt_05_2026_1.pdf",
+      publisher: "Delhi Subordinate Services Selection Board (DSSSB), Government of NCT of Delhi",
+      section: "How to apply (points 3 and 13) and general instructions (viii)",
+      lastVerified: "2026-10-18",
+    },
+  },
+];
+
 // ---------------------------------------------------------------- NEET (UG)
 
 const NEET_SETS: RequirementSet[] = [
@@ -415,6 +470,7 @@ export const APPLICATIONS = {
   neet: { name: "NEET", fullName: "National Eligibility cum Entrance Test (UG), conducted by NTA", sets: NEET_SETS },
   rrb: { name: "RRB", fullName: "Railway Recruitment Boards (Indian Railways)", sets: RRB_SETS },
   upsssc: { name: "UPSSSC", fullName: "Uttar Pradesh Subordinate Services Selection Commission", sets: UPSSSC_SETS },
+  dsssb: { name: "DSSSB", fullName: "Delhi Subordinate Services Selection Board", sets: DSSSB_SETS },
 } satisfies Record<string, ApplicationRequirements>;
 
 export type ApplicationId = keyof typeof APPLICATIONS;

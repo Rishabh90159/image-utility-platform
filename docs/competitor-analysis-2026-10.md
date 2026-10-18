@@ -326,3 +326,26 @@ Priority rule (from the site owner): skip anything closing within ~10 days of 18
   - RRB signature: 420 × 180 px, 35.7 KB.
   - UPSSSC: photo 99.7 KB, signature 48.8 KB.
   - The official RRB and UPSSSC domains are added to the unit and SEO tests' official-host lists.
+
+## 15. Fifth pass: wider scan (18 Oct)
+
+Demand: Google India autocomplete for ~47 bodies, exams and documents, counting how many suggestions are about
+size. Then each candidate was checked for an open application window and an official spec.
+
+| Candidate | Demand | Window / official source | Decision |
+|---|---|---|---|
+| **DSSSB** | 6/10 ("dsssb photo size in pixels", "…editor") | Advt 04/2026 (641 posts, closes 4 Nov) and 05/2026 (25 posts, closes 11 Nov) on dsssb.delhi.gov.in | **Built /tools/dsssb-photo**: photo rules plus the official 15–60 KB photo ID spec. No photo/signature KB, because DSSSB doesn't publish one |
+| JEE Main 2027 | strong | NTA's site still shows the 2026 bulletin; the 2027 bulletin is expected late Oct–early Nov | **Build as soon as the bulletin is out** |
+| India Post GDS | 9/10 | Portal shows only the Jan 2025 schedule; notification host returns 503 | Wait for a new schedule |
+| IBPS RRB, SBI Clerk | 6/10 each | No 2026 notification on ibps.in or SBI careers yet | Add to the existing IBPS and SBI pages when published |
+| UGC NET Dec 2026 | 5/10 | Closes 28 Oct (10 days) | Skip (deadline rule) |
+| CTET | 8/10 | Next notification expected Feb–Mar 2027 | Later |
+| Voter ID, driving licence, ration card | 9–10/10, year-round | No official spec found; results are resizer sites that disagree | Only with an official document |
+| RBI, NDA/CDS (UPSC), defence | strong | No open notification checked or verified | Later |
+
+DSSSB detail: the advertisements give the photo rules (recent colour photo, plain white or off-white background,
+full face, front view, eyes open, printed copy on request) and say blurred photos or signatures are rejected, but
+state no size. The scanned photo ID is a JPG of 15–60 KB, with a minimum of 300 × 200 px for PAN or driving
+licence, 200 × 300 px for a voter card and 450 × 350 px for a passport; it isn't needed if you give your Aadhaar
+number. The "480 × 672 px" that competitors quote appears in neither 2026 advertisement, so it isn't presented as
+a rule.

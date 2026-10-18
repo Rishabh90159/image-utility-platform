@@ -104,11 +104,28 @@ async function make(page, file, button, kindLabel) {
   await page.close();
 }
 
+// ---------- DSSSB ----------
+{
+  const page = await open("/tools/dsssb-photo");
+  const summary = await page.locator('section[aria-labelledby="requirements-heading"]').evaluate((el) => el.textContent ?? "");
+  check("DSSSB: both 2026 advertisements linked on dsssb.delhi.gov.in", (await page.locator('a[href^="https://dsssb.delhi.gov.in/"]').count()) >= 2 && summary.includes("04/2026") && summary.includes("05/2026"));
+  check("DSSSB: photo rules shown, no invented KB size", /white or off-white/.test(summary) && /doesn't state a file size/.test(summary));
+  check("DSSSB: ID proof spec with per-document minimums", /15 KB and 60 KB/.test(summary) && /450 × 350/.test(summary));
+  const table = await page.locator("table", { hasText: "Minimum resolution" }).innerText();
+  check("DSSSB: ID proof table lists all four documents", ["PAN card", "Driving licence", "Voter ID card", "Passport"].every((d) => table.includes(d)));
+  await page.locator('input[type="file"]').first().setInputFiles(path.join(FIX, "portrait.jpg"));
+  await page.getByRole("button", { name: "Create photo file" }).click();
+  const result = page.locator('section[aria-labelledby="result-heading"]');
+  await result.waitFor({ timeout: 60_000 });
+  check("DSSSB: photo file made, checklist says no pixel size is specified", /no pixel size is specified/.test(await result.innerText()));
+  await page.close();
+}
+
 // ---------- Hub ----------
 {
   const page = await open("/tools/application-photos");
   const table = await page.locator("table").first().innerText();
-  check("hub: comparison lists RRB and UPSSSC", /RRB/.test(table) && /UPSSSC/.test(table));
+  check("hub: comparison lists RRB, UPSSSC and DSSSB", /RRB/.test(table) && /UPSSSC/.test(table) && /DSSSB/.test(table));
   await page.close();
 }
 

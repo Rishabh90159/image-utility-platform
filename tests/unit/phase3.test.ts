@@ -13,6 +13,7 @@ const OFFICIAL_HOSTS = [
   "neet.nta.nic.in",
   "rrb.indianrailways.gov.in",
   "upsssc.gov.in",
+  "dsssb.delhi.gov.in",
   "www.passportindia.gov.in",
   "www.gov.uk",
   "www.canada.ca",
@@ -104,6 +105,7 @@ describe("registry and freshness", () => {
     "neet-photo": APPLICATIONS.neet.sets,
     "rrb-photo": APPLICATIONS.rrb.sets,
     "upsssc-photo": APPLICATIONS.upsssc.sets,
+    "dsssb-photo": APPLICATIONS.dsssb.sets,
     "passport-photo": PASSPORT_REQUIREMENTS,
   };
 
@@ -114,10 +116,10 @@ describe("registry and freshness", () => {
     }
   });
 
-  it("has 45 tools in five navigation groups, each related list pointing to other existing tools", () => {
-    expect(allTools).toHaveLength(45);
+  it("has 46 tools in five navigation groups, each related list pointing to other existing tools", () => {
+    expect(allTools).toHaveLength(46);
     expect(toolsIn("size").map((t) => t.id)).toEqual(["20kb-photo", "50kb-photo", "100kb-photo", "200kb-photo", "mb-to-kb-converter"]);
-    expect(toolsIn("application")).toHaveLength(8);
+    expect(toolsIn("application")).toHaveLength(9);
     expect(toolsIn("image")).toHaveLength(17);
     expect(toolsIn("convert")).toHaveLength(10);
     expect(toolsIn("pdf").map((t) => t.id)).toEqual(["word-to-pdf", "pdf-to-word", "merge-pdf", "compress-pdf", "pdf-to-jpg"]);
