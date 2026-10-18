@@ -4,7 +4,7 @@
 //
 // Run after a deploy, never before (the engines fetch the live pages and the key file):
 //   npm run indexnow                                  every URL in the live sitemap
-//   npm run indexnow -- /tools/resize-jpg /tools/merge-images   only these paths
+//   npm run indexnow -- tools/resize-jpg tools/merge-images     only these paths (leading slash optional)
 //
 // The key is public by design: IndexNow checks it by fetching /<key>.txt from the site.
 const SITE = "https://www.imgifyr.com";
@@ -14,7 +14,13 @@ const ENDPOINT = "https://api.indexnow.org/indexnow";
 const paths = process.argv.slice(2);
 let urls;
 if (paths.length) {
-  urls = paths.map((p) => new URL(p, SITE).href);
+  // Git Bash on Windows rewrites "/tools/x" into "C:/Program Files/Git/tools/x" before Node sees it.
+  const mangled = paths.filter((p) => /^[a-z]:[\\/]/i.test(p));
+  if (mangled.length) {
+    console.error(`Your shell turned ${mangled[0]} into a Windows path. Leave out the leading slash (tools/compress-pdf) or run with MSYS_NO_PATHCONV=1.`);
+    process.exit(1);
+  }
+  urls = paths.map((p) => (/^https?:\/\//.test(p) ? p : new URL(`/${p.replace(/^\/+/, "")}`, SITE).href));
 } else {
   const sitemap = await (await fetch(`${SITE}/sitemap.xml`)).text();
   urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1].trim());

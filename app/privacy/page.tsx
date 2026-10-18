@@ -10,18 +10,21 @@ export const metadata: Metadata = pageMetadata({
   path: "/privacy",
 });
 
-const analyticsEnabled = Boolean(process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN);
+const plausibleEnabled = Boolean(process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN);
+const googleAnalyticsEnabled = Boolean(process.env.NEXT_PUBLIC_GA_ID);
+const analyticsEnabled = plausibleEnabled || googleAnalyticsEnabled;
+const analyticsNames = [plausibleEnabled && "Plausible Analytics", googleAnalyticsEnabled && "Google Analytics"].filter(Boolean).join(" and ");
 
 export default function PrivacyPage() {
   return (
     <ContentPage
       title="Privacy policy"
       path="/privacy"
-      updated="2026-10-12"
+      updated="2026-10-19"
       intro={
         <p>
           The short version: your images are processed in your browser and are never uploaded to us or anyone else. There
-          are no accounts, and we don&apos;t sell or share personal data.
+          are no accounts, and we don&apos;t sell personal data.{googleAnalyticsEnabled ? " We use Google Analytics to count visits and see which tools are used; it never receives your images or file names." : ""}
         </p>
       }
     >
@@ -58,12 +61,36 @@ export default function PrivacyPage() {
       </ul>
       <p>
         This is enforced technically as well as by policy: the site&apos;s Content Security Policy tells your browser to block
-        network requests to any other server{analyticsEnabled ? ", except the analytics service described below" : ""}.
+        network requests to any other server{analyticsEnabled ? `, except ${analyticsNames}, described below` : ""}.
         The <Link href="/methodology">methodology page</Link> explains how the processing works.
       </p>
 
       <h2>Analytics</h2>
-      {analyticsEnabled ? (
+      {googleAnalyticsEnabled ? (
+        <>
+          <p>
+            We use Google Analytics, a service provided by Google, to understand how many people visit and which tools are
+            useful. It records page views and a small set of events, such as &ldquo;a tool was opened&rdquo;, &ldquo;an image
+            was compressed&rdquo; or &ldquo;a download was clicked&rdquo;, together with the information Google Analytics
+            normally collects, such as your browser and device type, approximate location derived from your IP address, and
+            the page you came from.
+          </p>
+          <p>
+            Events may include general details such as the tool used, the input and output format (for example, PNG to JPG),
+            and a broad size range (for example, &ldquo;1–5 MB&rdquo;). They never include your images, file names, file
+            contents, exact file sizes or anything you type into a tool. Google processes this data under its own terms; see{" "}
+            <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer">
+              how Google uses information from sites that use its services
+            </a>
+            . You can opt out with the{" "}
+            <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer">
+              Google Analytics opt-out browser add-on
+            </a>{" "}
+            or by blocking cookies for this site; every tool keeps working.
+          </p>
+        </>
+      ) : null}
+      {plausibleEnabled ? (
         <>
           <p>
             We use Plausible Analytics, a privacy-friendly service that doesn&apos;t use cookies and doesn&apos;t collect
@@ -76,17 +103,20 @@ export default function PrivacyPage() {
             sizes or any personal information. Plausible doesn&apos;t track you across websites.
           </p>
         </>
-      ) : (
+      ) : null}
+      {!analyticsEnabled ? (
         <p>
           We don&apos;t currently use any analytics service. If we add one in the future, it will be a privacy-friendly,
           cookieless service that never receives images, file names or personal information, and this policy will be updated
           before it goes live.
         </p>
-      )}
+      ) : null}
 
       <h2>Cookies and local storage</h2>
       <p>
-        {siteConfig.name} doesn&apos;t set cookies for tracking or advertising. The site doesn&apos;t require cookies to work.
+        {googleAnalyticsEnabled
+          ? `${siteConfig.name} itself doesn't set cookies, and there are no advertising cookies. Google Analytics sets its own first-party cookies (named _ga and _ga_ followed by an ID) to tell visits apart and count returning visitors. The site doesn't need cookies to work: blocking them doesn't affect any tool.`
+          : `${siteConfig.name} doesn't set cookies for tracking or advertising. The site doesn't require cookies to work.`}
       </p>
 
       <h2>Server logs</h2>
@@ -106,7 +136,7 @@ export default function PrivacyPage() {
       <h2>Data retention</h2>
       <p>
         We hold no images and no accounts, so there is nothing of yours to retain.
-        {analyticsEnabled ? " Aggregated, anonymous analytics statistics are kept to understand usage trends over time." : ""}{" "}
+        {googleAnalyticsEnabled ? " Google Analytics data is kept according to the retention setting of our Google Analytics account, and only aggregated reports are used to understand usage trends." : plausibleEnabled ? " Aggregated, anonymous analytics statistics are kept to understand usage trends over time." : ""}{" "}
         Technical server logs, where kept by our hosting provider, are retained only for a limited period for security and
         reliability.
       </p>
