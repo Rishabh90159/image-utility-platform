@@ -283,3 +283,46 @@ What changed:
 Tests: tests/e2e/exam-documents.mjs (17 checks). Thumb: 240 × 240 px, 200 DPI, 43.5 KB. Declaration: 800 × 400 px,
 or, when a neat page is under 50 KB and the user accepts, enlarged 2:1 with the reason shown in the checklist.
 All other suites pass.
+
+## 14. Recruitment pages from the Sarkari Result list (18 Oct)
+
+Decision: one evergreen page per recruiting body, with each notification in its selector. Not one page per
+vacancy: those would be near-identical (doorway pages), compete with each other and expire.
+
+Priority rule (from the site owner): skip anything closing within ~10 days of 18 Oct 2026, then rank by posts.
+
+| Recruitment | Posts | Last date | Photo-size demand (autocomplete) | Decision |
+|---|---|---|---|---|
+| BPSC TRE 4.0 | ~32,388–33,320 | 26 Oct | some | Skip: closes too soon; photo is captured live |
+| Rajasthan Safai Karmchari | 24,752 | 28 Oct | none | Skip |
+| UPESSC PRT | 12,405 | 28 Oct | none | Skip |
+| JSSC Para Teacher | 7,299 | 18 Oct | low | Skip |
+| **RRB NTPC Graduate + Under Graduate** | 3,548 + 1,688 | 6 Nov / 13 Nov (from the CENs) | strong | **Built /tools/rrb-photo** |
+| **UPSSSC (OTR; Inter Level 1,784 posts, 10 Nov–1 Dec)** | 1,784+ | 1 Dec (from the advertisement) | good | **Built /tools/upsssc-photo** |
+| DSSSB Sweeper & Chowkidar | 25 | 11 Nov | good (for DSSSB generally) | Later |
+
+### Official findings
+- **RRB**, CEN 06/2026 and 07/2026 (rrb.indianrailways.gov.in; the site blocks scripted downloads, so the documents
+  were opened through a browser), paras 14.4–14.5:
+  - No uploaded photo: a live photo is taken in the application.
+  - Signature: JPG/JPEG, 30–49 KB, at least 140 × 60 px, scanned at 100 DPI or more, black ink, running
+    handwriting.
+  - SC/ST certificate: a PDF under 400 KB.
+
+  The many "RRB NTPC photo resizer" pages in the results are out of date for this cycle.
+- **UPSSSC**, OTR notice No. 45 of 14 July 2026 (a Hindi scan with no text layer; its pages were turned into
+  images with Imgifyr's own PDF to JPG tool and read):
+  - Photo: colour, taken within 6 months, 50–100 KB, JPEG/JPG.
+  - Signature: Hindi or English, with your name written in Hindi below it; not in English capitals; 30–50 KB.
+  - No pixel size is stated.
+  - Advertisement 26-Exam/2026, para 2.9: Inter Level reuses the PET-2025 photo and signature, which can't be
+    changed. Notice No. 48 (31 July 2026) allows OTR changes except the mobile number (and the name and date
+    of birth for registrations made with a PET-2025 number).
+
+### Code changes
+- Tools: enlarging to reach a minimum KB is now also offered for "minimum" pixel sizes (not only "preferred"),
+  with two larger grow steps (6×, 8×). Checklist wording: "at least" and "enlarged from the minimum".
+- Tests: tests/e2e/rrb-upsssc.mjs (16 checks):
+  - RRB signature: 420 × 180 px, 35.7 KB.
+  - UPSSSC: photo 99.7 KB, signature 48.8 KB.
+  - The official RRB and UPSSSC domains are added to the unit and SEO tests' official-host lists.

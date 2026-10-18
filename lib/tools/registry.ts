@@ -46,7 +46,9 @@ export type ToolId =
   | "merge-pdf"
   | "compress-pdf"
   | "pdf-to-jpg"
-  | "image-to-jpg";
+  | "image-to-jpg"
+  | "rrb-photo"
+  | "upsssc-photo";
 
 export type ToolCategory = "resize" | "compress" | "convert" | "edit" | "size" | "application" | "units" | "pdf";
 
@@ -580,6 +582,28 @@ export const tools: Record<ToolId, ToolDefinition> = {
     related: ["jpg-to-pdf", "compress-pdf", "pdf-to-word", "resize-image-to-kb", "image-compressor"],
     updated: "2026-10-18",
   },
+  "rrb-photo": {
+    id: "rrb-photo",
+    path: "/tools/rrb-photo",
+    name: "RRB Photo & Signature",
+    navLabel: "RRB photo",
+    summary: "RRB NTPC 2026 takes the photo live; prepare the 30–49 KB signature JPG the application asks for.",
+    linkText: "Prepare your RRB NTPC signature",
+    category: "application",
+    related: ["signature-resizer", "ssc-photo", "compress-pdf", "image-cropper", "resize-image-to-kb", "upsssc-photo"],
+    updated: "2026-10-18",
+  },
+  "upsssc-photo": {
+    id: "upsssc-photo",
+    path: "/tools/upsssc-photo",
+    name: "UPSSSC Photo & Signature",
+    navLabel: "UPSSSC photo",
+    summary: "The UPSSSC OTR photo (50–100 KB) and signature with your name in Hindi below it (30–50 KB), as JPGs.",
+    linkText: "Prepare your UPSSSC OTR photo and signature",
+    category: "application",
+    related: ["signature-resizer", "100kb-photo", "50kb-photo", "rrb-photo", "image-cropper", "resize-image-to-kb"],
+    updated: "2026-10-18",
+  },
   "image-to-jpg": {
     id: "image-to-jpg",
     path: "/tools/image-to-jpg",
@@ -637,6 +661,8 @@ export const toolOrder: ToolId[] = [
   "ibps-photo",
   "sbi-photo",
   "neet-photo",
+  "rrb-photo",
+  "upsssc-photo",
   "passport-photo",
 ];
 

@@ -238,6 +238,21 @@ export const KEYWORD_MAP: KeywordTarget[] = [
     supportedBy: ["/tools/50kb-photo", "/tools/20kb-photo", "/tools/sbi-photo", "/tools/application-photos"],
   },
   {
+    path: "/tools/rrb-photo",
+    primary: "rrb ntpc photo",
+    // Google India autocomplete, 18 Oct 2026: "rrb ntpc photo and signature size converter", "rrb ntpc photo size in pixels".
+    secondary: ["rrb ntpc photo size", "rrb ntpc signature size", "rrb photo resizer", "rrb ntpc photo and signature size", "rrb signature size"],
+    intent: "application",
+    supportedBy: ["/tools/application-photos", "/tools/signature-resizer", "/tools/ssc-photo"],
+  },
+  {
+    path: "/tools/upsssc-photo",
+    primary: "upsssc photo",
+    secondary: ["upsssc photo size", "upsssc otr photo size", "upsssc signature size", "upsssc pet photo size", "upsssc photo resizer"],
+    intent: "application",
+    supportedBy: ["/tools/application-photos", "/tools/signature-resizer", "/tools/rrb-photo"],
+  },
+  {
     path: "/tools/sbi-photo",
     primary: "sbi photo",
     secondary: ["sbi photo size", "sbi signature size", "sbi po photo size", "sbi thumb impression size", "left thumb impression size for sbi po", "sbi hand written declaration"],

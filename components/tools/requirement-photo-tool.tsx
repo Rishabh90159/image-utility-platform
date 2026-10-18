@@ -399,7 +399,7 @@ function RequirementPhotoToolInner({ tool, sets, groupLabel, setLabel, appName }
                 appName={appName}
                 busy={runner.busy}
                 onGrow={
-                  current.underMin && !current.grownFrom && imageSpec?.pixelBasis === "preferred" && output
+                  current.underMin && !current.grownFrom && (imageSpec?.pixelBasis === "preferred" || imageSpec?.pixelBasis === "minimum") && output
                     ? () => grow(source, output)
                     : undefined
                 }
@@ -461,11 +461,11 @@ function Checklist({
     checks.push({
       label: "Pixel size",
       ok: image.width === out.widthPx && image.height === out.heightPx,
-      detail: `${formatDimensions(image.width, image.height)}, enlarged from the preferred ${made.grownFrom.width} × ${made.grownFrom.height} to reach the minimum file size`,
+      detail: `${formatDimensions(image.width, image.height)}, enlarged from the ${spec?.pixelBasis === "minimum" ? "minimum" : "preferred"} ${made.grownFrom.width} × ${made.grownFrom.height} to reach the minimum file size`,
     });
   } else if (out.widthPx && out.heightPx) {
-    const ok = image.width === out.widthPx && image.height === out.heightPx;
-    const word = spec?.pixelBasis === "preferred" ? "preferred" : "required";
+    const ok = spec?.pixelBasis === "minimum" ? image.width >= out.widthPx && image.height >= out.heightPx : image.width === out.widthPx && image.height === out.heightPx;
+    const word = spec?.pixelBasis === "preferred" ? "preferred" : spec?.pixelBasis === "minimum" ? "at least" : "required";
     checks.push({ label: "Pixel size", ok, detail: `${formatDimensions(image.width, image.height)} (${word} ${out.widthPx} × ${out.heightPx})` });
   } else {
     checks.push({ label: "Pixel size", ok: true, detail: `${formatDimensions(image.width, image.height)}; no pixel size is specified` });

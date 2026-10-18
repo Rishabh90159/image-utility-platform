@@ -11,6 +11,8 @@ const OFFICIAL_HOSTS = [
   "sbi.bank.in",
   "ssc.gov.in",
   "neet.nta.nic.in",
+  "rrb.indianrailways.gov.in",
+  "upsssc.gov.in",
   "www.passportindia.gov.in",
   "www.gov.uk",
   "www.canada.ca",
@@ -100,6 +102,8 @@ describe("registry and freshness", () => {
     "ibps-photo": APPLICATIONS.ibps.sets,
     "sbi-photo": APPLICATIONS.sbi.sets,
     "neet-photo": APPLICATIONS.neet.sets,
+    "rrb-photo": APPLICATIONS.rrb.sets,
+    "upsssc-photo": APPLICATIONS.upsssc.sets,
     "passport-photo": PASSPORT_REQUIREMENTS,
   };
 
@@ -110,10 +114,10 @@ describe("registry and freshness", () => {
     }
   });
 
-  it("has 43 tools in five navigation groups, each related list pointing to other existing tools", () => {
-    expect(allTools).toHaveLength(43);
+  it("has 45 tools in five navigation groups, each related list pointing to other existing tools", () => {
+    expect(allTools).toHaveLength(45);
     expect(toolsIn("size").map((t) => t.id)).toEqual(["20kb-photo", "50kb-photo", "100kb-photo", "200kb-photo", "mb-to-kb-converter"]);
-    expect(toolsIn("application")).toHaveLength(6);
+    expect(toolsIn("application")).toHaveLength(8);
     expect(toolsIn("image")).toHaveLength(17);
     expect(toolsIn("convert")).toHaveLength(10);
     expect(toolsIn("pdf").map((t) => t.id)).toEqual(["word-to-pdf", "pdf-to-word", "merge-pdf", "compress-pdf", "pdf-to-jpg"]);

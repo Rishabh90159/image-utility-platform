@@ -105,7 +105,7 @@ export async function runSpec(
 }
 
 /** Enlargement steps tried by `growToMinimum`, smallest first. */
-const GROW_STEPS = [1.25, 1.5, 2, 2.5, 3, 4, 5];
+const GROW_STEPS = [1.25, 1.5, 2, 2.5, 3, 4, 5, 6, 8];
 
 /**
  * When a source only *prefers* a pixel size and a file at that size can't reach

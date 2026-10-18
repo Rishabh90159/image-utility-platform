@@ -251,6 +251,111 @@ const SSC_SETS: RequirementSet[] = [
   },
 ];
 
+// ---------------------------------------------------------------- RRB
+// RRB's NTPC 2026 notices (CEN 06/2026 Graduate, CEN 07/2026 Under Graduate) capture the photo live
+// and accept no uploaded photograph; only the signature is uploaded. Both notices use identical wording.
+
+const RRB_LIVE_RULES = [
+  "No pre-existing photograph is uploaded: the application captures a live photo with your computer's webcam or your phone's front camera",
+  "Use a pure plain white background; plain, preferably dark, clothes keep contrast with it",
+  "Keep the camera at eye level, sit or stand directly in front of it and look straight ahead with a neutral expression",
+  "Your head should take up at least 50% of the photo; elbows and anything below the chest must not be visible",
+  "No cap, mask or glasses/spectacles; hair or cloth must not cover the face",
+  "Eyes fully open; you can preview and retake the photo until the application is submitted",
+];
+
+const RRB_SIGNATURE: ImageSpec = {
+  kind: "signature",
+  format: "JPG/JPEG",
+  widthPx: 140,
+  heightPx: 60,
+  pixelBasis: "minimum",
+  physical: "fits the 35 mm × 20 mm scan box on the form",
+  aspect: 140 / 60,
+  minKB: 30,
+  maxKB: 49,
+  rules: [
+    "Sign with a black ink pen on white paper",
+    "Running handwriting (cursive, joined letters), NOT block, capital or disjointed letters",
+    "Scan the signed paper at a minimum of 100 DPI",
+    "Rejected: non-white background, non-black ink, an unclear or partly visible signature, or a thumb impression instead of a signature",
+    "Must match the signature you give at the exams, document verification, medical examination and appointment",
+  ],
+};
+
+const RRB_NOTES = ["SC/ST candidates asking for a free train travel pass also upload their SC/ST certificate as a PDF smaller than 400 KB."];
+
+const RRB_SETS: RequirementSet[] = [
+  {
+    id: "rrb-ntpc-graduate-cen-06-2026",
+    name: "NTPC Graduate Level (CEN 06/2026)",
+    signature: RRB_SIGNATURE,
+    livePhotoCapture: { rules: RRB_LIVE_RULES },
+    notes: RRB_NOTES,
+    source: {
+      title: "Centralised Employment Notice No. 06/2026: Non Technical Popular Categories (Graduate)",
+      url: "https://rrb.indianrailways.gov.in/-/image/1791375679144CEN_06_2026_NTPC_G.pdf/examsDocuments",
+      publisher: "Railway Recruitment Boards (RRBs), Ministry of Railways",
+      section: "Para 14.4 (live photo) and 14.5 (scanned documents)",
+      lastVerified: "2026-10-18",
+    },
+  },
+  {
+    id: "rrb-ntpc-undergraduate-cen-07-2026",
+    name: "NTPC Under Graduate Level (CEN 07/2026)",
+    signature: RRB_SIGNATURE,
+    livePhotoCapture: { rules: RRB_LIVE_RULES },
+    notes: RRB_NOTES,
+    source: {
+      title: "Centralised Employment Notice No. 07/2026: Non Technical Popular Categories (Under Graduate)",
+      url: "https://rrb.indianrailways.gov.in/-/image/1791999622770Final_CEN_07-2026_14.10.2026_English.pdf/examsDocuments",
+      publisher: "Railway Recruitment Boards (RRBs), Ministry of Railways",
+      section: "Para 14.4 (live photo) and 14.5 (scanned documents)",
+      lastVerified: "2026-10-18",
+    },
+  },
+];
+
+// ---------------------------------------------------------------- UPSSSC
+// From 14 July 2026, One Time Registration (OTR) is compulsory for every UPSSSC exam; the photo and
+// signature are uploaded once, in the OTR. The notice states file sizes and formats, but no pixel size.
+
+const UPSSSC_SETS: RequirementSet[] = [
+  {
+    id: "upsssc-otr-2026",
+    name: "One Time Registration (OTR), used for PET and every later UPSSSC exam",
+    photo: {
+      kind: "photo",
+      format: "JPEG/JPG",
+      minKB: 50,
+      maxKB: 100,
+      rules: ["Recent colour photograph, taken within the last 6 months"],
+    },
+    signature: {
+      kind: "signature",
+      format: "JPEG/JPG",
+      minKB: 30,
+      maxKB: 50,
+      rules: [
+        "Sign in Hindi or English",
+        "Below the signature, write your name in Hindi in your own handwriting",
+        "Signatures in English CAPITAL LETTERS are invalid",
+      ],
+    },
+    notes: [
+      "OTR details can't be changed after the registration number is issued, apart from what the commission allows in its 31 July 2026 notice.",
+      "Mains applications reuse earlier uploads: for the Inter (12th) Level exam (advertisement 26-Exam/2026), the photo and signature uploaded for PET-2025 are shown automatically and can't be changed.",
+    ],
+    source: {
+      title: "Notice No. 45/17/Vigyapan Anubhag (11)/2026/O.T.R./2026: start of One Time Registration (OTR)",
+      url: "https://upsssc.gov.in/ViewPdf.aspx?YLZ1tKAtaiY6scDDR94IWt29SFu57FbUHrV3uMfCnjw=",
+      publisher: "Uttar Pradesh Subordinate Services Selection Commission (UPSSSC)",
+      section: "Points 8 and 9 (dated 14 July 2026, in Hindi)",
+      lastVerified: "2026-10-18",
+    },
+  },
+];
+
 // ---------------------------------------------------------------- NEET (UG)
 
 const NEET_SETS: RequirementSet[] = [
@@ -308,6 +413,8 @@ export const APPLICATIONS = {
   ibps: { name: "IBPS", fullName: "Institute of Banking Personnel Selection", sets: IBPS_SETS },
   sbi: { name: "SBI", fullName: "State Bank of India", sets: SBI_SETS },
   neet: { name: "NEET", fullName: "National Eligibility cum Entrance Test (UG), conducted by NTA", sets: NEET_SETS },
+  rrb: { name: "RRB", fullName: "Railway Recruitment Boards (Indian Railways)", sets: RRB_SETS },
+  upsssc: { name: "UPSSSC", fullName: "Uttar Pradesh Subordinate Services Selection Commission", sets: UPSSSC_SETS },
 } satisfies Record<string, ApplicationRequirements>;
 
 export type ApplicationId = keyof typeof APPLICATIONS;
