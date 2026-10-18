@@ -56,6 +56,52 @@ function bankingSignature(): ImageSpec {
   };
 }
 
+/** Left thumb impression: identical wording in IBPS CRP PO/CSA/SPL-XVI (Annexure III) and SBI PO 2026 (Annexure II). */
+function bankingThumb(rules: string[]): ImageSpec {
+  return {
+    kind: "thumb",
+    format: "JPG/JPEG",
+    widthPx: 240,
+    heightPx: 240,
+    pixelBasis: "preferred",
+    physical: "3 cm × 3 cm",
+    dpi: 200,
+    aspect: 1,
+    minKB: 20,
+    maxKB: 50,
+    rules: ["Put your left thumb impression on white paper with black or blue ink", ...rules],
+  };
+}
+
+/** Hand-written declaration: same size and file limits in IBPS and SBI; the wording to copy differs. */
+function bankingDeclaration(rules: string[]): ImageSpec {
+  return {
+    kind: "declaration",
+    format: "JPG/JPEG",
+    widthPx: 800,
+    heightPx: 400,
+    pixelBasis: "preferred",
+    physical: "10 cm × 5 cm",
+    dpi: 200,
+    aspect: 2,
+    minKB: 50,
+    maxKB: 100,
+    rules: ["Write the declaration in English, clearly, on white paper with black ink", "Must be in your own handwriting and NOT in capital letters", ...rules],
+  };
+}
+
+const IBPS_THUMB = bankingThumb([
+  "No left thumb: use the right thumb; if both are missing, a finger of the left hand starting from the forefinger (the notification lists the full order), and state in the uploaded image which finger or toe was used",
+]);
+const IBPS_DECLARATION = bankingDeclaration([
+  "Text: “I, ______ (Name of the candidate), hereby declare that all the information submitted by me in the application form is correct, true and valid. I will present the supporting documents as and when required.”",
+  "If you can't write, the text may be typed, with your left thumb impression below it (if you also can't sign)",
+]);
+const SBI_THUMB = bankingThumb(["No left thumb: you may use your right thumb"]);
+const SBI_DECLARATION = bankingDeclaration([
+  "Text: “I ______ (Name of the candidate), ______ (Date of Birth) hereby declare that all the information submitted by me in the application form is correct, true and valid. I will present the supporting documents as and when required. The signature, photograph and left-hand thumb impression is of mine”",
+]);
+
 const IBPS_NOTES = [
   "In addition to the uploaded photograph, the application asks you to capture a live photograph with a webcam or phone.",
   "The system won't let you continue until the photograph and signature match the specification.",
@@ -72,13 +118,15 @@ const IBPS_SETS: RequirementSet[] = [
     name: "CRP PO/MT-XVI (Probationary Officers / Management Trainees, vacancies 2027-28)",
     photo: bankingPhoto(),
     signature: bankingSignature(),
+    thumb: IBPS_THUMB,
+    declaration: IBPS_DECLARATION,
     notes: IBPS_NOTES,
     source: {
       title: "Notification CRP PO/MT-XVI",
       url: "https://www.ibps.in/wp-content/uploads/Detailed-Notification_CRP-PO-XVI_Final_V1_30.06.2026.pdf",
       publisher: "Institute of Banking Personnel Selection (IBPS)",
-      section: "Guidelines for scanning and upload of photograph, signature and documents",
-      lastVerified: "2026-10-07",
+      section: "Annexure III: Guidelines for Scanning and Upload of Documents",
+      lastVerified: "2026-10-18",
     },
   },
   {
@@ -86,13 +134,15 @@ const IBPS_SETS: RequirementSet[] = [
     name: "CRP CSA-XVI (Customer Service Associates / Clerks, vacancies 2027-28)",
     photo: bankingPhoto(),
     signature: bankingSignature(),
+    thumb: IBPS_THUMB,
+    declaration: IBPS_DECLARATION,
     notes: IBPS_NOTES,
     source: {
       title: "Notification CRP CSA-XVI",
       url: "https://www.ibps.in/wp-content/uploads/Notification_CRP_CSA_XVI-Final.pdf",
       publisher: "Institute of Banking Personnel Selection (IBPS)",
-      section: "Guidelines for scanning and upload of photograph, signature and documents",
-      lastVerified: "2026-10-07",
+      section: "Annexure III: Guidelines for Scanning and Upload of Documents",
+      lastVerified: "2026-10-18",
     },
   },
   {
@@ -100,13 +150,15 @@ const IBPS_SETS: RequirementSet[] = [
     name: "CRP SPL-XVI (Specialist Officers, vacancies 2027-28)",
     photo: bankingPhoto(),
     signature: bankingSignature(),
+    thumb: IBPS_THUMB,
+    declaration: IBPS_DECLARATION,
     notes: IBPS_NOTES,
     source: {
       title: "Notification CRP SPL-XVI",
       url: "https://www.ibps.in/wp-content/uploads/Detailed-Notification-CRP-SPL-XVI_Final_V1_30.06.2026.pdf",
       publisher: "Institute of Banking Personnel Selection (IBPS)",
-      section: "Guidelines for scanning and upload of photograph, signature and documents",
-      lastVerified: "2026-10-07",
+      section: "Annexure III: Guidelines for Scanning and Upload of Documents",
+      lastVerified: "2026-10-18",
     },
   },
 ];
@@ -119,13 +171,15 @@ const SBI_SETS: RequirementSet[] = [
     name: "Probationary Officers 2026 (Advertisement CRPD/PO/2026-27/09)",
     photo: bankingPhoto(),
     signature: bankingSignature(),
+    thumb: SBI_THUMB,
+    declaration: SBI_DECLARATION,
     notes: [BANKING_LIVE_NOTE],
     source: {
       title: "Recruitment of Probationary Officers – Advertisement No. CRPD/PO/2026-27/09",
       url: "https://sbi.bank.in/csfile/18062026_1_Detailed_Adv.2026.pdf",
       publisher: "State Bank of India, Central Recruitment & Promotion Department",
-      section: "Guidelines for scanning and upload of photograph, signature, left-hand thumb impression and hand-written declaration",
-      lastVerified: "2026-10-07",
+      section: "Annexure II: Guidelines for scanning and upload of photograph, signature, left-hand thumb impression and hand-written declaration",
+      lastVerified: "2026-10-18",
     },
   },
   {

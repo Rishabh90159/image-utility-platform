@@ -12,7 +12,7 @@ import { track } from "@/lib/analytics";
 import { toImageToolError } from "@/lib/image-processing/errors";
 import { FORMATS, RASTER_INPUT_FORMATS } from "@/lib/image-processing/formats";
 import type { BackgroundCleanup } from "@/lib/image-processing/types";
-import { formatKbRange, type ImageKind, type ImageSpec, type RequirementSet } from "@/lib/requirements/types";
+import { formatKbRange, IMAGE_KINDS, type ImageKind, type ImageSpec, type RequirementSet } from "@/lib/requirements/types";
 import type { ToolId } from "@/lib/tools/registry";
 import { formatBytes, formatDimensions, KB, outputFileName, sizeBucket } from "@/lib/utils/format";
 import { useJobRunner, useSourceImage, useToolOpen, type SourceImage } from "./hooks";
@@ -30,6 +30,7 @@ interface CustomSpec {
 
 interface Made {
   key: string;
+  kind: ImageKind;
   image: ResultImage;
   spec: OutputSpec;
   overMax: boolean;
@@ -88,6 +89,42 @@ export function RequirementPhotoTool(props: RequirementPhotoToolProps) {
   );
 }
 
+/** What the size check can't judge, per kind of image. */
+const CANT_CHECK: Record<ImageKind, string> = {
+  photo: "It can't check pose, lighting, expression, background or how recent the photo is.",
+  signature: "It can't check that the signature is yours, matches your usual signature, or isn't in capital letters.",
+  thumb: "It can't check that the ridges are clear or that the right finger was used. Zoom in on the result before uploading.",
+  declaration: "It can't check the wording, your handwriting or capital letters. Read the result once before uploading.",
+};
+
+const KIND_TEXT: Record<ImageKind, { option: string; prompt: string; button: string; busy: string; crop: string; heading: string }> = {
+  photo: { option: "Photograph", prompt: "Drop your photo", button: "Create photo file", busy: "Preparing photo…", crop: "Photo crop area", heading: "Your photo file" },
+  signature: {
+    option: "Signature",
+    prompt: "Drop a photo or scan of your signature",
+    button: "Create signature file",
+    busy: "Preparing signature…",
+    crop: "Signature crop area",
+    heading: "Your signature file",
+  },
+  thumb: {
+    option: "Thumb impression",
+    prompt: "Drop a photo or scan of your thumb impression",
+    button: "Create thumb impression file",
+    busy: "Preparing thumb impression…",
+    crop: "Thumb impression crop area",
+    heading: "Your thumb impression file",
+  },
+  declaration: {
+    option: "Declaration",
+    prompt: "Drop a photo or scan of your hand-written declaration",
+    button: "Create declaration file",
+    busy: "Preparing declaration…",
+    crop: "Declaration crop area",
+    heading: "Your declaration file",
+  },
+};
+
 function RequirementPhotoToolInner({ tool, sets, groupLabel, setLabel, appName }: RequirementPhotoToolProps) {
   useToolOpen(tool);
   const { source, loading, error, select, clear, setError } = useSourceImage({ tool, accept: RASTER_INPUT_FORMATS });
@@ -102,7 +139,7 @@ function RequirementPhotoToolInner({ tool, sets, groupLabel, setLabel, appName }
   const [selected, setSelected] = useState<string>(visibleSets[0]?.id ?? CUSTOM);
   const set = visibleSets.find((s) => s.id === selected) ?? null;
 
-  const kinds: ImageKind[] = set ? (["photo", "signature"] as const).filter((k) => set[k]) : ["photo", "signature"];
+  const kinds: ImageKind[] = set ? IMAGE_KINDS.filter((k) => set[k]) : ["photo", "signature"];
   const [kindChoice, setKindChoice] = useState<ImageKind>("photo");
   const kind = kinds.includes(kindChoice) ? kindChoice : kinds[0];
   const imageSpec = set ? set[kind] : undefined;
@@ -112,9 +149,13 @@ function RequirementPhotoToolInner({ tool, sets, groupLabel, setLabel, appName }
   const output: OutputSpec | null = imageSpec ? specToOutput(imageSpec) : (customResult?.spec ?? null);
   const specError = customResult?.error ?? null;
 
-  const [cleanBg, setCleanBg] = useState(true);
+  // Ink on paper gets a white background by default; a thumb impression doesn't, because a strong clean-up can erase its ridges.
+  const [cleanBgByKind, setCleanBgByKind] = useState<Record<ImageKind, boolean>>({ photo: false, signature: true, thumb: false, declaration: true });
+  const cleanBg = cleanBgByKind[kind];
+  const setCleanBg = (value: boolean) => setCleanBgByKind((current) => ({ ...current, [kind]: value }));
   const [threshold, setThreshold] = useState(190);
-  const cleanup: BackgroundCleanup | undefined = kind === "signature" && cleanBg ? { threshold, to: "white" } : undefined;
+  const cleanup: BackgroundCleanup | undefined = kind !== "photo" && cleanBg ? { threshold, to: "white" } : undefined;
+  const text = KIND_TEXT[kind];
 
   const aspect = imageSpec?.aspect ?? (output?.widthPx && output.heightPx ? output.widthPx / output.heightPx : null);
   const cropState = useCropState(source, aspect);
@@ -150,6 +191,7 @@ function RequirementPhotoToolInner({ tool, sets, groupLabel, setLabel, appName }
       if (!result) return;
       setMade({
         key: settingsKey,
+        kind,
         image: { blob: result.blob, width: result.width, height: result.height, mime: "image/jpeg" },
         spec,
         overMax: result.overMax,
@@ -176,6 +218,7 @@ function RequirementPhotoToolInner({ tool, sets, groupLabel, setLabel, appName }
       if (!grown) return;
       setMade({
         key: settingsKey,
+        kind,
         image: { blob: grown.result.blob, width: grown.result.width, height: grown.result.height, mime: "image/jpeg" },
         spec: grown.spec,
         overMax: grown.result.overMax,
@@ -228,7 +271,7 @@ function RequirementPhotoToolInner({ tool, sets, groupLabel, setLabel, appName }
           legend="What are you preparing?"
           value={kind}
           onChange={setKindChoice}
-          options={kinds.map((k) => ({ value: k, label: k === "photo" ? "Photograph" : "Signature" }))}
+          options={kinds.map((k) => ({ value: k, label: KIND_TEXT[k].option }))}
         />
       ) : null}
 
@@ -251,7 +294,7 @@ function RequirementPhotoToolInner({ tool, sets, groupLabel, setLabel, appName }
           error={error}
           onFile={onFile}
           onReset={reset}
-          prompt={kind === "signature" ? "Drop a photo or scan of your signature" : "Drop your photo"}
+          prompt={text.prompt}
           controls={null}
         />
       </div>
@@ -262,7 +305,7 @@ function RequirementPhotoToolInner({ tool, sets, groupLabel, setLabel, appName }
     <>
       {picker}
       <OrientationControls onRotate={cropState.rotate} onFlip={cropState.flip} flipped={cropState.flipH} />
-      {kind === "signature" ? (
+      {kind !== "photo" ? (
         <div className="space-y-3">
           <label className="flex items-start gap-3 text-sm font-medium text-ink">
             <input
@@ -273,7 +316,11 @@ function RequirementPhotoToolInner({ tool, sets, groupLabel, setLabel, appName }
             />
             <span>
               Clean the paper background to white
-              <span className="mt-0.5 block text-xs font-normal text-muted">Removes grey paper tones and shadows; keeps the ink.</span>
+              <span className="mt-0.5 block text-xs font-normal text-muted">
+                {kind === "thumb"
+                  ? "Use a light setting: a strong clean-up can erase the ridges, which must stay clearly visible."
+                  : "Removes grey paper tones and shadows; keeps the ink."}
+              </span>
             </span>
           </label>
           {cleanBg ? (
@@ -300,11 +347,11 @@ function RequirementPhotoToolInner({ tool, sets, groupLabel, setLabel, appName }
       <ActionButton
         onClick={() => output && create(source, output)}
         busy={runner.busy}
-        busyLabel={kind === "signature" ? "Preparing signature…" : "Preparing photo…"}
+        busyLabel={text.busy}
         progress={runner.progress}
         disabled={!output}
       >
-        {current ? "Create again" : kind === "signature" ? "Create signature file" : "Create photo file"}
+        {current ? "Create again" : text.button}
       </ActionButton>
     </>
   );
@@ -330,7 +377,7 @@ function RequirementPhotoToolInner({ tool, sets, groupLabel, setLabel, appName }
           crop={cropState.crop}
           onChange={cropState.setCrop}
           guide={kind === "photo" ? "portrait" : "thirds"}
-          label={kind === "photo" ? "Photo crop area" : "Signature crop area"}
+          label={text.crop}
         />
       }
       controls={controls}
@@ -339,7 +386,7 @@ function RequirementPhotoToolInner({ tool, sets, groupLabel, setLabel, appName }
           <>
           <ResultPanel
             tool={tool}
-            heading={kind === "signature" ? "Your signature file" : "Your photo file"}
+            heading={text.heading}
             original={source}
             output={current.image}
             fileName={outputFileName(source.name, `${appName.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${kind}`, "jpg")}
@@ -478,8 +525,7 @@ function Checklist({
         </Alert>
       ) : allOk ? (
         <Alert tone="success" title="Meets the size and file limits shown above">
-          This tool checks dimensions, file size and format only. It can&apos;t check pose, lighting, expression, background or
-          how recent the photo is.
+          This tool checks dimensions, file size and format only. {CANT_CHECK[made.kind]}
         </Alert>
       ) : null}
       <Alert tone="info" title="Verify before submitting">

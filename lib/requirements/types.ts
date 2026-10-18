@@ -22,7 +22,18 @@ export interface RequirementSource {
   lastVerified: string;
 }
 
-export type ImageKind = "photo" | "signature";
+export type ImageKind = "photo" | "signature" | "thumb" | "declaration";
+
+/** Every kind, in the order the tools offer them. */
+export const IMAGE_KINDS: ImageKind[] = ["photo", "signature", "thumb", "declaration"];
+
+/** How each kind is named on the page. */
+export const IMAGE_KIND_LABELS: Record<ImageKind, string> = {
+  photo: "Photograph",
+  signature: "Signature",
+  thumb: "Left thumb impression",
+  declaration: "Hand-written declaration",
+};
 
 export interface ImageSpec {
   kind: ImageKind;
@@ -58,6 +69,10 @@ export interface RequirementSet {
   name: string;
   photo?: ImageSpec;
   signature?: ImageSpec;
+  /** Left thumb impression, when the application asks for one. */
+  thumb?: ImageSpec;
+  /** Hand-written declaration, when the application asks for one. */
+  declaration?: ImageSpec;
   /** When the application captures the photo live instead of accepting an upload. */
   livePhotoCapture?: { rules: string[] };
   /** Other facts from the source worth knowing (plain sentences). */

@@ -20,7 +20,7 @@ export default function PrivacyPage() {
     <ContentPage
       title="Privacy policy"
       path="/privacy"
-      updated="2026-10-20"
+      updated="2026-10-18"
       intro={
         <p>
           The short version: your images are processed in your browser and are never uploaded to us or anyone else. There

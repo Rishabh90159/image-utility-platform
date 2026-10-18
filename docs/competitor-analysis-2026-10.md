@@ -234,10 +234,10 @@ Tests: tests/e2e/pdf-image-tools.mjs (29 checks): a 12 MB, 3-page scan compresse
 result; PDF to JPG pixel sizes and DPI correct, ZIP naming, every page ≤ 100 KB with the limit; password and
 non-PDF errors; mobile layout; no uploads. All other suites still pass (SEO 828/828, PDF tools 94/94).
 
-## 12. Second pass (19 Oct): the roadmap's two P0 features
+## 12. Second pass (18 Oct): the roadmap's two P0 features
 
 Source of priority: docs/seo-architecture.md ("Future opportunities", ordered by volume × winnability), re-checked
-against Google India autocomplete on 19 Oct 2026.
+against Google India autocomplete on 18 Oct 2026.
 
 | Feature | Demand evidence | What was built |
 |---|---|---|
@@ -249,3 +249,37 @@ pages (P1, only once they have format-specific controls), PAN card page (no offi
 
 Tests: tests/e2e/print-and-convert.mjs (19 checks) and tests/unit/print-sheet.test.ts; all suites pass (SEO 844/844,
 including the near-duplicate check now covering Image/PNG/WebP/HEIC to JPG).
+
+## 13. Low-competition opportunities (18 Oct, third pass)
+
+Method: Google India autocomplete for demand, then the top results for each query (US-based search engine, so
+indicative) to judge competition. "Low" = the top results are small or programmatic sites, often contradicting each
+other, with no big brands.
+
+| Opportunity | Demand (autocomplete) | Top results | Competition | Decision |
+|---|---|---|---|---|
+| **Left thumb impression + hand-written declaration (IBPS, SBI)** | "thumb impression resize for sbi po / ibps / sbi clerk", "left thumb impression size for sbi po / ibps po" | imresizer, bankopedia, adda247, careerpower; they disagree (240×240 vs 100×100 px; "IBPS mandates no pixel size") | **Low** | **Built**: specs read from the official PDFs (below) |
+| JEE Main photo | "jee main photo size in kb / pixels / converter", "jee main photo resizer" | a coaching blog and a programmatic multi-language site, conflicting (10–200 vs 10–300 KB) | Low | Next: build when NTA publishes the JEE Main 2027 information bulletin, from that bulletin only |
+| India Post GDS photo + signature | "gds photo and signature resizer / size in kb", "india post gds photo sign resize tool" | small exam-portal sites only | Low | Next: needs the official GDS notification or portal instructions |
+| RRB, CTET, CUET, SSC GD, SBI Clerk | many "… photo size in pixels / converter" queries | mostly news and coaching sites | Low–medium | One at a time, only from official notifications |
+| Photo with name and date | "photo with name and date online free", "… for tnpsc / upsc" | CapCut, Fotor, Pixelbin, imresizer | Medium | Later: a feature, but big brands rank |
+
+### Thumb impression and declaration: official specs
+Read on 18 Oct 2026 from the documents the site already cites:
+
+| Document | Thumb impression | Hand-written declaration |
+|---|---|---|
+| IBPS CRP PO/MT-XVI, CSA-XVI, SPL-XVI (Annexure III) | Black or blue ink on white paper; JPG; 240 × 240 px at 200 DPI (preferred) = 3 × 3 cm; 20–50 KB | English, own handwriting, black ink, not in capitals; JPG; 800 × 400 px at 200 DPI (preferred) = 10 × 5 cm; 50–100 KB |
+| SBI PO 2026, CRPD/PO/2026-27/09 (Annexure II) | Same | Same size; SBI's wording adds date of birth and a closing sentence |
+
+What changed:
+- The requirement data has two new kinds, `thumb` and `declaration`, added to the IBPS and SBI PO sets with the
+  official rules and wording.
+- The tool offers them under "What are you preparing?". Paper clean-up defaults to off for thumbs, so ridges aren't
+  erased, and the result's caveat is specific to each kind.
+- Shown in the requirement tables and the exam hub. The IBPS and SBI pages have new sections and FAQs (with
+  distinct wording: near-duplicate check 7.3%), and their titles now include "Thumb Impression".
+
+Tests: tests/e2e/exam-documents.mjs (17 checks). Thumb: 240 × 240 px, 200 DPI, 43.5 KB. Declaration: 800 × 400 px,
+or, when a neat page is under 50 KB and the user accepts, enlarged 2:1 with the reason shown in the checklist.
+All other suites pass.

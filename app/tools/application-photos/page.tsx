@@ -119,6 +119,12 @@ function ComparisonTable() {
                 </td>
                 <td className="px-3 py-3 tabular-nums">
                   <Cell spec={row[0].signature} />
+                  {row[0].thumb || row[0].declaration ? (
+                    <p className="mt-1.5 text-xs text-muted">
+                      Also asks for a {[row[0].thumb && "left thumb impression", row[0].declaration && "hand-written declaration"].filter(Boolean).join(" and a ")}
+                      : sizes and a tool on the <Link href={page.path} className="text-accent hover:underline">{app.name} page</Link>.
+                    </p>
+                  ) : null}
                 </td>
                 <td className="px-3 py-3">
                   <ul className="space-y-1.5">

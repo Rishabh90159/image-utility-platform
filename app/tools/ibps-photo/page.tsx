@@ -15,7 +15,7 @@ const description =
   "Make an IBPS photo of 200 × 230 px and 20–50 KB, and a 140 × 60 px, 10–20 KB signature, as stated in the current IBPS CRP notifications. Sources listed.";
 
 export const metadata: Metadata = pageMetadata({
-  title: "IBPS Photo Resizer – Photo Size & Upload Requirements",
+  title: "IBPS Photo, Signature & Thumb Impression Resizer",
   description,
   path: tool.path,
 });
@@ -30,6 +30,16 @@ const faqs: FaqItem[] = [
     question: "What is the IBPS signature size?",
     answer:
       "140 × 60 pixels (preferred) and 10–20 KB, JPG or JPEG. Sign on white paper with a black ink pen. A signature in capital letters is not accepted.",
+  },
+  {
+    question: "What is the IBPS left thumb impression size?",
+    answer:
+      "The CRP PO/MT-XVI, CSA-XVI and SPL-XVI notifications ask for a left thumb impression in black or blue ink on white paper, 240 × 240 pixels at 200 DPI (preferred), that is 3 × 3 cm, and 20–50 KB as JPG. Without a left thumb, the right thumb may be used; the notification lists what to use if both are missing.",
+  },
+  {
+    question: "What size is the IBPS hand-written declaration?",
+    answer:
+      "800 × 400 pixels at 200 DPI (preferred), which is 10 × 5 cm, between 50 KB and 100 KB, as JPG. It must be in your own handwriting, in English and not in capital letters, using the wording given in the notification.",
   },
   {
     question: "Do all IBPS exams use the same photo requirements?",
@@ -93,12 +103,27 @@ export default function IbpsPhotoPage() {
             <Link href="/tools/image-compressor">image compressor</Link> handle general photos.
           </p>
 
-          <h2>Other images in the application</h2>
+          <h2>Left thumb impression and hand-written declaration</h2>
           <p>
-            The CRP PO/MT-XVI notification also asks for a left thumb impression (240 × 240 pixels preferred, 20–50 KB) and a
-            hand-written declaration (800 × 400 pixels preferred, 50–100 KB), both JPG. To prepare them here, choose{" "}
-            <strong>Other – enter the requirement from my notification</strong> and type those numbers. Check your own
-            notification for the exact wording of the declaration.
+            The IBPS application also asks for two scanned documents, and the tool above prepares both: choose{" "}
+            <strong>Thumb impression</strong> or <strong>Declaration</strong> under &ldquo;What are you preparing?&rdquo;.
+            According to Annexure III of the notification:
+          </p>
+          <ul>
+            <li>
+              <strong>Left thumb impression:</strong> black or blue ink on white paper, 240 × 240 pixels at 200 DPI (preferred),
+              which is 3 × 3 cm, and 20–50 KB, as JPG.
+            </li>
+            <li>
+              <strong>Hand-written declaration:</strong> written in English in your own handwriting with black ink on white
+              paper, not in capital letters; 800 × 400 pixels at 200 DPI (preferred), which is 10 × 5 cm, and 50–100 KB, as JPG.
+              The exact text to copy is shown with the requirement above.
+            </li>
+          </ul>
+          <p>
+            Press firmly once and lift the thumb straight up so the ridges stay sharp. The paper clean-up is off for thumb
+            impressions by default: if you switch it on, keep it light so no ridges disappear. For the declaration, photograph
+            the whole page straight on in good light, then crop to the written text.
           </p>
 
           <h2>Common mistakes</h2>

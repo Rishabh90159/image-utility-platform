@@ -219,7 +219,7 @@ async function makeFile(page, fileName, kindLabel) {
 
 {
   const page = await openPage("/tools/ibps-photo");
-  check("IBPS: requirement summary with official PDF link and verified date", (await page.locator('a[href^="https://www.ibps.in/wp-content/uploads/Detailed-Notification_CRP-PO-XVI"]').count()) >= 1 && /Last verified\s+7 October 2026/.test(await page.locator('section[aria-labelledby="requirements-heading"]').innerText()));
+  check("IBPS: requirement summary with official PDF link and verified date", (await page.locator('a[href^="https://www.ibps.in/wp-content/uploads/Detailed-Notification_CRP-PO-XVI"]').count()) >= 1 && /Last verified\s+18 October 2026/.test(await page.locator('section[aria-labelledby="requirements-heading"]').innerText()));
   let r = await makeFile(page, "portrait.jpg");
   check("IBPS: photo exactly 200 × 230 px JPG within 20–50 KB", isJpeg(r.dl.buf) && r.info.width === 200 && r.info.height === 230 && r.dl.buf.length >= 20 * KB && r.dl.buf.length <= 50 * KB, `${r.dl.buf.length} bytes`);
   check("IBPS: shown size = downloaded size; checklist all passed", r.shown === r.dl.buf.length && !r.checklist.includes("does not meet"), r.checklist.replace(/\n/g, " | "));

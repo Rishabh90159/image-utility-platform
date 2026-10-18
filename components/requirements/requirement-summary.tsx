@@ -2,6 +2,8 @@ import { Alert } from "@/components/controls/alert";
 import {
   formatKbRange,
   formatVerifiedDate,
+  IMAGE_KIND_LABELS,
+  IMAGE_KINDS,
   type ApplicationRequirements,
   type ImageSpec,
   type RequirementSet,
@@ -82,7 +84,7 @@ export function RequirementSummary({
 function groupIdentical(sets: RequirementSet[]): RequirementSet[][] {
   const groups = new Map<string, RequirementSet[]>();
   for (const set of sets) {
-    const key = JSON.stringify([set.group, set.photo, set.signature, set.livePhotoCapture, set.notes]);
+    const key = JSON.stringify([set.group, set.photo, set.signature, set.thumb, set.declaration, set.livePhotoCapture, set.notes]);
     groups.set(key, [...(groups.get(key) ?? []), set]);
   }
   return [...groups.values()];
@@ -90,7 +92,7 @@ function groupIdentical(sets: RequirementSet[]): RequirementSet[][] {
 
 function RequirementCard({ sets }: { sets: RequirementSet[] }) {
   const set = sets[0];
-  const specs = [set.photo, set.signature].filter((s): s is ImageSpec => Boolean(s));
+  const specs = IMAGE_KINDS.map((kind) => set[kind]).filter((s): s is ImageSpec => Boolean(s));
   return (
     <article className="rounded-md border border-line" aria-labelledby={`req-${set.id}`}>
       <h3 id={`req-${set.id}`} className="border-b border-line bg-surface px-4 py-2.5 text-sm font-semibold text-ink">
@@ -132,7 +134,7 @@ function RequirementCard({ sets }: { sets: RequirementSet[] }) {
                   </th>
                   {specs.map((s) => (
                     <th key={s.kind} scope="col" className="py-1.5 pr-3 font-medium">
-                      {s.kind === "photo" ? "Photograph" : "Signature"}
+                      {IMAGE_KIND_LABELS[s.kind]}
                     </th>
                   ))}
                 </tr>
@@ -149,7 +151,7 @@ function RequirementCard({ sets }: { sets: RequirementSet[] }) {
         {/* The detailed rules are collapsed so the tool stays near the top on phones; they remain in the page. */}
         <details className="group rounded-md border border-line">
           <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-3 font-medium text-ink [&::-webkit-details-marker]:hidden">
-            {specs.length > 1 ? "Photo and signature rules" : specs[0]?.kind === "signature" ? "Signature rules and notes" : "Photo rules and notes"}
+            {specs.length > 2 ? "Rules for each upload" : specs.length > 1 ? "Photo and signature rules" : specs[0]?.kind === "signature" ? "Signature rules and notes" : "Photo rules and notes"}
             <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" className="shrink-0 transition-transform group-open:rotate-180">
               <path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.6" />
             </svg>
@@ -158,7 +160,7 @@ function RequirementCard({ sets }: { sets: RequirementSet[] }) {
             {specs.map((s) =>
               s.rules.length > 0 ? (
                 <div key={`${s.kind}-rules`}>
-                  <p className="font-medium text-ink">{s.kind === "photo" ? "Photograph" : "Signature"}</p>
+                  <p className="font-medium text-ink">{IMAGE_KIND_LABELS[s.kind]}</p>
                   <ul className="mt-1 list-disc space-y-0.5 pl-5 text-ink-soft">
                     {s.rules.map((rule) => (
                       <li key={rule}>{rule}</li>

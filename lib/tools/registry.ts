@@ -226,7 +226,7 @@ export const tools: Record<ToolId, ToolDefinition> = {
     linkText: "Convert PNG to JPG",
     category: "convert",
     related: ["jpg-to-png", "webp-to-jpg", "image-to-jpg", "image-compressor", "resize-image-to-kb"],
-    updated: "2026-10-19",
+    updated: "2026-10-18",
   },
   "webp-to-jpg": {
     id: "webp-to-jpg",
@@ -237,7 +237,7 @@ export const tools: Record<ToolId, ToolDefinition> = {
     linkText: "Convert WebP to JPG",
     category: "convert",
     related: ["png-to-jpg", "image-to-jpg", "image-compressor", "resize-image-to-kb", "image-resizer"],
-    updated: "2026-10-19",
+    updated: "2026-10-18",
   },
   "heic-to-jpg": {
     id: "heic-to-jpg",
@@ -248,7 +248,7 @@ export const tools: Record<ToolId, ToolDefinition> = {
     linkText: "Convert HEIC photos to JPG",
     category: "convert",
     related: ["image-to-jpg", "image-resizer", "image-compressor", "jpg-to-png"],
-    updated: "2026-10-19",
+    updated: "2026-10-18",
   },
   "svg-to-png": {
     id: "svg-to-png",
@@ -391,7 +391,7 @@ export const tools: Record<ToolId, ToolDefinition> = {
     linkText: "Resize a photo for IBPS",
     category: "application",
     related: ["sbi-photo", "50kb-photo", "20kb-photo", "signature-resizer", "image-cropper", "resize-image-to-kb"],
-    updated: "2026-10-07",
+    updated: "2026-10-18",
   },
   "sbi-photo": {
     id: "sbi-photo",
@@ -402,7 +402,7 @@ export const tools: Record<ToolId, ToolDefinition> = {
     linkText: "Resize a photo for SBI recruitment",
     category: "application",
     related: ["ibps-photo", "50kb-photo", "20kb-photo", "signature-resizer", "image-cropper", "resize-image-to-kb"],
-    updated: "2026-10-07",
+    updated: "2026-10-18",
   },
   "neet-photo": {
     id: "neet-photo",
@@ -589,7 +589,7 @@ export const tools: Record<ToolId, ToolDefinition> = {
     linkText: "Convert any image to JPG",
     category: "convert",
     related: ["png-to-jpg", "webp-to-jpg", "heic-to-jpg", "resize-image-to-kb", "image-compressor"],
-    updated: "2026-10-19",
+    updated: "2026-10-18",
   },
 };
 

@@ -15,7 +15,7 @@ const description =
   "Resize your photo and signature for an SBI recruitment application. Pick your advertisement to apply its stated size (200 × 230 px, 20–50 KB) with the source.";
 
 export const metadata: Metadata = pageMetadata({
-  title: "SBI Photo Resizer – Photo Size & Application Requirements",
+  title: "SBI Photo, Signature & Thumb Impression Resizer",
   description,
   path: tool.path,
 });
@@ -30,6 +30,16 @@ const faqs: FaqItem[] = [
     question: "What size should my SBI signature be?",
     answer:
       "140 × 60 pixels (preferred) and 10–20 KB, signed on white paper with a black ink pen. A signature in capital letters is not accepted.",
+  },
+  {
+    question: "What is the SBI left thumb impression size?",
+    answer:
+      "The SBI PO 2026 advertisement (CRPD/PO/2026-27/09) asks for a left-hand thumb impression in black or blue ink on white paper, 240 × 240 pixels at 200 DPI (preferred), that is 3 × 3 cm, and 20–50 KB as JPG. If you don't have a left thumb, you may use your right thumb.",
+  },
+  {
+    question: "What should the SBI hand-written declaration say?",
+    answer:
+      "The advertisement gives the text: “I ______ (Name of the candidate), ______ (Date of Birth) hereby declare that all the information submitted by me in the application form is correct, true and valid. I will present the supporting documents as and when required. The signature, photograph and left-hand thumb impression is of mine.” Write it in English in your own handwriting, not in capitals; the file should be 800 × 400 pixels and 50–100 KB.",
   },
   {
     question: "Do all SBI applications use the same photo specification?",
@@ -89,6 +99,31 @@ export default function SbiPhotoPage() {
             For any other pixel size or KB limit, use the <Link href="/tools/signature-resizer">signature resizer</Link>; for
             ordinary photos, the <Link href="/tools/image-resizer">image resizer</Link> or{" "}
             <Link href="/tools/image-compressor">image compressor</Link>.
+          </p>
+
+          <h2>Thumb impression and declaration for SBI PO</h2>
+          <p>
+            Besides the photo and signature, SBI&apos;s PO 2026 advertisement asks for two more uploads, described in its
+            Annexure II. Pick <strong>Thumb impression</strong> or <strong>Declaration</strong> in the tool to get each one at
+            the stated size.
+          </p>
+          <ul>
+            <li>
+              <strong>Thumb:</strong> your left-hand thumb, pressed in black or blue ink on white paper. SBI asks for 240 × 240
+              pixels at 200 DPI (preferred), 3 × 3 cm, as a JPG between 20 and 50 KB. A candidate without a left thumb may use
+              the right one.
+            </li>
+            <li>
+              <strong>Declaration:</strong> SBI&apos;s wording includes your date of birth after your name and ends with
+              &ldquo;The signature, photograph and left-hand thumb impression is of mine&rdquo;. Copy it by hand in English, in
+              black ink, without capital letters throughout. The file is 800 × 400 pixels at 200 DPI (preferred), 10 × 5 cm,
+              from 50 to 100 KB.
+            </li>
+          </ul>
+          <p>
+            A neat page often compresses below 50 KB at 800 × 400. If that happens, the tool offers to enlarge the image a
+            little so it reaches the minimum, and says so in the checklist. Leave the paper clean-up off for the thumb, or set
+            it low, so the ridge lines stay visible.
           </p>
 
           <h2>Requirements differ between advertisements</h2>

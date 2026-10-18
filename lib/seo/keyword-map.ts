@@ -134,7 +134,7 @@ export const KEYWORD_MAP: KeywordTarget[] = [
   {
     path: "/tools/image-to-jpg",
     primary: "image to jpg",
-    // Google India autocomplete, 19 Oct 2026, adds KB limits: "image to jpg converter 100 kb", "photo to jpg converter 50kb".
+    // Google India autocomplete, 18 Oct 2026, adds KB limits: "image to jpg converter 100 kb", "photo to jpg converter 50kb".
     secondary: ["image to jpg converter", "photo to jpg", "photo to jpg converter", "convert image to jpg", "avif to jpg", "bmp to jpg"],
     intent: "tool",
     supportedBy: ["/tools/png-to-jpg", "/tools/webp-to-jpg", "/tools/heic-to-jpg"],
@@ -233,14 +233,14 @@ export const KEYWORD_MAP: KeywordTarget[] = [
   {
     path: "/tools/ibps-photo",
     primary: "ibps photo",
-    secondary: ["ibps photo size", "ibps signature size", "ibps photo resizer"],
+    secondary: ["ibps photo size", "ibps signature size", "ibps photo resizer", "ibps thumb impression size", "left thumb impression size for ibps po", "ibps hand written declaration size"],
     intent: "application",
     supportedBy: ["/tools/50kb-photo", "/tools/20kb-photo", "/tools/sbi-photo", "/tools/application-photos"],
   },
   {
     path: "/tools/sbi-photo",
     primary: "sbi photo",
-    secondary: ["sbi photo size", "sbi signature size", "sbi po photo size"],
+    secondary: ["sbi photo size", "sbi signature size", "sbi po photo size", "sbi thumb impression size", "left thumb impression size for sbi po", "sbi hand written declaration"],
     intent: "application",
     supportedBy: ["/tools/ibps-photo", "/tools/50kb-photo", "/tools/application-photos"],
   },
