@@ -19,7 +19,7 @@ function resolveSiteUrl(): string {
 
 export const siteConfig = {
   name: "Imgifyr",
-  tagline: "Fast, private image tools that make your image fit the exact requirement.",
+  tagline: "Photos and PDFs that fit the form, first time. Free with no limits, and nothing is uploaded.",
   description:
     "Free online image tools to resize, crop, compress and convert JPG, PNG, WebP, HEIC and SVG images. Everything runs in your browser, so your images are never uploaded.",
   url: resolveSiteUrl(),
@@ -28,8 +28,10 @@ export const siteConfig = {
   /** Social profiles linked from the footer. */
   social: {
     instagram: "https://www.instagram.com/rishabh073153/",
-    linkedin: "https://www.linkedin.com/in/rishabh-gautam-48a7b0249/",
+    linkedin: "https://www.linkedin.com/company/imgifyr/",
   },
+  /** Profiles owned by the brand itself, listed as `sameAs` in the Organization schema. Never personal accounts. */
+  brandProfiles: ["https://www.linkedin.com/company/imgifyr/"],
   /** Preview deployments must never be indexed. */
   isIndexable: process.env.VERCEL_ENV !== "preview",
 } as const;

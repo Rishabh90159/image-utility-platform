@@ -17,6 +17,7 @@ export function websiteSchema() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: siteConfig.name,
+    alternateName: ["Imgifyr.com", "imgifyr"],
     url: absoluteUrl("/"),
     description: siteConfig.description,
     inLanguage: "en",
@@ -31,7 +32,8 @@ export function organizationSchema() {
     "@type": "Organization",
     name: siteConfig.name,
     url: absoluteUrl("/"),
-    logo: absoluteUrl("/icon.svg"),
+    logo: absoluteUrl("/logo-512.png"),
+    sameAs: [...siteConfig.brandProfiles],
   };
 }
 

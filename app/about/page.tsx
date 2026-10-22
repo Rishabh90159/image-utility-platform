@@ -32,6 +32,10 @@ export default function AboutPage() {
       <h2>Principles</h2>
       <ul>
         <li>
+          <strong>Free, with no limits.</strong> No account, no daily cap, no file-count limit and no watermark on any
+          download, including passport photos and PDFs.
+        </li>
+        <li>
           <strong>Privacy by design.</strong> Images are processed in your browser and are not uploaded. There is no account
           to create and nothing to delete afterwards.
         </li>
@@ -48,6 +52,20 @@ export default function AboutPage() {
           as a way to restore quality.
         </li>
       </ul>
+
+      <h2>Why it&apos;s free, and will stay free</h2>
+      <p>
+        Online tools usually limit free use because every file you upload costs them server time and storage, so &ldquo;free&rdquo;
+        becomes a trial: a few files a day, a low-resolution preview, or a watermark until you pay. {siteConfig.name} works the
+        other way round. The processing runs on your own device, so one conversion or a thousand costs the same to us:
+        nothing beyond serving the page.
+      </p>
+      <p>
+        That&apos;s why the tools have no daily cap, no watermark and no paid tier. If the site ever carries a sponsor message
+        to cover hosting, it will never limit, watermark or slow down a tool, and your files will still never be uploaded.
+        The only limits are practical ones, stated on each tool: for example, images up to 50 MB, since very large files are
+        hard for a phone to process.
+      </p>
 
       <h2>The tools</h2>
       <ul>

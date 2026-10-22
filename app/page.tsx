@@ -78,7 +78,7 @@ const faqs: FaqItem[] = [
   {
     question: "Are these image tools really free?",
     answer:
-      "Yes. Every tool is free to use as often as you like, with no account, no daily limit and no watermark added to your images.",
+      "Yes, with no catch. Every tool is free to use as often as you like, with no account, no daily limit, no file-count limit and no watermark. Most sites limit free use because every file costs them server time; here your own browser does the work, so a conversion costs us nothing and there's no reason to ration it.",
   },
   {
     question: "Are my images uploaded to a server?",
@@ -109,24 +109,24 @@ const faqs: FaqItem[] = [
 
 const benefits: { title: string; text: string; icon: React.ReactNode }[] = [
   {
-    title: "Private by design",
-    text: "Images are never uploaded, so they can't be leaked, kept or used for training.",
-    icon: <path d="M10 2.5l6 2.2v4.6c0 3.9-2.6 6.9-6 8.2-3.4-1.3-6-4.3-6-8.2V4.7z M7.3 10l1.9 1.9 3.6-3.8" />,
+    title: "Free, no limits",
+    text: "No sign-up, no daily cap and no watermark. Your device does the work, so there's nothing to ration.",
+    icon: <path d="M3 3.5h6.5l7.5 7.5-6 6-8-8z M6.5 7a.5.5 0 100-1 .5.5 0 000 1z" />,
   },
   {
-    title: "Exact numbers",
-    text: "Every result shows its real file size, measured from the file you download.",
+    title: "Official sizes",
+    text: "Exam and passport requirements are copied from the official notice, linked and dated.",
     icon: <path d="M2.5 6.5h15v7h-15z M5.5 6.5v2.5 M8.5 6.5v3.5 M11.5 6.5v2.5 M14.5 6.5v3.5" />,
   },
   {
-    title: "Honest results",
-    text: "If a target can't be reached, the tool says so instead of pretending.",
+    title: "Exact, honest results",
+    text: "Every result shows its real file size. If a target can't be reached, the tool says so.",
     icon: <path d="M10 17.5a7.5 7.5 0 100-15 7.5 7.5 0 000 15z M6.8 10.2l2.2 2.2 4.2-4.4" />,
   },
   {
-    title: "Metadata removed",
-    text: "Processed images don't carry camera details or GPS location from the original.",
-    icon: <path d="M10 17.5s5.5-4.7 5.5-9a5.5 5.5 0 00-11 0c0 4.3 5.5 9 5.5 9z M3 3l14 14" />,
+    title: "Private by design",
+    text: "Images are never uploaded, and downloads don't carry camera details or GPS location.",
+    icon: <path d="M10 2.5l6 2.2v4.6c0 3.9-2.6 6.9-6 8.2-3.4-1.3-6-4.3-6-8.2V4.7z M7.3 10l1.9 1.9 3.6-3.8" />,
   },
 ];
 
