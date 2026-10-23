@@ -64,8 +64,24 @@ export default function ToolsIndexPage() {
         Free tools that run in your browser. Pick the one that matches what you need to do; your images are never uploaded.
       </p>
 
+      {/* Jump links to each group; on phones they scroll sideways in one row instead of wrapping. */}
+      <nav aria-label="Tool groups" className="-mx-4 mt-6 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+        <ul className="flex gap-2 sm:flex-wrap">
+          {groups.map((group) => (
+            <li key={group.category} className="shrink-0">
+              <a
+                href={`#group-${group.category}`}
+                className="inline-flex min-h-10 items-center rounded-full border border-line bg-canvas px-4 text-sm font-medium text-ink-soft transition-colors hover:border-accent/50 hover:text-accent"
+              >
+                {group.heading}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
       {groups.map((group) => (
-        <section key={group.category} aria-labelledby={`group-${group.category}`} className="mt-12">
+        <section key={group.category} aria-labelledby={`group-${group.category}`} className="mt-10 sm:mt-12">
           <h2 id={`group-${group.category}`} className="text-xl font-bold tracking-tight text-ink">
             {group.heading}
           </h2>
@@ -90,7 +106,7 @@ export default function ToolsIndexPage() {
               </>
             ) : null}
           </p>
-          <ul className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-5 grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
             {allTools
               .filter((tool) => tool.category === group.category || (group.category === "size" && tool.category === "units"))
               .map((tool) => (

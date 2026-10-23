@@ -241,6 +241,10 @@ async function makeFile(page, fileName, kindLabel) {
   check("IBPS: application_photo_started/completed tracked with preset id", ev.some(([n, p]) => n === "application_photo_completed" && p.preset === "ibps-crp-po-mt-xvi"), ev.map(([n]) => n).join(","));
   await page.screenshot({ path: path.join(OUT, "ibps-desktop.png"), fullPage: true });
 
+  // Sources are inside the collapsed "Full rules and official source" section.
+
+  await page.locator('section[aria-labelledby="requirements-heading"] summary').first().click();
+
   const [popup] = await Promise.all([
     page.waitForEvent("popup"),
     page.locator('section[aria-labelledby="requirements-heading"] a[target="_blank"]').first().click({ modifiers: [] }),
@@ -291,7 +295,7 @@ async function makeFile(page, fileName, kindLabel) {
 {
   const page = await openPage("/tools/passport-photo");
   check("Passport: comparison table lists India, UK and Canada with sources", (await page.locator("table").first().innerText()).match(/India[\s\S]*United Kingdom[\s\S]*Canada/) !== null && (await page.locator('a[href^="https://www.passportindia.gov.in/"]').count()) >= 1);
-  check("Passport: US and Australia listed as not yet verified", /United States:[\s\S]*Australia:/.test(await page.locator('section[aria-labelledby="requirements-heading"]').innerText()));
+  check("Passport: US and Australia listed as not yet verified", /United States:[\s\S]*Australia:/.test(await page.locator('section[aria-labelledby="requirements-heading"]').evaluate((el) => el.textContent ?? "")));
   await page.getByLabel("Country").selectOption("India");
   let r = await makeFile(page, "portrait.jpg");
   check("Passport India: 413 × 531 px JPG with 300 DPI for printing", r.info.width === 413 && r.info.height === 531 && jfifDpi(r.dl.buf) === 300, `dpi ${jfifDpi(r.dl.buf)}`);

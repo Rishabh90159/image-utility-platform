@@ -123,20 +123,28 @@ function PassportComparison() {
         </table>
       </div>
 
-      <h3 className="mt-5 text-sm font-semibold text-ink">Not yet verified</h3>
-      <ul className="mt-2 space-y-2 text-sm text-ink-soft">
-        {PASSPORT_NOT_VERIFIED.map((item) => (
-          <li key={item.country}>
-            <strong className="text-ink">{item.country}:</strong> {item.reason} Official page:{" "}
-            <SourceLink href={item.url} preset={`passport-${item.country.toLowerCase().replace(/\s+/g, "-")}-unverified`}>
-              {item.label}
-            </SourceLink>{" "}
-            <span className="text-muted">(checked {formatVerifiedDate(item.checkedOn)})</span>
-          </li>
-        ))}
-      </ul>
-      <p className="mt-4 text-sm leading-relaxed text-ink-soft">
-        <strong className="text-ink">Important:</strong> Application requirements can change. Always verify the final image
+      {/* Collapsed so the tool stays near the top on phones; the text stays in the page. */}
+      <details className="group mt-4 rounded-md border border-line">
+        <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-3 text-sm font-medium text-ink [&::-webkit-details-marker]:hidden">
+          <h3 className="font-medium">Not yet verified: {PASSPORT_NOT_VERIFIED.map((item) => item.country).join(", ")}</h3>
+          <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" className="shrink-0 transition-transform group-open:rotate-180">
+            <path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.6" />
+          </svg>
+        </summary>
+        <ul className="space-y-2 border-t border-line px-3 py-3 text-sm text-ink-soft">
+          {PASSPORT_NOT_VERIFIED.map((item) => (
+            <li key={item.country}>
+              <strong className="text-ink">{item.country}:</strong> {item.reason} Official page:{" "}
+              <SourceLink href={item.url} preset={`passport-${item.country.toLowerCase().replace(/\s+/g, "-")}-unverified`}>
+                {item.label}
+              </SourceLink>{" "}
+              <span className="text-muted">(checked {formatVerifiedDate(item.checkedOn)})</span>
+            </li>
+          ))}
+        </ul>
+      </details>
+      <p className="mt-3 text-xs leading-relaxed text-muted">
+        <strong className="text-ink-soft">Important:</strong> Application requirements can change. Always verify the final image
         against the latest official notification or application portal before submitting. This is an independent tool and is
         not affiliated with any government.
       </p>

@@ -154,7 +154,7 @@ export default function DsssbPhotoPage() {
       }
     >
       <div className="space-y-6">
-        <RequirementSummary heading="DSSSB Photo, Signature and ID Proof Requirements" app={app} />
+        <RequirementSummary heading="DSSSB Photo, Signature and ID Proof Size at a Glance" app={app} />
         <RequirementPhotoTool tool="dsssb-photo" sets={app.sets} setLabel="DSSSB advertisement" appName="DSSSB" />
       </div>
     </ToolPageShell>

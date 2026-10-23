@@ -58,7 +58,7 @@ const columns: {
     label: "PDF tools",
     tint: "sky",
     icon: <path d="M5 2.5h7l3.5 3.5v11.5H5z M12 2.5V6h3.5 M7.5 10.5h5 M7.5 13.5h5" />,
-    tools: ["compress-pdf", "jpg-to-pdf", "pdf-to-jpg", "merge-pdf", "pdf-to-word"],
+    tools: ["compress-pdf", "jpg-to-pdf", "pdf-to-jpg", "merge-pdf", "pdf-to-word", "word-to-pdf"],
     more: { href: PDF_HUB.path, label: "All PDF tools" },
   },
 ];

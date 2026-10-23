@@ -135,7 +135,7 @@ export default function RrbPhotoPage() {
       }
     >
       <div className="space-y-6">
-        <RequirementSummary heading="RRB NTPC 2026 Photo and Signature Requirements" app={app} />
+        <RequirementSummary heading="RRB NTPC Signature Size and Photo Rules at a Glance" app={app} />
         <RequirementPhotoTool tool="rrb-photo" sets={app.sets} setLabel="RRB notice (CEN)" appName="RRB" />
       </div>
     </ToolPageShell>

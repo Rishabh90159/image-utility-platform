@@ -16,12 +16,34 @@ export const metadata: Metadata = pageMetadata({
 
 const pct = (value: number) => `${Math.round(value * 100)}%`;
 
+/** Section links for the "On this page" list; each id matches an h2 below. */
+const toc = [
+  { id: "everything-runs-in-your-browser", label: "Everything runs in your browser" },
+  { id: "opening-and-checking-files", label: "Opening and checking files" },
+  { id: "resizing", label: "Resizing" },
+  { id: "compression", label: "Compression" },
+  { id: "reaching-a-target-file-size", label: "Reaching a target file size (KB)" },
+  { id: "format-conversion", label: "Format conversion" },
+  { id: "cropping-rotation-and-photo-preparation", label: "Cropping, rotation and photo preparation" },
+  { id: "exam-recruitment-and-passport-requirements", label: "Exam, recruitment and passport requirements" },
+  { id: "photo-size-pages", label: "Photo size pages (20KB, 50KB, 100KB, 200KB)" },
+  { id: "enlarging-upscaler-and-image-size-increase", label: "Enlarging: upscaler and image size increase" },
+  { id: "background-removal", label: "Background removal" },
+  { id: "photo-to-pdf-and-jpg-to-pdf", label: "Photo to PDF and JPG to PDF" },
+  { id: "merging-and-enhancing", label: "Merging and enhancing" },
+  { id: "jpeg-to-jpg-and-file-size-units", label: "JPEG to JPG and file-size units" },
+  { id: "batch-processing", label: "Batch processing" },
+  { id: "metadata", label: "Metadata" },
+  { id: "known-limitations", label: "Known limitations" },
+];
+
 export default function MethodologyPage() {
   return (
     <ContentPage
       title="How the tools work"
       path="/methodology"
       updated="2026-10-07"
+      toc={toc}
       intro={
         <p>
           This page explains what happens to your image at each step, in plain language, so you can judge the results for
@@ -29,7 +51,7 @@ export default function MethodologyPage() {
         </p>
       }
     >
-      <h2>Everything runs in your browser</h2>
+      <h2 id="everything-runs-in-your-browser">Everything runs in your browser</h2>
       <p>
         When you select an image, your browser reads the file from your device. The processing code (image decoding,
         resizing and encoding) is part of the web page and runs on your computer or phone, using the image features built
@@ -42,7 +64,7 @@ export default function MethodologyPage() {
         image data.
       </p>
 
-      <h2>Opening and checking files</h2>
+      <h2 id="opening-and-checking-files">Opening and checking files</h2>
       <ul>
         <li>
           The file type is identified from the file&apos;s contents, not just its name, so a renamed or damaged file is caught
@@ -59,7 +81,7 @@ export default function MethodologyPage() {
         </li>
       </ul>
 
-      <h2>Resizing</h2>
+      <h2 id="resizing">Resizing</h2>
       <p>
         The image is redrawn at the new size with high-quality smoothing. For large reductions (for example, a 6000-pixel
         photo down to 800 pixels), the image is halved in several steps rather than shrunk in one go. A single large jump
@@ -72,7 +94,7 @@ export default function MethodologyPage() {
         if an image is too large for your device, you&apos;ll see a message suggesting smaller dimensions.
       </p>
 
-      <h2>Compression</h2>
+      <h2 id="compression">Compression</h2>
       <h3>JPG and WebP</h3>
       <p>
         These formats are lossy. The quality setting (0–100%) controls how aggressively fine detail is simplified. The
@@ -101,7 +123,7 @@ export default function MethodologyPage() {
         so rather than presenting a bigger file as a success.
       </p>
 
-      <h2>Reaching a target file size (KB)</h2>
+      <h2 id="reaching-a-target-file-size">Reaching a target file size (KB)</h2>
       <p>
         The size of a compressed image depends on its content, so it can&apos;t be set directly. The{" "}
         <Link href="/tools/resize-image-to-kb">Resize Image to KB tool</Link> searches for the best result in stages, and
@@ -134,7 +156,7 @@ export default function MethodologyPage() {
         is, and the exact byte count is shown alongside each result.
       </p>
 
-      <h2>Format conversion</h2>
+      <h2 id="format-conversion">Format conversion</h2>
       <ul>
         <li>
           <strong>JPG to PNG:</strong> the decoded JPG is saved losslessly as PNG. This prevents further loss but can&apos;t
@@ -166,7 +188,7 @@ export default function MethodologyPage() {
         </li>
       </ul>
 
-      <h2>Cropping, rotation and photo preparation</h2>
+      <h2 id="cropping-rotation-and-photo-preparation">Cropping, rotation and photo preparation</h2>
       <p>
         The cropper works on a preview, but the crop is applied to the full-resolution image: rotation (in 90° steps) and
         mirroring are applied first, then the selected rectangle is cut out and scaled to the output size with the same
@@ -184,7 +206,7 @@ export default function MethodologyPage() {
         transparent, darker ink is kept, and a narrow band in between is blended so pen edges stay smooth.
       </p>
 
-      <h2>Exam, recruitment and passport requirements</h2>
+      <h2 id="exam-recruitment-and-passport-requirements">Exam, recruitment and passport requirements</h2>
       <p>
         Pages such as the IBPS, SBI, SSC, NEET and passport photo tools apply requirements published by the organisation
         concerned. How that data is kept:
@@ -218,14 +240,14 @@ export default function MethodologyPage() {
         examination body or government.
       </p>
 
-      <h2>Photo size pages (20KB, 50KB, 100KB, 200KB)</h2>
+      <h2 id="photo-size-pages">Photo size pages (20KB, 50KB, 100KB, 200KB)</h2>
       <p>
         These pages use the same target-size search as the Resize Image to KB tool, with the target preset. Optional settings
         let you cap the width (the image is scaled down first, then the search runs) or cap the quality (the search never goes
         above it, so the file may end up well under the target). The size shown is always the size of the file you download.
       </p>
 
-      <h2>Enlarging: upscaler and image size increase</h2>
+      <h2 id="enlarging-upscaler-and-image-size-increase">Enlarging: upscaler and image size increase</h2>
       <p>
         Enlarging uses Lanczos-3 resampling: each new pixel is a weighted average of the original pixels in a 6 × 6
         neighbourhood, with weights from a windowed sinc function. It keeps edges crisper than the bilinear or bicubic
@@ -240,7 +262,7 @@ export default function MethodologyPage() {
         re-encodes at higher JPG quality and, if needed, larger dimensions.
       </p>
 
-      <h2>Background removal</h2>
+      <h2 id="background-removal">Background removal</h2>
       <p>
         The background remover runs U²-Netp, a small salient-object segmentation network (Qin et al., 2020, Apache 2.0
         licence), with ONNX Runtime&apos;s WebAssembly engine on a single thread. The model receives a 320 × 320 copy of the
@@ -251,7 +273,7 @@ export default function MethodologyPage() {
         precise than large server-side models, especially with hair, glass, low contrast and several subjects.
       </p>
 
-      <h2>Photo to PDF and JPG to PDF</h2>
+      <h2 id="photo-to-pdf-and-jpg-to-pdf">Photo to PDF and JPG to PDF</h2>
       <p>
         PDFs are written by a small built-in PDF 1.4 writer: one page per image, each image embedded as JPEG data. A JPG that
         needs no resizing and uses RGB or greyscale colour is copied into the PDF byte-for-byte; if the photo has an EXIF
@@ -261,7 +283,7 @@ export default function MethodologyPage() {
         clips the overflow.
       </p>
 
-      <h2>Merging and enhancing</h2>
+      <h2 id="merging-and-enhancing">Merging and enhancing</h2>
       <p>
         Merging scales images in proportion so they share a width (vertical), a height (horizontal) or a cell size (grid),
         then draws them on one canvas; large reductions go through the stepped downscaler. If the result would exceed
@@ -271,7 +293,7 @@ export default function MethodologyPage() {
         sharpening. The live preview is computed on a copy up to 1000 pixels; the download is processed at full size.
       </p>
 
-      <h2>JPEG to JPG and file-size units</h2>
+      <h2 id="jpeg-to-jpg-and-file-size-units">JPEG to JPG and file-size units</h2>
       <p>
         &ldquo;Change extension only&rdquo; copies the file&apos;s bytes unchanged under a .jpg name, after checking its
         content really is JPEG. &ldquo;Re-save&rdquo; decodes and encodes it at 92% quality. The MB to KB converter shows
@@ -279,7 +301,7 @@ export default function MethodologyPage() {
         binary units labelled KB and MB, as most upload forms count them.
       </p>
 
-      <h2>Batch processing</h2>
+      <h2 id="batch-processing">Batch processing</h2>
       <p>
         The bulk resizer processes images through a small pool of background workers, usually two or three depending on
         the device&apos;s processor and memory. Each image is decoded, resized, encoded and then released from memory before
@@ -288,14 +310,14 @@ export default function MethodologyPage() {
         cleaned so they can&apos;t contain folders or characters that are invalid on Windows, macOS or Linux.
       </p>
 
-      <h2>Metadata</h2>
+      <h2 id="metadata">Metadata</h2>
       <p>
         Processed images are new files containing only pixel data. EXIF metadata such as camera model, date taken and GPS
         location is not copied. The one exception: if the target-size tool returns your original file unchanged (because it
         was already small enough), that file is exactly as you provided it.
       </p>
 
-      <h2>Known limitations</h2>
+      <h2 id="known-limitations">Known limitations</h2>
       <ul>
         <li>
           The resizer, compressor, target-size and JPG/PNG converters handle one image at a time; use the bulk resizer for

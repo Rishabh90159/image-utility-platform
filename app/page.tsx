@@ -8,7 +8,7 @@ import { TINTS, type Tint } from "@/components/controls/tints";
 import { pageMetadata } from "@/lib/seo/metadata";
 import type { FaqItem } from "@/lib/seo/schema";
 import { siteConfig } from "@/lib/site";
-import { allTools, APPLICATION_HUB, getTool, type ToolId } from "@/lib/tools/registry";
+import { allTools, APPLICATION_HUB, getTool, PDF_HUB, type ToolId } from "@/lib/tools/registry";
 
 export const metadata: Metadata = pageMetadata({
   title: `Free Online Image Tools – Resize, Compress & Convert Images | ${siteConfig.name}`,
@@ -372,7 +372,15 @@ export default function HomePage() {
               {allTools.length} free tools, one place
             </h2>
             <p className="mt-1 text-slate-200">
-              Image, PDF, photo size, exam and passport tools. No sign-up, no limits, nothing uploaded.
+              Image tools,{" "}
+              <Link href={PDF_HUB.path} className="font-medium text-white underline underline-offset-2 hover:text-sky-200">
+                PDF tools
+              </Link>
+              , photo size tools and{" "}
+              <Link href={APPLICATION_HUB.path} className="font-medium text-white underline underline-offset-2 hover:text-sky-200">
+                exam and passport photo requirements
+              </Link>
+              . No sign-up, no limits, nothing uploaded.
             </p>
           </div>
           <Link

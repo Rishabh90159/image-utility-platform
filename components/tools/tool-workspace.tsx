@@ -122,15 +122,19 @@ export function ToolWorkspace({
         <div
           className={`grid gap-6 p-4 sm:p-5 ${widePreview ? "lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]" : "md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]"}`}
         >
-          {preview ?? (
-            <ImagePreview
-              src={source.url}
-              alt="Preview of the image you selected"
-              width={source.width}
-              height={source.height}
-              className="h-52 sm:h-72 md:h-full md:max-h-[26rem] md:min-h-72"
-            />
-          )}
+          {/* On wider screens the image stays in view while the settings beside it are scrolled. */}
+          <div className="min-w-0 md:sticky md:top-20 md:self-start">
+            {preview ?? (
+              <ImagePreview
+                src={source.url}
+                alt="Preview of the image you selected"
+                width={source.width}
+                height={source.height}
+                transparent={source.hasTransparency}
+                className="h-52 sm:h-72 md:h-[26rem]"
+              />
+            )}
+          </div>
           <div className="min-w-0 space-y-5">
             {errorBlock}
             {controls}
@@ -159,7 +163,9 @@ export function ActionButton({
   progress?: number | null;
 }) {
   return (
-    <div>
+    // Sticky: while the settings above it are long, the main action stays at the bottom of the screen
+    // instead of scrolling out of sight. Pure CSS, so it costs nothing at runtime.
+    <div className="sticky bottom-0 z-20 -mb-2 bg-canvas/95 py-3 shadow-[0_-10px_12px_-12px_rgb(15_23_42/0.3)] backdrop-blur-sm sm:shadow-none">
       <button
         type="button"
         onClick={onClick}

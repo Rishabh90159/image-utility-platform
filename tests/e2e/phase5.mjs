@@ -311,14 +311,15 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
   await page.goto(BASE + "/", { waitUntil: "networkidle" });
   const label = viewport.width < 500 ? "mobile" : "desktop";
   check(`home (${label}): hero copy`, (await page.locator("h1").innerText()) === "Free Online Image Tools" && /No upload/.test(await page.locator("main").innerText()));
-  const order = await page.locator("main h2").allInnerTexts();
+  // textContent, not innerText: sections below the fold render lazily (content-visibility), so their innerText is empty.
+  const order = (await page.locator("main h2").allTextContents()).map((t) => t.trim());
   const expected = ["Popular image tools", "Photo and exam tools", "Convert between formats", "How Imgifyr works", "Why use Imgifyr?", "Frequently asked questions"];
   check(`home (${label}): section order`, expected.every((h, i) => order.indexOf(h) >= 0 && (i === 0 || order.indexOf(h) > order.indexOf(expected[i - 1]))), order.join(" | "));
   await page.screenshot({ path: path.join(OUT, `home-${label}.png`) });
   await page.locator('input[type="file"]').first().setInputFiles(files.png);
   await page.getByText("What do you want to do?").waitFor();
   check(`home (${label}): PNG offers Convert to JPG`, await page.getByRole("link", { name: "Convert to JPG" }).isVisible());
-  await page.getByRole("link", { name: "Compress", exact: true }).click();
+  await page.locator("main").getByRole("link", { name: "Compress", exact: true }).click();
   await page.waitForURL("**/tools/image-compressor");
   await page.getByText("logo.png").first().waitFor({ timeout: 15000 });
   check(`home (${label}): chosen image opens in the selected tool`, true);

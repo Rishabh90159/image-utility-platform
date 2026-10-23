@@ -71,7 +71,8 @@ async function make(page, file, button, kindLabel) {
 // ---------- RRB ----------
 {
   const page = await open("/tools/rrb-photo");
-  const summary = await page.locator('section[aria-labelledby="requirements-heading"]').innerText();
+  // The notification list and rules sit in a collapsed <details>, so read textContent.
+  const summary = await page.locator('section[aria-labelledby="requirements-heading"]').evaluate((el) => el.textContent ?? "");
   check("RRB: says the photo is captured live, not uploaded", /captured live/i.test(summary));
   check("RRB: both CEN 06/2026 and 07/2026 listed with official links", (await page.locator('a[href^="https://rrb.indianrailways.gov.in/"]').count()) >= 2 && /06\/2026/.test(summary) && /07\/2026/.test(summary));
   check("RRB: signature minimum and KB range shown", /at least 140 × 60/.test(summary) && /30 KB – 49 KB/.test(summary), summary.match(/at least 140 × 60[^\n]*/)?.[0]);

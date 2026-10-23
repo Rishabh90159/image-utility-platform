@@ -67,8 +67,8 @@ export function RequirementSummary({
           <RequirementCard key={group[0].id} sets={group} />
         ))}
       </div>
-      <p className="mt-4 text-sm leading-relaxed text-ink-soft">
-        <strong className="text-ink">Important:</strong> Application requirements can change. Always verify the final image
+      <p className="mt-3 text-xs leading-relaxed text-muted">
+        <strong className="text-ink-soft">Important:</strong> Application requirements can change. Always verify the final image
         against the latest official notification or application portal before submitting. This is an independent tool and is
         not affiliated with any examination body or government.
       </p>
@@ -105,23 +105,12 @@ function RequirementCard({ sets }: { sets: RequirementSet[] }) {
           `Same requirements in ${sets.length} notifications`
         )}
       </h3>
-      {sets.length > 1 ? (
-        <ul className="list-disc border-b border-line bg-surface px-4 pb-2.5 pl-9 text-sm text-ink-soft">
-          {sets.map((s) => (
-            <li key={s.id}>{s.name}</li>
-          ))}
-        </ul>
-      ) : null}
       <div className="space-y-3 px-4 py-3 text-sm">
         {set.livePhotoCapture ? (
-          <div>
-            <p className="font-medium text-ink">Photograph: captured live in the application form</p>
-            <ul className="mt-1 list-disc space-y-0.5 pl-5 text-ink-soft">
-              {set.livePhotoCapture.rules.map((rule) => (
-                <li key={rule}>{rule}</li>
-              ))}
-            </ul>
-          </div>
+          <p className="text-ink-soft">
+            <strong className="font-medium text-ink">Photograph: captured live in the application form</strong>, so there is
+            no photo file to upload.
+          </p>
         ) : null}
         {specs.length > 0 ? (
           <div className="relative overflow-x-auto">
@@ -148,15 +137,38 @@ function RequirementCard({ sets }: { sets: RequirementSet[] }) {
             </table>
           </div>
         ) : null}
-        {/* The detailed rules are collapsed so the tool stays near the top on phones; they remain in the page. */}
+        {/*
+          The rules, the notifications covered and the sources are collapsed so the tool stays near the top on phones.
+          They remain in the page HTML for search engines and for anyone who opens them.
+        */}
         <details className="group rounded-md border border-line">
           <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-3 font-medium text-ink [&::-webkit-details-marker]:hidden">
-            {specs.length > 2 ? "Rules for each upload" : specs.length > 1 ? "Photo and signature rules" : specs[0]?.kind === "signature" ? "Signature rules and notes" : "Photo rules and notes"}
+            {sets.length > 1 ? "Full rules and official sources" : "Full rules and official source"}
             <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" className="shrink-0 transition-transform group-open:rotate-180">
               <path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.6" />
             </svg>
           </summary>
           <div className="space-y-3 border-t border-line px-3 py-3">
+            {sets.length > 1 ? (
+              <div>
+                <p className="font-medium text-ink">Applies to</p>
+                <ul className="mt-1 list-disc space-y-0.5 pl-5 text-ink-soft">
+                  {sets.map((s) => (
+                    <li key={s.id}>{s.name}</li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+            {set.livePhotoCapture ? (
+              <div>
+                <p className="font-medium text-ink">Live photo</p>
+                <ul className="mt-1 list-disc space-y-0.5 pl-5 text-ink-soft">
+                  {set.livePhotoCapture.rules.map((rule) => (
+                    <li key={rule}>{rule}</li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
             {specs.map((s) =>
               s.rules.length > 0 ? (
                 <div key={`${s.kind}-rules`}>
@@ -179,27 +191,35 @@ function RequirementCard({ sets }: { sets: RequirementSet[] }) {
                 </ul>
               </div>
             ) : null}
+            <div className="text-muted">
+              {sets.length === 1 ? "Source:" : "Sources:"}
+              <ul className={sets.length === 1 ? "inline" : "mt-1 list-disc space-y-0.5 pl-5"}>
+                {sets.map((s) => (
+                  <li key={s.id} className={sets.length === 1 ? "inline" : undefined}>
+                    {" "}
+                    <SourceLink href={s.source.url} preset={s.id}>
+                      {s.source.title}
+                    </SourceLink>{" "}
+                    ({s.source.publisher}
+                    {s.source.section ? `, ${s.source.section}` : ""})
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </details>
-        <div className="text-muted">
-          {sets.length === 1 ? "Source:" : "Sources:"}
-          <ul className={sets.length === 1 ? "inline" : "mt-1 list-disc space-y-0.5 pl-5"}>
-            {sets.map((s) => (
-              <li key={s.id} className={sets.length === 1 ? "inline" : undefined}>
-                {" "}
-                <SourceLink href={s.source.url} preset={s.id}>
-                  {s.source.title}
-                </SourceLink>{" "}
-                ({s.source.publisher}
-                {s.source.section ? `, ${s.source.section}` : ""}) · Last verified{" "}
-                <time dateTime={s.source.lastVerified}>{formatVerifiedDate(s.source.lastVerified)}</time>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <p className="text-xs text-muted">
+          Last verified <time dateTime={latestVerified(sets)}>{formatVerifiedDate(latestVerified(sets))}</time> against the
+          official notice{sets.length > 1 ? "s" : ""}
+        </p>
       </div>
     </article>
   );
+}
+
+/** The most recent verification date in a group of notifications. */
+function latestVerified(sets: RequirementSet[]): string {
+  return sets.map((s) => s.source.lastVerified).sort().at(-1) ?? "";
 }
 
 export function pixelText(s: ImageSpec): string {

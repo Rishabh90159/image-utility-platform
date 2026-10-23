@@ -261,8 +261,7 @@ function RequirementPhotoToolInner({ tool, sets, groupLabel, setLabel, appName }
 
       {set?.livePhotoCapture && !set.photo ? (
         <Alert tone="info" title="The photo is captured live, not uploaded">
-          The {appName} application takes your photo with your camera while you fill in the form, so there is no photo file to
-          prepare. This tool prepares the signature you upload.
+          The {appName} form takes your photo with your camera. This tool prepares the signature you upload.
         </Alert>
       ) : null}
 
