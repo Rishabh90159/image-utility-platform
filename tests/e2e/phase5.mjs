@@ -290,7 +290,7 @@ for (const [k, f] of Object.entries(files)) fs.writeFileSync(f, Buffer.from(made
   for (let i = 0; i < (await groups.count()); i++) boxes.push(await groups.nth(i).boundingBox());
   const lefts = [...new Set(boxes.map((b) => Math.round(b.x)))];
   check("footer (mobile): link groups in two columns", lefts.length === 2, `column x: ${lefts.join(", ")}`);
-  check("footer (mobile): every group and link visible, nothing to tap open", (await footer.locator("details").count()) === 0 && (await footer.getByRole("link", { name: "PNG to JPG Converter" }).isVisible()) && (await footer.getByRole("link", { name: "Privacy policy" }).isVisible()));
+  check("footer (mobile): every group and link visible, nothing to tap open", (await footer.locator("details").count()) === 0 && (await footer.getByRole("link", { name: "PNG to JPG", exact: true }).isVisible()) && (await footer.getByRole("link", { name: "Privacy policy" }).isVisible()));
   check("footer (mobile): no horizontal scroll", await mobile.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
   await footer.screenshot({ path: path.join(OUT, "footer-mobile.png") });
   await mctx.close();
@@ -312,7 +312,7 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
   const label = viewport.width < 500 ? "mobile" : "desktop";
   check(`home (${label}): hero copy`, (await page.locator("h1").innerText()) === "Free Online Image Tools" && /No upload/.test(await page.locator("main").innerText()));
   const order = await page.locator("main h2").allInnerTexts();
-  const expected = ["Popular tools", "Image tools", "Image converters", "Photo size tools", "Exam and passport photos", "Your images stay on your device", "How Imgifyr works", "Frequently asked questions"];
+  const expected = ["Popular image tools", "Photo and exam tools", "Convert between formats", "How Imgifyr works", "Why use Imgifyr?", "Frequently asked questions"];
   check(`home (${label}): section order`, expected.every((h, i) => order.indexOf(h) >= 0 && (i === 0 || order.indexOf(h) > order.indexOf(expected[i - 1]))), order.join(" | "));
   await page.screenshot({ path: path.join(OUT, `home-${label}.png`) });
   await page.locator('input[type="file"]').first().setInputFiles(files.png);

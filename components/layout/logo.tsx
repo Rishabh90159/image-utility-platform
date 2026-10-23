@@ -23,10 +23,10 @@ export function LogoMark({ size = 28 }: { size?: number }) {
   );
 }
 
-/** Mark plus wordmark, used in the header and footer. */
-export function Logo() {
+/** Mark plus wordmark, used in the header and footer. `light` is for the dark navy header and footer. */
+export function Logo({ tone = "dark" }: { tone?: "dark" | "light" }) {
   return (
-    <span className="inline-flex items-center gap-2.5 text-ink">
+    <span className={`inline-flex items-center gap-2.5 ${tone === "light" ? "text-white" : "text-ink"}`}>
       <LogoMark />
       <span className="font-display text-[1.1875rem] font-extrabold tracking-[-0.02em]">{siteConfig.name}</span>
     </span>

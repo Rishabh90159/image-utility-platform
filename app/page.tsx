@@ -5,11 +5,10 @@ import { QuickStart } from "@/components/home/quick-start";
 import { ToolTile } from "@/components/home/tool-tile";
 import { PhotoCard } from "@/components/controls/photo-card";
 import { TINTS, type Tint } from "@/components/controls/tints";
-import { ToolIcon } from "@/components/tool-card/tool-icon";
 import { pageMetadata } from "@/lib/seo/metadata";
 import type { FaqItem } from "@/lib/seo/schema";
 import { siteConfig } from "@/lib/site";
-import { APPLICATION_HUB, getTool, toolsIn, type NavGroup, type ToolId } from "@/lib/tools/registry";
+import { allTools, APPLICATION_HUB, getTool, type ToolId } from "@/lib/tools/registry";
 
 export const metadata: Metadata = pageMetadata({
   title: `Free Online Image Tools – Resize, Compress & Convert Images | ${siteConfig.name}`,
@@ -18,61 +17,6 @@ export const metadata: Metadata = pageMetadata({
   path: "/",
 });
 
-const groups: { id: NavGroup; heading: string; intro: React.ReactNode }[] = [
-  {
-    id: "image",
-    heading: "Image tools",
-    intro: (
-      <>
-        Resize an image online by pixels or percentage, compress JPG, PNG and WebP files, crop, upscale, enhance or remove a
-        background. Format-specific resizers handle <Link href="/tools/resize-jpg">JPG</Link>,{" "}
-        <Link href="/tools/resize-png">PNG</Link>, <Link href="/tools/resize-webp">WebP</Link> and animated{" "}
-        <Link href="/tools/resize-gif">GIF</Link> files, and the{" "}
-        <Link href="/tools/instagram-image-resizer">Instagram resizer</Link> sizes photos for posts, Stories and Reels.
-      </>
-    ),
-  },
-  {
-    id: "convert",
-    heading: "Image converters",
-    intro: (
-      <>
-        Convert an image online from one format to another: iPhone HEIC and WebP to JPG, JPG to PNG and back, SVG to PNG, PNG
-        to vector SVG, and photos to a single PDF.
-      </>
-    ),
-  },
-  {
-    id: "pdf",
-    heading: "PDF tools",
-    intro: (
-      <>
-        Convert Word documents to PDF and PDFs to editable Word, or merge several PDFs into one, without uploading them. See
-        all <Link href="/tools/pdf-tools">PDF tools</Link>.
-      </>
-    ),
-  },
-  {
-    id: "size",
-    heading: "Photo size tools",
-    intro: (
-      <>
-        When a form says &ldquo;under 50 KB&rdquo;, these get your photo there in one step while keeping it as sharp as
-        possible. For any other limit, use <Link href="/tools/resize-image-to-kb">resize image to KB</Link>.
-      </>
-    ),
-  },
-  {
-    id: "application",
-    heading: "Exam and passport photos",
-    intro: (
-      <>
-        Photo and signature sizes taken from official notifications, each with its source and check date, and a tool that
-        applies them. <Link href={APPLICATION_HUB.path}>Compare every exam&apos;s requirements</Link> on one page.
-      </>
-    ),
-  },
-];
 
 const faqs: FaqItem[] = [
   {
@@ -241,31 +185,6 @@ function HeroIllustration() {
   );
 }
 
-function ToolLinkList({ ids }: { ids: ToolId[] }) {
-  return (
-    <ul className="grid gap-2 sm:grid-cols-2">
-      {ids.map((id) => {
-        const tool = getTool(id);
-        return (
-          <li key={id}>
-            <Link
-              href={tool.path}
-              className="group flex h-full gap-3 rounded-lg border border-line bg-canvas p-3.5 transition-colors hover:border-accent/50"
-            >
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-accent-soft text-accent transition-colors group-hover:bg-accent group-hover:text-white">
-                <ToolIcon category={tool.category} id={tool.id} />
-              </span>
-              <span className="min-w-0">
-                <span className="block font-medium text-ink group-hover:text-accent group-hover:underline">{tool.name}</span>
-                <span className="mt-0.5 block text-sm leading-snug text-muted">{tool.summary}</span>
-              </span>
-            </Link>
-          </li>
-        );
-      })}
-    </ul>
-  );
-}
 
 export default function HomePage() {
   return (
@@ -445,27 +364,25 @@ export default function HomePage() {
         </div>
       </section>
 
-      <div className="render-later mt-16 border-y border-line bg-surface">
-        <div className="mx-auto max-w-6xl divide-y divide-line px-4 sm:px-6">
-          {groups.map((group) => (
-            <section
-              key={group.id}
-              aria-labelledby={`group-${group.id}`}
-              className="grid gap-x-12 gap-y-4 py-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.4fr)] lg:py-12"
-            >
-              <div className="lg:sticky lg:top-24 lg:self-start">
-                <h2 id={`group-${group.id}`} className="text-2xl font-bold tracking-tight text-ink">
-                  {group.heading}
-                </h2>
-                <p className="mt-2 leading-relaxed text-ink-soft [&_a]:text-accent [&_a]:underline [&_a]:underline-offset-2">
-                  {group.intro}
-                </p>
-              </div>
-              <ToolLinkList ids={toolsIn(group.id).map((tool) => tool.id)} />
-            </section>
-          ))}
+      {/* The full list lives on /tools (and in the header menus), so the homepage stays short. */}
+      <section aria-labelledby="all-tools-heading" className="render-later mx-auto max-w-6xl px-4 pt-16 sm:px-6">
+        <div className="flex flex-col items-start gap-5 rounded-xl bg-gradient-to-r from-[#0f1e46] to-[#1d4ed8] p-6 text-white sm:flex-row sm:items-center sm:justify-between sm:p-8">
+          <div>
+            <h2 id="all-tools-heading" className="text-2xl font-bold tracking-tight">
+              {allTools.length} free tools, one place
+            </h2>
+            <p className="mt-1 text-slate-200">
+              Image, PDF, photo size, exam and passport tools. No sign-up, no limits, nothing uploaded.
+            </p>
+          </div>
+          <Link
+            href="/tools"
+            className="inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-lg bg-white px-5 font-semibold text-accent-ink transition-colors hover:bg-accent-soft"
+          >
+            Browse all tools <span aria-hidden="true">→</span>
+          </Link>
         </div>
-      </div>
+      </section>
 
       <div className="render-later mx-auto max-w-3xl px-4 pt-16 sm:px-6">
         <Faq items={faqs} variant="boxed" intro="Answers to common questions about Imgifyr." className="" />
